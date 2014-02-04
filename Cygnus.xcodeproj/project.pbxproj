@@ -1,1024 +1,572 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>350696B0F76E4DCEA537DE49</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>A0BB8D85AFD64CCC87AC5CCD</key>
-		<dict>
-			<key>fileRef</key>
-			<string>D72F10921C964563A92E83E5</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C5CD8164C6014A1CBC72AA11</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Pods.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928811518A0D9D8006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928812718A0D9D8006A4ACB</string>
-				<string>C928814018A0D9D9006A4ACB</string>
-				<string>C928812018A0D9D8006A4ACB</string>
-				<string>C928811F18A0D9D8006A4ACB</string>
-				<string>C5CD8164C6014A1CBC72AA11</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928811618A0D9D8006A4ACB</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>CLASSPREFIX</key>
-				<string>CYG</string>
-				<key>LastUpgradeCheck</key>
-				<string>0500</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>Fototropik</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>C928813818A0D9D9006A4ACB</key>
-					<dict>
-						<key>TestTargetID</key>
-						<string>C928811D18A0D9D8006A4ACB</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>C928811918A0D9D8006A4ACB</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-			</array>
-			<key>mainGroup</key>
-			<string>C928811518A0D9D8006A4ACB</string>
-			<key>productRefGroup</key>
-			<string>C928811F18A0D9D8006A4ACB</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>C928811D18A0D9D8006A4ACB</string>
-				<string>C928813818A0D9D9006A4ACB</string>
-			</array>
-		</dict>
-		<key>C928811918A0D9D8006A4ACB</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>C928814818A0D9D9006A4ACB</string>
-				<string>C928814918A0D9D9006A4ACB</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>C928811A18A0D9D8006A4ACB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C928813218A0D9D9006A4ACB</string>
-				<string>C928812E18A0D9D8006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C928811B18A0D9D8006A4ACB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C928812418A0D9D8006A4ACB</string>
-				<string>C928812618A0D9D8006A4ACB</string>
-				<string>C928812218A0D9D8006A4ACB</string>
-				<string>A0BB8D85AFD64CCC87AC5CCD</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C928811C18A0D9D8006A4ACB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C928812C18A0D9D8006A4ACB</string>
-				<string>C928813418A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C928811D18A0D9D8006A4ACB</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>C928814A18A0D9D9006A4ACB</string>
-			<key>buildPhases</key>
-			<array>
-				<string>350696B0F76E4DCEA537DE49</string>
-				<string>C928811A18A0D9D8006A4ACB</string>
-				<string>C928811B18A0D9D8006A4ACB</string>
-				<string>C928811C18A0D9D8006A4ACB</string>
-				<string>E42FBE20BC1D4B56B966147E</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Cygnus</string>
-			<key>productName</key>
-			<string>Cygnus</string>
-			<key>productReference</key>
-			<string>C928811E18A0D9D8006A4ACB</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>C928811E18A0D9D8006A4ACB</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Cygnus.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>C928811F18A0D9D8006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928811E18A0D9D8006A4ACB</string>
-				<string>C928813918A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812018A0D9D8006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928812118A0D9D8006A4ACB</string>
-				<string>C928812318A0D9D8006A4ACB</string>
-				<string>C928812518A0D9D8006A4ACB</string>
-				<string>C928813A18A0D9D9006A4ACB</string>
-				<string>D72F10921C964563A92E83E5</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812118A0D9D8006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>C928812218A0D9D8006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928812118A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928812318A0D9D8006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreGraphics.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreGraphics.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>C928812418A0D9D8006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928812318A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928812518A0D9D8006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>UIKit.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/UIKit.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>C928812618A0D9D8006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928812518A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928812718A0D9D8006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928813018A0D9D9006A4ACB</string>
-				<string>C928813118A0D9D9006A4ACB</string>
-				<string>C928813318A0D9D9006A4ACB</string>
-				<string>C928812818A0D9D8006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Cygnus</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812818A0D9D8006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928812918A0D9D8006A4ACB</string>
-				<string>C928812A18A0D9D8006A4ACB</string>
-				<string>C928812D18A0D9D8006A4ACB</string>
-				<string>C928812F18A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812918A0D9D8006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Cygnus-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812A18A0D9D8006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928812B18A0D9D8006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812B18A0D9D8006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812C18A0D9D8006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928812A18A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928812D18A0D9D8006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>main.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928812E18A0D9D8006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928812D18A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928812F18A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Cygnus-Prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928813018A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>CYGAppDelegate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928813118A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>CYGAppDelegate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928813218A0D9D9006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928813118A0D9D9006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928813318A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Images.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928813418A0D9D9006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928813318A0D9D9006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928813518A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C928814718A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C928813618A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C928813B18A0D9D9006A4ACB</string>
-				<string>C928813D18A0D9D9006A4ACB</string>
-				<string>C928813C18A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C928813718A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>C928814518A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>C928813818A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>C928814D18A0D9D9006A4ACB</string>
-			<key>buildPhases</key>
-			<array>
-				<string>C928813518A0D9D9006A4ACB</string>
-				<string>C928813618A0D9D9006A4ACB</string>
-				<string>C928813718A0D9D9006A4ACB</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>C928813F18A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>CygnusTests</string>
-			<key>productName</key>
-			<string>CygnusTests</string>
-			<key>productReference</key>
-			<string>C928813918A0D9D9006A4ACB</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>C928813918A0D9D9006A4ACB</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>CygnusTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>C928813A18A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>XCTest.framework</string>
-			<key>path</key>
-			<string>Library/Frameworks/XCTest.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>C928813B18A0D9D9006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928813A18A0D9D9006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928813C18A0D9D9006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928812118A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928813D18A0D9D9006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928812518A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928813E18A0D9D9006A4ACB</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>C928811618A0D9D8006A4ACB</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>C928811D18A0D9D8006A4ACB</string>
-			<key>remoteInfo</key>
-			<string>Cygnus</string>
-		</dict>
-		<key>C928813F18A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>C928811D18A0D9D8006A4ACB</string>
-			<key>targetProxy</key>
-			<string>C928813E18A0D9D9006A4ACB</string>
-		</dict>
-		<key>C928814018A0D9D9006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928814618A0D9D9006A4ACB</string>
-				<string>C928814118A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>CygnusTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928814118A0D9D9006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928814218A0D9D9006A4ACB</string>
-				<string>C928814318A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928814218A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>CygnusTests-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928814318A0D9D9006A4ACB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C928814418A0D9D9006A4ACB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928814418A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928814518A0D9D9006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928814318A0D9D9006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928814618A0D9D9006A4ACB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>CygnusTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C928814718A0D9D9006A4ACB</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C928814618A0D9D9006A4ACB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>C928814818A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>C928814918A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.0</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>C928814A18A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>C928814B18A0D9D9006A4ACB</string>
-				<string>C928814C18A0D9D9006A4ACB</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>C928814B18A0D9D9006A4ACB</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>C5CD8164C6014A1CBC72AA11</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Cygnus/Cygnus-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>Cygnus/Cygnus-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>C928814C18A0D9D9006A4ACB</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>C5CD8164C6014A1CBC72AA11</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Cygnus/Cygnus-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>Cygnus/Cygnus-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>app</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>C928814D18A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>C928814E18A0D9D9006A4ACB</string>
-				<string>C928814F18A0D9D9006A4ACB</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>C928814E18A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Cygnus.app/Cygnus</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Cygnus/Cygnus-Prefix.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>CygnusTests/CygnusTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>C928814F18A0D9D9006A4ACB</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_INCLUDING_64_BIT)</string>
-				<key>BUNDLE_LOADER</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Cygnus.app/Cygnus</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Cygnus/Cygnus-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>CygnusTests/CygnusTests-Info.plist</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUNDLE_LOADER)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>D72F10921C964563A92E83E5</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>E42FBE20BC1D4B56B966147E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Pods-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>C928811618A0D9D8006A4ACB</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A0BB8D85AFD64CCC87AC5CCD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D72F10921C964563A92E83E5 /* libPods.a */; };
+		C928812218A0D9D8006A4ACB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C928812118A0D9D8006A4ACB /* Foundation.framework */; };
+		C928812418A0D9D8006A4ACB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C928812318A0D9D8006A4ACB /* CoreGraphics.framework */; };
+		C928812618A0D9D8006A4ACB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C928812518A0D9D8006A4ACB /* UIKit.framework */; };
+		C928812C18A0D9D8006A4ACB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C928812A18A0D9D8006A4ACB /* InfoPlist.strings */; };
+		C928812E18A0D9D8006A4ACB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C928812D18A0D9D8006A4ACB /* main.m */; };
+		C928813218A0D9D9006A4ACB /* CYGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C928813118A0D9D9006A4ACB /* CYGAppDelegate.m */; };
+		C928813418A0D9D9006A4ACB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C928813318A0D9D9006A4ACB /* Images.xcassets */; };
+		C928813B18A0D9D9006A4ACB /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C928813A18A0D9D9006A4ACB /* XCTest.framework */; };
+		C928813C18A0D9D9006A4ACB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C928812118A0D9D8006A4ACB /* Foundation.framework */; };
+		C928813D18A0D9D9006A4ACB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C928812518A0D9D8006A4ACB /* UIKit.framework */; };
+		C928814518A0D9D9006A4ACB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C928814318A0D9D9006A4ACB /* InfoPlist.strings */; };
+		C928814718A0D9D9006A4ACB /* CygnusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C928814618A0D9D9006A4ACB /* CygnusTests.m */; };
+		C978311918A0E382008879B7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978311818A0E382008879B7 /* CoreLocation.framework */; };
+		C978311D18A0E392008879B7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978311C18A0E392008879B7 /* Security.framework */; };
+		C978311F18A0E397008879B7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978311E18A0E397008879B7 /* MobileCoreServices.framework */; };
+		C978312118A0E39C008879B7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978312018A0E39C008879B7 /* SystemConfiguration.framework */; };
+		C978312318A0E3A1008879B7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978312218A0E3A1008879B7 /* MapKit.framework */; };
+		C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */; };
+		C9D3A53618A0E5CB00FD8193 /* CYGDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */; };
+		C9F4A0D118A0F0A100231649 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978311A18A0E38D008879B7 /* QuartzCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C928813E18A0D9D9006A4ACB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C928811618A0D9D8006A4ACB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C928811D18A0D9D8006A4ACB;
+			remoteInfo = Cygnus;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C5CD8164C6014A1CBC72AA11 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		C928811E18A0D9D8006A4ACB /* Cygnus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cygnus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C928812118A0D9D8006A4ACB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C928812318A0D9D8006A4ACB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C928812518A0D9D8006A4ACB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C928812918A0D9D8006A4ACB /* Cygnus-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Cygnus-Info.plist"; sourceTree = "<group>"; };
+		C928812B18A0D9D8006A4ACB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C928812D18A0D9D8006A4ACB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C928812F18A0D9D9006A4ACB /* Cygnus-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cygnus-Prefix.pch"; sourceTree = "<group>"; };
+		C928813018A0D9D9006A4ACB /* CYGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CYGAppDelegate.h; sourceTree = "<group>"; };
+		C928813118A0D9D9006A4ACB /* CYGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CYGAppDelegate.m; sourceTree = "<group>"; };
+		C928813318A0D9D9006A4ACB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		C928813918A0D9D9006A4ACB /* CygnusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CygnusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C928813A18A0D9D9006A4ACB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C928814218A0D9D9006A4ACB /* CygnusTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CygnusTests-Info.plist"; sourceTree = "<group>"; };
+		C928814418A0D9D9006A4ACB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C928814618A0D9D9006A4ACB /* CygnusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CygnusTests.m; sourceTree = "<group>"; };
+		C978311818A0E382008879B7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		C978311A18A0E38D008879B7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C978311C18A0E392008879B7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C978311E18A0E397008879B7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		C978312018A0E39C008879B7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C978312218A0E3A1008879B7 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C9D3A53318A0E5CB00FD8193 /* CYGDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGDefines.h; sourceTree = "<group>"; };
+		C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGDefines.m; sourceTree = "<group>"; };
+		D72F10921C964563A92E83E5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C928811B18A0D9D8006A4ACB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9F4A0D118A0F0A100231649 /* QuartzCore.framework in Frameworks */,
+				C928812418A0D9D8006A4ACB /* CoreGraphics.framework in Frameworks */,
+				C978312318A0E3A1008879B7 /* MapKit.framework in Frameworks */,
+				C978312118A0E39C008879B7 /* SystemConfiguration.framework in Frameworks */,
+				C978311F18A0E397008879B7 /* MobileCoreServices.framework in Frameworks */,
+				C978311D18A0E392008879B7 /* Security.framework in Frameworks */,
+				C978311918A0E382008879B7 /* CoreLocation.framework in Frameworks */,
+				C928812618A0D9D8006A4ACB /* UIKit.framework in Frameworks */,
+				C928812218A0D9D8006A4ACB /* Foundation.framework in Frameworks */,
+				A0BB8D85AFD64CCC87AC5CCD /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C928813618A0D9D9006A4ACB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C928813B18A0D9D9006A4ACB /* XCTest.framework in Frameworks */,
+				C928813D18A0D9D9006A4ACB /* UIKit.framework in Frameworks */,
+				C928813C18A0D9D9006A4ACB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C916A29918A0E85000FB480F /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				C928813018A0D9D9006A4ACB /* CYGAppDelegate.h */,
+				C928813118A0D9D9006A4ACB /* CYGAppDelegate.m */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		C916A29A18A0E86C00FB480F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C928813318A0D9D9006A4ACB /* Images.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		C916A29B18A0E87600FB480F /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		C916A29C18A0E89300FB480F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		C928811518A0D9D8006A4ACB = {
+			isa = PBXGroup;
+			children = (
+				C928812718A0D9D8006A4ACB /* Cygnus */,
+				C928814018A0D9D9006A4ACB /* CygnusTests */,
+				C928812018A0D9D8006A4ACB /* Frameworks */,
+				C928811F18A0D9D8006A4ACB /* Products */,
+				C5CD8164C6014A1CBC72AA11 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		C928811F18A0D9D8006A4ACB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C928811E18A0D9D8006A4ACB /* Cygnus.app */,
+				C928813918A0D9D9006A4ACB /* CygnusTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C928812018A0D9D8006A4ACB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C978312218A0E3A1008879B7 /* MapKit.framework */,
+				C978312018A0E39C008879B7 /* SystemConfiguration.framework */,
+				C978311E18A0E397008879B7 /* MobileCoreServices.framework */,
+				C978311C18A0E392008879B7 /* Security.framework */,
+				C978311A18A0E38D008879B7 /* QuartzCore.framework */,
+				C978311818A0E382008879B7 /* CoreLocation.framework */,
+				C928812118A0D9D8006A4ACB /* Foundation.framework */,
+				C928812318A0D9D8006A4ACB /* CoreGraphics.framework */,
+				C928812518A0D9D8006A4ACB /* UIKit.framework */,
+				C928813A18A0D9D9006A4ACB /* XCTest.framework */,
+				D72F10921C964563A92E83E5 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C928812718A0D9D8006A4ACB /* Cygnus */ = {
+			isa = PBXGroup;
+			children = (
+				C916A29918A0E85000FB480F /* Application */,
+				C916A29B18A0E87600FB480F /* View Controllers */,
+				C916A29C18A0E89300FB480F /* Views */,
+				C916A29A18A0E86C00FB480F /* Resources */,
+				C928812818A0D9D8006A4ACB /* Supporting Files */,
+			);
+			path = Cygnus;
+			sourceTree = "<group>";
+		};
+		C928812818A0D9D8006A4ACB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C928812918A0D9D8006A4ACB /* Cygnus-Info.plist */,
+				C928812A18A0D9D8006A4ACB /* InfoPlist.strings */,
+				C928812D18A0D9D8006A4ACB /* main.m */,
+				C928812F18A0D9D9006A4ACB /* Cygnus-Prefix.pch */,
+				C9D3A53318A0E5CB00FD8193 /* CYGDefines.h */,
+				C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C928814018A0D9D9006A4ACB /* CygnusTests */ = {
+			isa = PBXGroup;
+			children = (
+				C928814618A0D9D9006A4ACB /* CygnusTests.m */,
+				C928814118A0D9D9006A4ACB /* Supporting Files */,
+			);
+			path = CygnusTests;
+			sourceTree = "<group>";
+		};
+		C928814118A0D9D9006A4ACB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C928814218A0D9D9006A4ACB /* CygnusTests-Info.plist */,
+				C928814318A0D9D9006A4ACB /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C928811D18A0D9D8006A4ACB /* Cygnus */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C928814A18A0D9D9006A4ACB /* Build configuration list for PBXNativeTarget "Cygnus" */;
+			buildPhases = (
+				350696B0F76E4DCEA537DE49 /* Check Pods Manifest.lock */,
+				C928811A18A0D9D8006A4ACB /* Sources */,
+				C928811B18A0D9D8006A4ACB /* Frameworks */,
+				C928811C18A0D9D8006A4ACB /* Resources */,
+				E42FBE20BC1D4B56B966147E /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Cygnus;
+			productName = Cygnus;
+			productReference = C928811E18A0D9D8006A4ACB /* Cygnus.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C928813818A0D9D9006A4ACB /* CygnusTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C928814D18A0D9D9006A4ACB /* Build configuration list for PBXNativeTarget "CygnusTests" */;
+			buildPhases = (
+				C928813518A0D9D9006A4ACB /* Sources */,
+				C928813618A0D9D9006A4ACB /* Frameworks */,
+				C928813718A0D9D9006A4ACB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C928813F18A0D9D9006A4ACB /* PBXTargetDependency */,
+			);
+			name = CygnusTests;
+			productName = CygnusTests;
+			productReference = C928813918A0D9D9006A4ACB /* CygnusTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C928811618A0D9D8006A4ACB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = CYG;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = Fototropik;
+				TargetAttributes = {
+					C928813818A0D9D9006A4ACB = {
+						TestTargetID = C928811D18A0D9D8006A4ACB;
+					};
+				};
+			};
+			buildConfigurationList = C928811918A0D9D8006A4ACB /* Build configuration list for PBXProject "Cygnus" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C928811518A0D9D8006A4ACB;
+			productRefGroup = C928811F18A0D9D8006A4ACB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C928811D18A0D9D8006A4ACB /* Cygnus */,
+				C928813818A0D9D9006A4ACB /* CygnusTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C928811C18A0D9D8006A4ACB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C928812C18A0D9D8006A4ACB /* InfoPlist.strings in Resources */,
+				C928813418A0D9D9006A4ACB /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C928813718A0D9D9006A4ACB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C928814518A0D9D9006A4ACB /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		350696B0F76E4DCEA537DE49 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E42FBE20BC1D4B56B966147E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C928811A18A0D9D8006A4ACB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C928813218A0D9D9006A4ACB /* CYGAppDelegate.m in Sources */,
+				C928812E18A0D9D8006A4ACB /* main.m in Sources */,
+				C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C928813518A0D9D9006A4ACB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9D3A53618A0E5CB00FD8193 /* CYGDefines.m in Sources */,
+				C928814718A0D9D9006A4ACB /* CygnusTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C928813F18A0D9D9006A4ACB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C928811D18A0D9D8006A4ACB /* Cygnus */;
+			targetProxy = C928813E18A0D9D9006A4ACB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C928812A18A0D9D8006A4ACB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C928812B18A0D9D8006A4ACB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C928814318A0D9D9006A4ACB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C928814418A0D9D9006A4ACB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C928814818A0D9D9006A4ACB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C928814918A0D9D9006A4ACB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C928814B18A0D9D9006A4ACB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5CD8164C6014A1CBC72AA11 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				BUNDLE_ID = "${ORGANIZATION}.${PRODUCT_NAME}.dev";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cygnus/Cygnus-Prefix.pch";
+				INFOPLIST_FILE = "Cygnus/Cygnus-Info.plist";
+				ORGANIZATION = Fototropik;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C928814C18A0D9D9006A4ACB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5CD8164C6014A1CBC72AA11 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				BUNDLE_ID = "${ORGANIZATION}.${PRODUCT_NAME}";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cygnus/Cygnus-Prefix.pch";
+				INFOPLIST_FILE = "Cygnus/Cygnus-Info.plist";
+				ORGANIZATION = Fototropik;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C928814E18A0D9D9006A4ACB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Cygnus.app/Cygnus";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cygnus/Cygnus-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "CygnusTests/CygnusTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		C928814F18A0D9D9006A4ACB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Cygnus.app/Cygnus";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cygnus/Cygnus-Prefix.pch";
+				INFOPLIST_FILE = "CygnusTests/CygnusTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C928811918A0D9D8006A4ACB /* Build configuration list for PBXProject "Cygnus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C928814818A0D9D9006A4ACB /* Debug */,
+				C928814918A0D9D9006A4ACB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C928814A18A0D9D9006A4ACB /* Build configuration list for PBXNativeTarget "Cygnus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C928814B18A0D9D9006A4ACB /* Debug */,
+				C928814C18A0D9D9006A4ACB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C928814D18A0D9D9006A4ACB /* Build configuration list for PBXNativeTarget "CygnusTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C928814E18A0D9D9006A4ACB /* Debug */,
+				C928814F18A0D9D9006A4ACB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C928811618A0D9D8006A4ACB /* Project object */;
+}
