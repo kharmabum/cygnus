@@ -7,6 +7,7 @@
 //
 
 #import "CYGAppDelegate.h"
+#import "CYGMapViewController.h"
 
 @implementation CYGAppDelegate
 
@@ -15,7 +16,15 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    [self applyStylesheet];
+    
+    UIViewController *viewController = [[CYGMapViewController alloc] init];
+    UITabBarController *tabController = [[UITabBarController alloc] init];
+    tabController.viewControllers = @[viewController];
+    tabController.selectedIndex = 0;
+    self.window.rootViewController = tabController;
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
@@ -45,5 +54,10 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+- (void)applyStylesheet
+{
+}
+
 
 @end

@@ -25,6 +25,8 @@
 		C978311F18A0E397008879B7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978311E18A0E397008879B7 /* MobileCoreServices.framework */; };
 		C978312118A0E39C008879B7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978312018A0E39C008879B7 /* SystemConfiguration.framework */; };
 		C978312318A0E3A1008879B7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978312218A0E3A1008879B7 /* MapKit.framework */; };
+		C978710D18A881FC00B25145 /* CYGMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C978710C18A881FC00B25145 /* CYGMapViewController.m */; };
+		C978710E18A881FC00B25145 /* CYGMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C978710C18A881FC00B25145 /* CYGMapViewController.m */; };
 		C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */; };
 		C9D3A53618A0E5CB00FD8193 /* CYGDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */; };
 		C9F4A0D118A0F0A100231649 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978311A18A0E38D008879B7 /* QuartzCore.framework */; };
@@ -64,6 +66,8 @@
 		C978311E18A0E397008879B7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		C978312018A0E39C008879B7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C978312218A0E3A1008879B7 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C978710B18A881FC00B25145 /* CYGMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGMapViewController.h; sourceTree = "<group>"; };
+		C978710C18A881FC00B25145 /* CYGMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGMapViewController.m; sourceTree = "<group>"; };
 		C9D3A53318A0E5CB00FD8193 /* CYGDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGDefines.h; sourceTree = "<group>"; };
 		C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGDefines.m; sourceTree = "<group>"; };
 		D72F10921C964563A92E83E5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +124,8 @@
 		C916A29B18A0E87600FB480F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C978710B18A881FC00B25145 /* CYGMapViewController.h */,
+				C978710C18A881FC00B25145 /* CYGMapViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -344,6 +350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C928813218A0D9D9006A4ACB /* CYGAppDelegate.m in Sources */,
+				C978710D18A881FC00B25145 /* CYGMapViewController.m in Sources */,
 				C928812E18A0D9D8006A4ACB /* main.m in Sources */,
 				C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */,
 			);
@@ -355,6 +362,7 @@
 			files = (
 				C9D3A53618A0E5CB00FD8193 /* CYGDefines.m in Sources */,
 				C928814718A0D9D9006A4ACB /* CygnusTests.m in Sources */,
+				C978710E18A881FC00B25145 /* CYGMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
