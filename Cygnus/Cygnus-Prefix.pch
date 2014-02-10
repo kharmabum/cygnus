@@ -14,9 +14,9 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <QuartzCore/QuartzCore.h>
-
+    #import <SSToolkit/SSToolkit.h>
     #import "CYGDefines.h"
     #import "FTAdditions.h"
-    #import <SSToolkit/SSToolkit.h>
     #import "AFNetworking.h"
+    #import <Parse/Parse.h>
 #endif

@@ -15,8 +15,12 @@
 
 #pragma mark - API
 
-extern NSString *const kCYGAPIClientID;
-extern NSString *const kCYGAPIClientSecret;
+extern NSString *const kCYGParseApplicationId;
+extern NSString *const kCYGParseClientKey;
+
+extern NSString *const kCYGTwitterKey;
+extern NSString *const kCYGTwitterSecret;
+
 
 #pragma mark - Fonts
 
@@ -33,3 +37,8 @@ extern NSString *const kCYGGenericNotification;
 
 extern NSString *const kCYGGenericEvent;
 extern NSString *const kCYGGenericEventParam;
+
+#pragma mark - Class Names
+
+extern NSString *const kCYGPointClassName;
+

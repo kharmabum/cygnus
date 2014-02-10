@@ -8,6 +8,8 @@
 
 #import "CYGAppDelegate.h"
 #import "CYGMapViewController.h"
+#import "CYGUser.h"
+#import "CYGPoint.h"
 
 @implementation CYGAppDelegate
 
@@ -24,6 +26,13 @@
     tabController.selectedIndex = 0;
     self.window.rootViewController = tabController;
     [self.window makeKeyAndVisible];
+    
+    [self performBlockInBackground:^{
+        [CYGUser registerSubclass];
+        [CYGPoint registerSubclass];
+        [Parse setApplicationId:kCYGParseApplicationId clientKey:kCYGParseClientKey];
+        [PFTwitterUtils initializeWithConsumerKey:kCYGTwitterKey consumerSecret:kCYGTwitterSecret];
+    }];
     
     return YES;
 }
