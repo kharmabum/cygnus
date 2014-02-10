@@ -8,6 +8,7 @@
 
 #import "CYGAppDelegate.h"
 #import "CYGMapViewController.h"
+#import "CYGProfileViewController.h"
 #import "CYGUser.h"
 #import "CYGPoint.h"
 
@@ -20,9 +21,8 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self applyStylesheet];
     
-    UIViewController *viewController = [[CYGMapViewController alloc] init];
     UITabBarController *tabController = [[UITabBarController alloc] init];
-    tabController.viewControllers = @[viewController];
+    tabController.viewControllers = @[[[CYGMapViewController alloc] init], [[CYGProfileViewController alloc] init]];
     tabController.selectedIndex = 0;
     self.window.rootViewController = tabController;
     [self.window makeKeyAndVisible];
@@ -30,6 +30,10 @@
     [self performBlockInBackground:^{
         [CYGUser registerSubclass];
         [CYGPoint registerSubclass];
+        [PFUser enableAutomaticUser];
+        PFACL *defaultACL = [PFACL ACL];
+        [defaultACL setPublicReadAccess:YES];
+        [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
         [Parse setApplicationId:kCYGParseApplicationId clientKey:kCYGParseClientKey];
         [PFTwitterUtils initializeWithConsumerKey:kCYGTwitterKey consumerSecret:kCYGTwitterSecret];
     }];

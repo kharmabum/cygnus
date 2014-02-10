@@ -18,7 +18,9 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        self.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
+                                                        image:[UIImage imageNamed:@"map-icon"]
+                                                          tag:0];
     }
     return self;
 }
