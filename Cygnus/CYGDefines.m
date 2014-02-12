@@ -29,3 +29,13 @@ NSString *const kCYGItalicFontName = @"HelveticaNeue-Italic";
 
 
 NSString *const kCYGPointClassName = @"CYGPoint";
+
+#pragma mark - Metrics
+
+double const kCYGFeetToMeters = 0.3048;
+double const kCYGMetersToFeet = 3.2808399;
+double const kCYGMetersToMiles = 0.000621371192;
+double const kCYGFeetToMiles = 5280.0;
+double const kCYGKilometerToMeters = 1000.0;
+double const kCYGMetersCutoff = 1000;
+double const kCYGFeetCutoff = 3281;

@@ -35,6 +35,7 @@
         _locationManager.delegate = self;
         _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
         
+        /*
         [[[[RACObserve(self, currentLocation)
             ignore:nil]
            // Flatten and subscribe to all 3 signals when currentLocation updates
@@ -45,6 +46,7 @@
          subscribeError:^(NSError *error) {
              [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching your location." type:TSMessageNotificationTypeError];
          }];
+         */
     }
     return self;
 }
@@ -53,6 +55,9 @@
     self.isFirstUpdate = YES;
     [self.locationManager startMonitoringSignificantLocationChanges];
 }
+
+#pragma mark - CLLocationManagerDelegate
+
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (self.isFirstUpdate) {
@@ -67,5 +72,10 @@
     }
 }
 
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching your location." type:TSMessageNotificationTypeError];
+
+}
 
 @end

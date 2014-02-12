@@ -42,3 +42,15 @@ extern NSString *const kCYGGenericEventParam;
 
 extern NSString *const kCYGPointClassName;
 
+#pragma mark - Number Constants
+
+extern double const kCYGFeetToMeters;
+extern double const kCYGMetersToFeet;
+extern double const kCYGMetersToMiles;
+extern double const kCYGFeetToMiles;
+extern double const kCYGKilometerToMeters;
+extern double const kCYGMetersCutoff;
+extern double const kCYGFeetCutoff;
+
+
+

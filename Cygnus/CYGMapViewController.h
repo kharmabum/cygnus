@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Fototropik. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import Foundation;
+@import UIKit;
 
 @interface CYGMapViewController : UIViewController
 

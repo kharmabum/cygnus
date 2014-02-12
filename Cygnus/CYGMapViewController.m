@@ -6,9 +6,12 @@
 //  Copyright (c) 2014 Fototropik. All rights reserved.
 //
 
+@import MapKit;
+@import CoreLocation;
+@import CoreGraphics;
 #import "CYGMapViewController.h"
 
-@interface CYGMapViewController ()
+@interface CYGMapViewController () 
 
 @end
 
