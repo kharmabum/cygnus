@@ -72,6 +72,9 @@
 
 - (void)applyStylesheet
 {
+//    [self.window setTintColor:tintColor];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
 }
 
 

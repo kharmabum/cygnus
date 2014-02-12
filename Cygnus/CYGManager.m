@@ -7,7 +7,6 @@
 //
 
 #import "CYGManager.h"
-#import <ReactiveCocoa/ReactiveCocoa/ReactiveCocoa.h>
 #import <TSMessages/TSMessage.h>
 
 
@@ -53,7 +52,7 @@
 
 - (void)findCurrentLocation {
     self.isFirstUpdate = YES;
-    [self.locationManager startMonitoringSignificantLocationChanges];
+    [self.locationManager startUpdatingLocation];
 }
 
 #pragma mark - CLLocationManagerDelegate

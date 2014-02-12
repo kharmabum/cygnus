@@ -18,7 +18,7 @@ PODS:
   - AFNetworking/UIKit (2.1.0):
     - AFNetworking/NSURLConnection
   - Facebook-iOS-SDK (3.12.0)
-  - FlurrySDK (4.3.0)
+  - FlurrySDK (4.3.2)
   - FormatterKit (1.4.0):
     - FormatterKit/AddressFormatter
     - FormatterKit/ArrayFormatter
@@ -60,6 +60,7 @@ PODS:
   - TSMessages (0.9.4):
     - HexColors
   - TTTAttributedLabel (1.8.1)
+  - UIView-Autolayout (0.0.10)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
@@ -77,6 +78,7 @@ DEPENDENCIES:
   - SSToolkit (~> 1.0.4)
   - TSMessages (~> 0.9)
   - TTTAttributedLabel (~> 1.8)
+  - UIView-Autolayout (~> 0.0.10)
 
 EXTERNAL SOURCES:
   FTAdditions:
@@ -85,7 +87,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: c7d7901a83f631414c7eda1737261f696101a5cd
   Facebook-iOS-SDK: c09f7d80db5c48170ff834bc03ebe774c49d1f5b
-  FlurrySDK: 7d91ccc3b3591fd8eb8919f2b90e271e2b0acabe
+  FlurrySDK: 508afbd655fe2ff935d3e9543cb1c8aa432794de
   FormatterKit: 475c602b6098d69c3255c65cfe6cb6a27c175f57
   FTAdditions: 52b1724dc53b8e68fd897064edbac35f50bbffb6
   HexColors: 3a68db077cd6572a8f7d4aa1add284dd2436a934
@@ -101,5 +103,6 @@ SPEC CHECKSUMS:
   SSToolkit: 689acaedac79c2079e492e528a55bcb5db9d98c4
   TSMessages: 5ab92604b02e49a755d2cc2baf114d2248a90977
   TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
+  UIView-Autolayout: d274098a5cbd5c1171db1f2638cbfaf4fba97c74
 
 COCOAPODS: 0.29.0
