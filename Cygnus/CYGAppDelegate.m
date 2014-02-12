@@ -7,10 +7,12 @@
 //
 
 #import "CYGAppDelegate.h"
+#import <TSMessage.h>
 #import "CYGMapViewController.h"
 #import "CYGProfileViewController.h"
 #import "CYGUser.h"
 #import "CYGPoint.h"
+
 
 @implementation CYGAppDelegate
 
@@ -26,6 +28,8 @@
     tabController.selectedIndex = 0;
     self.window.rootViewController = tabController;
     [self.window makeKeyAndVisible];
+    [TSMessage setDefaultViewController: self.window.rootViewController];
+
     
     [self performBlockInBackground:^{
         [CYGUser registerSubclass];
