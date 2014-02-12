@@ -33,6 +33,7 @@
     if (self = [super init]) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
         
         [[[[RACObserve(self, currentLocation)
             ignore:nil]
@@ -50,7 +51,7 @@
 
 - (void)findCurrentLocation {
     self.isFirstUpdate = YES;
-    [self.locationManager startUpdatingLocation];
+    [self.locationManager startMonitoringSignificantLocationChanges];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
@@ -63,7 +64,6 @@
     
     if (location.horizontalAccuracy > 0) {
         self.currentLocation = location;
-        [self.locationManager stopUpdatingLocation];
     }
 }
 
