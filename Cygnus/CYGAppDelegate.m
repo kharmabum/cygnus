@@ -23,13 +23,11 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self applyStylesheet];
     
-    UITabBarController *tabController = [[UITabBarController alloc] init];
-    tabController.viewControllers = @[[[CYGMapViewController alloc] init], [[CYGProfileViewController alloc] init]];
-    tabController.selectedIndex = 0;
-    self.window.rootViewController = tabController;
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    [navigationController pushViewController:[[CYGMapViewController alloc] init] animated:NO];
+    self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
     [TSMessage setDefaultViewController: self.window.rootViewController];
-
     
     [self performBlockInBackground:^{
         [CYGUser registerSubclass];
