@@ -20,6 +20,13 @@
     return kCYGPointClassName;
 }
 
+//TODO: isSimilar? For collapsing large datasets
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"CYGPoint - ObjId: %@, Title: %@, AuthorId: %@, Tags: %@, Lat: %f, Long: %f,", self.objectId, self.title, self.author.objectId, self.tags, self.location.latitude, self.location.longitude];
+}
+
 - (BOOL)isEqual:(id) object
 {
     if (self == object) {
@@ -30,10 +37,14 @@
         return NO;
     }
     
-    return ([self.author.objectId isEqualToString:[(CYGPoint *)object author].objectId] &&
-            [self.title isEqualToString:[(CYGPoint *)object title]] &&
+    NSLog(@"Comparing CYGPoints: \n Point1: %@ \n Point2: %@ \n", [self description], [object description]);
+    return (
+            ([self.objectId isEqualToString:[(CYGPoint *)object objectId]]) &&
+            ([self.author.objectId isEqualToString:[(CYGPoint *)object author].objectId] || (!self.author && ![(CYGPoint*)object author])) &&
+            ([self.title isEqualToString:[(CYGPoint *)object title]] || (!self.title && ![(CYGPoint*)object title])) &&
             [self.tags isEqualToArray:[(CYGPoint *)object tags]] &&
-            (self.location.latitude == [(CYGPoint *)object location].latitude && self.location.longitude == [(CYGPoint *)object location].longitude));
+            (fequal(self.location.latitude, [(CYGPoint *)object location].latitude) && fequal(self.location.longitude, [(CYGPoint *)object location].longitude))
+            );
 }
 
 - (NSUInteger)hash

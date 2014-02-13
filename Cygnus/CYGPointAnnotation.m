@@ -11,7 +11,7 @@
 
 @interface CYGPointAnnotation ()
 
-@property (nonatomic, strong) CYGPoint *point;
+@property (nonatomic, strong, readwrite) CYGPoint *point;
 
 @end
 @implementation CYGPointAnnotation
@@ -23,9 +23,7 @@
     self = [super init];
     if (self) {
         _point = aPoint;
-        
-        PFGeoPoint *geoPoint = self.point.location;
-        [self setGeoPoint:geoPoint];
+        [self setGeoPoint:self.point.location];
     }
     return self;
 }

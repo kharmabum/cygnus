@@ -13,6 +13,9 @@
 #define NSLog(args, ...)
 #endif
 
+#define fequal(a,b) (fabs((a) - (b)) < FLT_EPSILON)
+#define fequalzero(a) (fabs(a) < FLT_EPSILON)
+
 #pragma mark - API
 
 extern NSString *const kCYGParseApplicationId;
@@ -38,9 +41,12 @@ extern NSString *const kCYGNotificationPointAnnotationUpdated;
 extern NSString *const kCYGGenericEvent;
 extern NSString *const kCYGGenericEventParam;
 
-#pragma mark - Class Names
+#pragma mark - Parse Class Names, Keys
 
 extern NSString *const kCYGPointClassName;
+extern NSString *const kCYGPointLocationKey;
+extern NSString *const kCYGPointAuthorKey;
+extern NSString *const kCYGPointTagsKey;
 
 #pragma mark - Number Constants
 
@@ -52,6 +58,9 @@ extern double const kCYGKilometerToMeters;
 extern double const kCYGMetersCutoff;
 extern double const kCYGFeetCutoff;
 extern double const kCYGRegionBufferInMeters;
+extern double const kCYGMaxFilterDistanceInKilometers;
+extern double const kCYGMinFilterDistanceInKilometers;
+extern double const kCYGMaxQueryLimit;
 
 
 #pragma mark - Misc

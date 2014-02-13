@@ -25,13 +25,16 @@ NSString *const kCYGBoldFontName = @"HelveticaNeue-Bold";
 NSString *const kCYGBoldItalicFontName = @"HelveticaNeue-BoldItalic";
 NSString *const kCYGItalicFontName = @"HelveticaNeue-Italic";
 
-#pragma mark - Notifications
+    #pragma mark - Notifications
 
 NSString *const kCYGNotificationPointAnnotationUpdated = @"CYGPointAnnotationUpdated";
 
-#pragma mark - Class Names
+#pragma mark - Parse Keys
 
 NSString *const kCYGPointClassName = @"CYGPoint";
+NSString *const kCYGPointLocationKey = @"location";
+NSString *const kCYGPointAuthorKey = @"author";
+NSString *const kCYGPointTagsKey = @"tags";
 
 #pragma mark - Metrics
 
@@ -43,6 +46,10 @@ double const kCYGKilometerToMeters = 1000.0;
 double const kCYGMetersCutoff = 1000;
 double const kCYGFeetCutoff = 3281;
 double const kCYGRegionBufferInMeters = 2000;
+double const kCYGMaxFilterDistanceInKilometers = 100;
+double const kCYGMinFilterDistanceInKilometers = 5;
+double const kCYGMaxQueryLimit = 1000;
+
 
 #pragma mark - Misc
 

@@ -32,7 +32,8 @@
     if (self = [super init]) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
-        _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        _locationManager.distanceFilter = kCLLocationAccuracyNearestTenMeters;
         
         /*
         [[[[RACObserve(self, currentLocation)

@@ -13,7 +13,8 @@
 
 - (id)initWithPoint:(CYGPoint *)aPoint;
 
-@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property (nonatomic, strong, readonly) CYGPoint *point;
+@property (nonatomic, assign, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *subtitle;
 

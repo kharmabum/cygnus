@@ -15,12 +15,17 @@
 #import "CYGPoint.h"
 #import "CYGUser.h"
 #import "CYGPointAnnotation.h"
+#import "MRProgress.h"
+#import "TSMessage.h"
 
 @interface CYGMapViewController () <MKMapViewDelegate>
 
+@property (strong, nonatomic)  NSArray *filterTags;
+@property (strong, nonatomic)  NSMutableArray *annotations;
+@property (strong, nonatomic)  MKMapView *mapView;
 @property (strong, nonatomic)  UIToolbar *toolbar;
-@property (nonatomic, strong) MKMapView *mapView;
-@property (nonatomic, assign) BOOL mapViewIsOpen;
+@property (strong, nonatomic)  UIButton *userLocationButton;
+@property (assign, nonatomic)  BOOL mapViewIsOpen;
 
 
 @end
@@ -49,16 +54,114 @@
 
 - (void)centerMapUserLocation
 {
-    [self.mapView setCenterCoordinate:[[CYGManager sharedManager] currentLocation].coordinate animated:YES];
+    CLLocation *location = [[CYGManager sharedManager] currentLocation];
+    if (location) {
+        [self.mapView setCenterCoordinate:location.coordinate animated:YES];
+    }
 }
 
-- (void)addPointAtCurrentLocation
+- (void)zoomMapViewToFitAnnotationsWithUserLocation:(BOOL)fitToUserLocation
 {
-	CLLocation *location = [[CYGManager sharedManager] currentLocation];
-	if (!location) {
-		return;
+    NSArray *annotations = self.annotations;
+    if (fitToUserLocation) {
+        annotations = [annotations arrayByAddingObject:self.mapView.userLocation];
+    }
+    [self.mapView showAnnotations:annotations animated:YES];
+}
+
+
+- (void)refreshOnMapViewRegion
+{
+    [MRProgressOverlayView showOverlayAddedTo:self.navigationController.view animated:YES];
+    
+    MKMapRect mRect = self.mapView.visibleMapRect;
+    MKMapPoint eastMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect));
+    MKMapPoint westMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect));
+    CLLocationDistance filterDistanceKm = MKMetersBetweenMapPoints(eastMapPoint, westMapPoint)/1000;
+    filterDistanceKm = MAX(kCYGMinFilterDistanceInKilometers, filterDistanceKm);
+    filterDistanceKm = MIN(kCYGMaxFilterDistanceInKilometers, filterDistanceKm);
+    
+    PFQuery *query = [CYGPoint query];
+    [query setLimit:kCYGMaxQueryLimit];
+    [query whereKey:kCYGPointLocationKey
+       nearGeoPoint:[PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude
+                                           longitude:self.mapView.centerCoordinate.longitude]
+   withinKilometers:filterDistanceKm];
+    [query whereKey:kCYGPointTagsKey containsAllObjectsInArray:self.filterTags];
+    [query includeKey:kCYGPointAuthorKey];
+    
+    if (self.annotations.count == 0) {
+		query.cachePolicy = kPFCachePolicyCacheThenNetwork;
 	}
     
+    __block BOOL firstCall = YES;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSLog(@"\n OBJECTS RETRIEVED: %lu \n ", (unsigned long)objects.count);
+        
+		if (error) {
+            if (error.code == kPFErrorCacheMiss) {
+                firstCall = NO;
+                return;
+            }
+            [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+            [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching points." type:TSMessageNotificationTypeError];
+		} else {
+            if (objects.count == 0) {
+                if (query.cachePolicy == kPFCachePolicyCacheThenNetwork && firstCall) {
+                    firstCall = NO;
+                    return;
+                }
+                [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+                [TSMessage showNotificationWithTitle:@"No results." subtitle:@"Sorry! :(" type:TSMessageNotificationTypeError];
+                [self.mapView removeAnnotations:self.annotations];
+                [self.annotations removeAllObjects];
+            }
+            
+			// 1. Find genuinely new points:
+			NSMutableArray *newPointAnnotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
+			for (CYGPoint *newPoint in objects) {
+				BOOL found = NO;
+				for (CYGPointAnnotation *currentAnnotation in self.annotations) {
+					if ([newPoint isEqual:currentAnnotation.point]) {
+						found = YES;
+                        break;
+					}
+				}
+				if (!found) {
+					[newPointAnnotations addObject:[[CYGPointAnnotation alloc] initWithPoint:newPoint]];
+				}
+			}
+            
+			// 2. Find currently presented point that didn't return with new results:
+			NSMutableArray *annotationsToRemove = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
+			for (CYGPointAnnotation *currentAnnotation in self.annotations) {
+				BOOL found = NO;
+				for (CYGPoint *newPoint in objects) {
+					if ([newPoint isEqual:currentAnnotation.point]) {
+						found = YES;
+                        break;
+					}
+				}
+				if (!found) {
+					[annotationsToRemove addObject:currentAnnotation];
+				}
+			}
+            
+			[self.mapView removeAnnotations:annotationsToRemove];
+			[self.mapView addAnnotations:newPointAnnotations];
+			[self.annotations addObjectsFromArray:newPointAnnotations];
+			[self.annotations removeObjectsInArray:annotationsToRemove];
+            [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+            [self zoomMapViewToFitAnnotationsWithUserLocation:YES];
+            firstCall = NO;
+		}
+    }];
+}
+
+
+/* FOR TESTING */
+- (void)addPoint
+{
     static NSDateFormatter *_dateFormatter = nil;
     if (_dateFormatter == nil) {
         _dateFormatter = [[NSDateFormatter alloc] init];
@@ -66,8 +169,9 @@
         _dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     }
     
-	CLLocationCoordinate2D coordinate = [location coordinate];
-    PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:coordinate.latitude+1 longitude:coordinate.longitude+1];
+    // TODO: Validation on points. must have tags, etc
+    
+    PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
     __block CYGPoint *newPoint = [CYGPoint object];
     newPoint.location = geoPoint;
     newPoint.author = [CYGUser currentUser];
@@ -76,10 +180,11 @@
 
     [newPoint saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(newPoint.location.latitude, newPoint.location.longitude), kCYGRegionBufferInMeters, kCYGRegionBufferInMeters);
-            [self.mapView setRegion:region animated:YES];
             CYGPointAnnotation *annotation = [[CYGPointAnnotation alloc] initWithPoint:newPoint];
             [self.mapView addAnnotation:annotation];
+            [self.annotations addObject:annotation];
+            NSLog(@"Point Added: \n %@",[newPoint description]);
+            
         }
     }];
 }
@@ -98,21 +203,27 @@
     [self.view addSubview:self.mapView];
     [self.mapView pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
     
+    self.userLocationButton = [UIButton autoLayoutView];
+    [self.userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
+    [self.userLocationButton setBackgroundImage:[UIImage imageNamed:@"user-location-icon"] forState:UIControlStateNormal];
+    [self.userLocationButton setAlpha:0.8];
+    [self.mapView addSubview:self.userLocationButton];
+    [self.userLocationButton pinToSuperviewEdges:JRTViewPinTopEdge inset:25];
+    [self.userLocationButton pinToSuperviewEdges:JRTViewPinLeftEdge inset:10];
+    
     self.toolbar = [UIToolbar autoLayoutView];
     self.toolbar.translucent = YES;
     [self.view addSubview:self.toolbar];
     [self.toolbar pinToSuperviewEdges:(JRTViewPinBottomEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
     [self.toolbar constrainToHeight:50];
 
-//    UIBarButtonItem *locationButton;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
     UIBarButtonItem *tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tag-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(addPointAtCurrentLocation)];
-    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(addPoint)];
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshOnMapViewRegion)];
     NSArray *buttons = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];
     self.toolbar.items = buttons;
-    
     
     
     [[[[RACObserve([CYGManager sharedManager], currentLocation)
@@ -151,7 +262,9 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [[CYGManager sharedManager] findCurrentLocation];        
+        [[CYGManager sharedManager] findCurrentLocation];
+        _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
+        self.filterTags = @[@"test"];
     }
     return self;
 }
