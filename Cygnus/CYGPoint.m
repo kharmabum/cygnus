@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Fototropik. All rights reserved.
 //
 
-#import "CYGPoint.h"
 #import <Parse/PFObject+Subclass.h>
+#import "CYGUser.h"
+#import "CYGPoint.h"
 
 
 @implementation CYGPoint
@@ -17,6 +18,27 @@
 + (NSString *)parseClassName
 {
     return kCYGPointClassName;
+}
+
+- (BOOL)isEqual:(id) object
+{
+    if (self == object) {
+        return YES;
+    }
+    
+    if (![object isKindOfClass:[CYGPoint class]]) {
+        return NO;
+    }
+    
+    return ([self.author.objectId isEqualToString:[(CYGPoint *)object author].objectId] &&
+            [self.title isEqualToString:[(CYGPoint *)object title]] &&
+            [self.tags isEqualToArray:[(CYGPoint *)object tags]] &&
+            (self.location.latitude == [(CYGPoint *)object location].latitude && self.location.longitude == [(CYGPoint *)object location].longitude));
+}
+
+- (NSUInteger)hash
+{
+    return (NSUInteger)self;
 }
 
 @end
