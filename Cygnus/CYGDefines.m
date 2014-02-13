@@ -25,8 +25,11 @@ NSString *const kCYGBoldFontName = @"HelveticaNeue-Bold";
 NSString *const kCYGBoldItalicFontName = @"HelveticaNeue-BoldItalic";
 NSString *const kCYGItalicFontName = @"HelveticaNeue-Italic";
 
-#pragma mark - Class Names
+#pragma mark - Notifications
 
+NSString *const kCYGNotificationPointAnnotationUpdated = @"CYGPointAnnotationUpdated";
+
+#pragma mark - Class Names
 
 NSString *const kCYGPointClassName = @"CYGPoint";
 
@@ -39,3 +42,8 @@ double const kCYGFeetToMiles = 5280.0;
 double const kCYGKilometerToMeters = 1000.0;
 double const kCYGMetersCutoff = 1000;
 double const kCYGFeetCutoff = 3281;
+double const kCYGRegionBufferInMeters = 2000;
+
+#pragma mark - Misc
+
+NSString *const kCYGPointAnnotationIdentifier = @"CYGPointAnnotationId";

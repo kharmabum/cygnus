@@ -31,7 +31,7 @@ extern NSString *const kCYGItalicFontName;
 
 #pragma mark - Notifications
 
-extern NSString *const kCYGGenericNotification;
+extern NSString *const kCYGNotificationPointAnnotationUpdated;
 
 #pragma mark - Analytics
 
@@ -51,6 +51,9 @@ extern double const kCYGFeetToMiles;
 extern double const kCYGKilometerToMeters;
 extern double const kCYGMetersCutoff;
 extern double const kCYGFeetCutoff;
+extern double const kCYGRegionBufferInMeters;
 
 
+#pragma mark - Misc
 
+extern NSString *const kCYGPointAnnotationIdentifier;

@@ -9,8 +9,10 @@
 #import "CYGPoint.h"
 #import <Parse/PFObject+Subclass.h>
 
+
 @implementation CYGPoint
 
+@dynamic title, location, tags, author;
 
 + (NSString *)parseClassName
 {
