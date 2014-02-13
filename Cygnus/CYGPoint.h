@@ -9,6 +9,10 @@
 
 @interface CYGPoint : PFObject <PFSubclassing>
 
+@property (strong, nonatomic)  NSString *title;
+@property (strong, nonatomic)  PFGeoPoint *location;
+
+
 + (NSString *)parseClassName;
 
 @end

@@ -12,7 +12,7 @@
 
 @interface CYGManager ()
 @property (nonatomic, strong, readwrite) CLLocation *currentLocation;
-@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong, readwrite) CLLocationManager *locationManager;
 @property (nonatomic, assign) BOOL isFirstUpdate;
 
 @end
@@ -59,13 +59,12 @@
 
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    if (self.isFirstUpdate) {
+    if (self.isFirstUpdate) { //ignore cached value
         self.isFirstUpdate = NO;
         return;
     }
     
     CLLocation *location = [locations lastObject];
-    
     if (location.horizontalAccuracy > 0) {
         self.currentLocation = location;
     }

@@ -12,6 +12,8 @@
 @interface CYGManager : NSObject <CLLocationManagerDelegate>
 
 @property (nonatomic, strong, readonly) CLLocation *currentLocation;
+@property (nonatomic, strong, readonly) CLLocationManager *locationManager;
+
 
 + (instancetype)sharedManager;
 

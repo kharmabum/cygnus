@@ -8,6 +8,7 @@
 
 #import "CYGAppDelegate.h"
 #import <TSMessage.h>
+#import "CYGManager.h"
 #import "CYGMapViewController.h"
 #import "CYGProfileViewController.h"
 #import "CYGUser.h"
@@ -19,7 +20,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self applyStylesheet];
     
@@ -53,11 +53,14 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [[[CYGManager sharedManager] locationManager] stopUpdatingLocation];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [[CYGManager sharedManager] findCurrentLocation];
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

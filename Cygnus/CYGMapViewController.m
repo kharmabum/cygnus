@@ -15,6 +15,7 @@
 
 @interface CYGMapViewController () <MKMapViewDelegate>
 
+@property (strong, nonatomic)  UIToolbar *toolbar;
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, assign) BOOL mapViewIsOpen;
 
@@ -25,12 +26,19 @@
 @implementation CYGMapViewController
 
 
+#pragma mark - Map Animations
+
+- (void)centerMapUserLocation
+{
+    [self.mapView setCenterCoordinate:[[CYGManager sharedManager] currentLocation].coordinate animated:YES];
+}
 
 
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.mapViewIsOpen = YES;
     self.mapView = [MKMapView autoLayoutView];
     self.mapView.opaque = YES;
@@ -39,14 +47,31 @@
     [self.view addSubview:self.mapView];
     [self.mapView pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
     
+    self.toolbar = [UIToolbar autoLayoutView];
+    self.toolbar.translucent = YES;
+    [self.view addSubview:self.toolbar];
+    [self.toolbar pinToSuperviewEdges:(JRTViewPinBottomEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
+    [self.toolbar constrainToHeight:50];
+
+//    UIBarButtonItem *locationButton;
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tag-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    NSArray *buttons = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];
+    self.toolbar.items = buttons;
+    
+    
+    
     [[[[RACObserve([CYGManager sharedManager], currentLocation)
-          ignore:nil]
-        take:1]
-        deliverOn:RACScheduler.mainThreadScheduler]
+        ignore:nil]
+       take:1]
+      deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(CLLocation *location) {
          MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), 2000, 2000);
-         [self.mapView setRegion:region animated:NO];
-    }];
+         [self.mapView setRegion:region animated:YES];
+     }];
 }
 
 - (void)viewDidUnload {
