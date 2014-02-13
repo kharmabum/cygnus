@@ -28,6 +28,8 @@ NSString *const kCYGItalicFontName = @"HelveticaNeue-Italic";
     #pragma mark - Notifications
 
 NSString *const kCYGNotificationPointAnnotationUpdated = @"CYGPointAnnotationUpdated";
+NSString *const kCYGNotificationCLAuthorizationStatusAuthorized = @"CLAuthorizationStatusAuthorized";
+
 
 #pragma mark - Parse Keys
 

@@ -37,7 +37,6 @@
         return NO;
     }
     
-    NSLog(@"Comparing CYGPoints: \n Point1: %@ \n Point2: %@ \n", [self description], [object description]);
     return (
             ([self.objectId isEqualToString:[(CYGPoint *)object objectId]]) &&
             ([self.author.objectId isEqualToString:[(CYGPoint *)object author].objectId] || (!self.author && ![(CYGPoint*)object author])) &&

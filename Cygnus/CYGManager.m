@@ -33,7 +33,6 @@
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
         _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        _locationManager.distanceFilter = kCLLocationAccuracyNearestTenMeters;
         
         /*
         [[[[RACObserve(self, currentLocation)
@@ -52,8 +51,17 @@
 }
 
 - (void)findCurrentLocation {
-    self.isFirstUpdate = YES;
-    [self.locationManager startUpdatingLocation];
+    if ((![CLLocationManager locationServicesEnabled])
+        || ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted)
+        || ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Cygnus can’t access your current location.\n\nTo view nearby points or create a point at your current location, turn on access for Cygnus to your location in the Settings app under Location Services." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        [alertView show];
+    }
+    else {
+        self.isFirstUpdate = YES;
+        [self.locationManager startUpdatingLocation];
+    }
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -75,6 +83,30 @@
 {
     [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching your location." type:TSMessageNotificationTypeError];
 
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	switch (status) {
+		case kCLAuthorizationStatusAuthorized:
+			NSLog(@"kCLAuthorizationStatusAuthorized");
+			[self.locationManager startUpdatingLocation];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationCLAuthorizationStatusAuthorized object:nil];
+			break;
+		case kCLAuthorizationStatusDenied:
+			NSLog(@"kCLAuthorizationStatusDenied");
+        {{
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Cygnus can’t access your current location.\n\nTo view nearby points or create a point at your current location, turn on access for Cygnus to your location in the Settings app under Location Services." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+            [alertView show];
+        }}
+			break;
+		case kCLAuthorizationStatusNotDetermined:
+			NSLog(@"kCLAuthorizationStatusNotDetermined");
+			break;
+		case kCLAuthorizationStatusRestricted:
+			NSLog(@"kCLAuthorizationStatusRestricted");
+			break;
+	}
 }
 
 @end

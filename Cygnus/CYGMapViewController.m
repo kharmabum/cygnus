@@ -27,7 +27,6 @@
 @property (strong, nonatomic)  UIButton *userLocationButton;
 @property (assign, nonatomic)  BOOL mapViewIsOpen;
 
-
 @end
 
 @implementation CYGMapViewController
@@ -89,32 +88,20 @@
    withinKilometers:filterDistanceKm];
     [query whereKey:kCYGPointTagsKey containsAllObjectsInArray:self.filterTags];
     [query includeKey:kCYGPointAuthorKey];
-    
-    if (self.annotations.count == 0) {
-		query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-	}
-    
-    __block BOOL firstCall = YES;
+
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSLog(@"\n OBJECTS RETRIEVED: %lu \n ", (unsigned long)objects.count);
         
 		if (error) {
-            if (error.code == kPFErrorCacheMiss) {
-                firstCall = NO;
-                return;
-            }
             [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
             [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching points." type:TSMessageNotificationTypeError];
 		} else {
             if (objects.count == 0) {
-                if (query.cachePolicy == kPFCachePolicyCacheThenNetwork && firstCall) {
-                    firstCall = NO;
-                    return;
-                }
                 [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
                 [TSMessage showNotificationWithTitle:@"No results." subtitle:@"Sorry! :(" type:TSMessageNotificationTypeError];
                 [self.mapView removeAnnotations:self.annotations];
                 [self.annotations removeAllObjects];
+                return;
             }
             
 			// 1. Find genuinely new points:
@@ -153,7 +140,6 @@
 			[self.annotations removeObjectsInArray:annotationsToRemove];
             [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
             [self zoomMapViewToFitAnnotationsWithUserLocation:YES];
-            firstCall = NO;
 		}
     }];
 }
@@ -189,6 +175,11 @@
     }];
 }
 
+#pragma mark - NSOBject
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kCYGNotificationPointAnnotationUpdated object:nil];
+}
 
 #pragma mark - UIViewController
 
@@ -225,15 +216,18 @@
     NSArray *buttons = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];
     self.toolbar.items = buttons;
     
-    
     [[[[RACObserve([CYGManager sharedManager], currentLocation)
         ignore:nil]
        take:1]
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(CLLocation *location) {
-         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), kCYGRegionBufferInMeters, kCYGRegionBufferInMeters);
-         [self.mapView setRegion:region animated:YES];
+         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude),
+                                                                        kCYGRegionBufferInMeters,
+                                                                        kCYGRegionBufferInMeters);
+         [self.mapView setRegion:region animated:NO];
+         [self refreshOnMapViewRegion];
      }];
+    //TODO: get cached tags in userDefaults self.tags == ??
 }
 
 - (void)viewDidUnload {
@@ -257,7 +251,6 @@
     [super viewDidDisappear:animated];
 }
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -265,7 +258,11 @@
         [[CYGManager sharedManager] findCurrentLocation];
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
         self.filterTags = @[@"test"];
-    }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshOnMapViewRegion)
+                                                     name:kCYGNotificationPointAnnotationUpdated object:nil];
+         }
     return self;
 }
 

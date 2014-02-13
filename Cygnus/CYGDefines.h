@@ -35,6 +35,7 @@ extern NSString *const kCYGItalicFontName;
 #pragma mark - Notifications
 
 extern NSString *const kCYGNotificationPointAnnotationUpdated;
+extern NSString *const kCYGNotificationCLAuthorizationStatusAuthorized;
 
 #pragma mark - Analytics
 

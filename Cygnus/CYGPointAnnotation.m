@@ -38,6 +38,7 @@
     [self.point saveEventually:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationPointAnnotationUpdated object:self.point];
+            NSLog(@"Point annotation updated.");
         }
     }];
 }
