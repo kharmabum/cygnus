@@ -10,5 +10,6 @@
 #define Cygnus_CYGAdditions_h
 
 #import "UIColor+CYGAdditions.h"
+#import "NSString+CYGAdditions.h"
 
 #endif

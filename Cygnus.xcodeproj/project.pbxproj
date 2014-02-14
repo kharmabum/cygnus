@@ -31,14 +31,14 @@
 		C978711318A8A60700B25145 /* CYGUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C978711118A8A60700B25145 /* CYGUser.m */; };
 		C978711618A8A78E00B25145 /* CYGPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C978711518A8A78E00B25145 /* CYGPoint.m */; };
 		C978711718A8A78E00B25145 /* CYGPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C978711518A8A78E00B25145 /* CYGPoint.m */; };
-		C978711A18A8ADF200B25145 /* CYGProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C978711918A8ADF200B25145 /* CYGProfileViewController.m */; };
-		C978711B18A8ADF200B25145 /* CYGProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C978711918A8ADF200B25145 /* CYGProfileViewController.m */; };
 		C9C52D5018AD425E0089B3B1 /* CYGPointCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D4F18AD425E0089B3B1 /* CYGPointCreationViewController.m */; };
 		C9C52D5118AD425E0089B3B1 /* CYGPointCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D4F18AD425E0089B3B1 /* CYGPointCreationViewController.m */; };
 		C9C52D5418ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */; };
 		C9C52D5518ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */; };
 		C9C52D5818ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */; };
 		C9C52D5918ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */; };
+		C9C52D5E18ADF2630089B3B1 /* NSString+CYGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5D18ADF2630089B3B1 /* NSString+CYGAdditions.m */; };
+		C9C52D5F18ADF2630089B3B1 /* NSString+CYGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5D18ADF2630089B3B1 /* NSString+CYGAdditions.m */; };
 		C9CC592A18ABF5F8006FA0DD /* CYGManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CC592918ABF5F8006FA0DD /* CYGManager.m */; };
 		C9CC592B18ABF5F8006FA0DD /* CYGManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CC592918ABF5F8006FA0DD /* CYGManager.m */; };
 		C9CC593218AC4A16006FA0DD /* CYGPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CC593118AC4A16006FA0DD /* CYGPointAnnotation.m */; };
@@ -88,8 +88,6 @@
 		C978711118A8A60700B25145 /* CYGUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGUser.m; sourceTree = "<group>"; };
 		C978711418A8A78E00B25145 /* CYGPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGPoint.h; sourceTree = "<group>"; };
 		C978711518A8A78E00B25145 /* CYGPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGPoint.m; sourceTree = "<group>"; };
-		C978711818A8ADF200B25145 /* CYGProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGProfileViewController.h; sourceTree = "<group>"; };
-		C978711918A8ADF200B25145 /* CYGProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGProfileViewController.m; sourceTree = "<group>"; };
 		C9C52D4E18AD425E0089B3B1 /* CYGPointCreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGPointCreationViewController.h; sourceTree = "<group>"; };
 		C9C52D4F18AD425E0089B3B1 /* CYGPointCreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGPointCreationViewController.m; sourceTree = "<group>"; };
 		C9C52D5218ADA0CD0089B3B1 /* CYGPointCreationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGPointCreationView.h; sourceTree = "<group>"; };
@@ -97,6 +95,8 @@
 		C9C52D5618ADE3560089B3B1 /* UIColor+CYGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+CYGAdditions.h"; sourceTree = "<group>"; };
 		C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+CYGAdditions.m"; sourceTree = "<group>"; };
 		C9C52D5B18ADE39F0089B3B1 /* CYGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGAdditions.h; sourceTree = "<group>"; };
+		C9C52D5C18ADF2630089B3B1 /* NSString+CYGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+CYGAdditions.h"; sourceTree = "<group>"; };
+		C9C52D5D18ADF2630089B3B1 /* NSString+CYGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CYGAdditions.m"; sourceTree = "<group>"; };
 		C9CC592818ABF5F8006FA0DD /* CYGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGManager.h; sourceTree = "<group>"; };
 		C9CC592918ABF5F8006FA0DD /* CYGManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGManager.m; sourceTree = "<group>"; };
 		C9CC593018AC4A16006FA0DD /* CYGPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGPointAnnotation.h; sourceTree = "<group>"; };
@@ -161,8 +161,6 @@
 			children = (
 				C978710B18A881FC00B25145 /* CYGMapViewController.h */,
 				C978710C18A881FC00B25145 /* CYGMapViewController.m */,
-				C978711818A8ADF200B25145 /* CYGProfileViewController.h */,
-				C978711918A8ADF200B25145 /* CYGProfileViewController.m */,
 				C9C52D4E18AD425E0089B3B1 /* CYGPointCreationViewController.h */,
 				C9C52D4F18AD425E0089B3B1 /* CYGPointCreationViewController.m */,
 			);
@@ -280,6 +278,8 @@
 				C9C52D5B18ADE39F0089B3B1 /* CYGAdditions.h */,
 				C9C52D5618ADE3560089B3B1 /* UIColor+CYGAdditions.h */,
 				C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */,
+				C9C52D5C18ADF2630089B3B1 /* NSString+CYGAdditions.h */,
+				C9C52D5D18ADF2630089B3B1 /* NSString+CYGAdditions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -422,9 +422,9 @@
 				C9C52D5018AD425E0089B3B1 /* CYGPointCreationViewController.m in Sources */,
 				C978710D18A881FC00B25145 /* CYGMapViewController.m in Sources */,
 				C9C52D5418ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */,
+				C9C52D5E18ADF2630089B3B1 /* NSString+CYGAdditions.m in Sources */,
 				C928812E18A0D9D8006A4ACB /* main.m in Sources */,
 				C9CC592A18ABF5F8006FA0DD /* CYGManager.m in Sources */,
-				C978711A18A8ADF200B25145 /* CYGProfileViewController.m in Sources */,
 				C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */,
 				C9C52D5818ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */,
 			);
@@ -438,11 +438,11 @@
 				C978711718A8A78E00B25145 /* CYGPoint.m in Sources */,
 				C9CC592B18ABF5F8006FA0DD /* CYGManager.m in Sources */,
 				C9C52D5118AD425E0089B3B1 /* CYGPointCreationViewController.m in Sources */,
+				C9C52D5F18ADF2630089B3B1 /* NSString+CYGAdditions.m in Sources */,
 				C9D3A53618A0E5CB00FD8193 /* CYGDefines.m in Sources */,
 				C9C52D5518ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */,
 				C928814718A0D9D9006A4ACB /* CygnusTests.m in Sources */,
 				C978711318A8A60700B25145 /* CYGUser.m in Sources */,
-				C978711B18A8ADF200B25145 /* CYGProfileViewController.m in Sources */,
 				C978710E18A881FC00B25145 /* CYGMapViewController.m in Sources */,
 				C9CC593318AC4A16006FA0DD /* CYGPointAnnotation.m in Sources */,
 			);

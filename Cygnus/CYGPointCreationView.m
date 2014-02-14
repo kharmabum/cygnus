@@ -141,6 +141,8 @@
         [_scrollViewContentView addSubview:_tagsTextField];
         [_tagsTextField pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:_tagsLabel inset:3];
         [_tagsTextField pinToSuperviewEdges:(JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:11];
+        _tagsTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _tagsTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _tagsTextField.placeholder = @"(comma separated)";
         _tagsTextField.returnKeyType = UIReturnKeyNext;
         _tagsTextField.textColor = [UIColor lightGrayColor];
@@ -149,7 +151,10 @@
         [_scrollViewContentView addSubview:_titleLabel];
         [_titleLabel pinToSuperviewEdges:(JRTViewPinLeftEdge) inset:11];
         [_titleLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:_tagsTextField inset:8];
-        _titleLabel.text = @"Title";
+        _titleLabel.text = @"Name";
+        _titleTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _titleTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+
         _titleLabel.textColor = [UIColor darkGrayColor];
         
         _titleTextField = [UITextField autoLayoutView];

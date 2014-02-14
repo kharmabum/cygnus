@@ -69,9 +69,28 @@
     [self.mapView showAnnotations:annotations animated:YES];
 }
 
-- (void)pointAnnotationUpdated:(CYGPoint *)aPoint
+- (void)pointAnnotationUpdated:(NSNotification*)aNotification
 {
-    // TODO: Check to see if you editted point is currently visible.
+    CYGPoint *newPoint = aNotification.object;
+    if (![newPoint.tags isEqualToArray:self.tags]) return;
+    
+    // Find presented annotation that's just been updated.
+    CYGPointAnnotation *oldAnnotation;
+    CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:newPoint];
+    for (CYGPointAnnotation *currentAnnotation in self.annotations) {
+        if ([newPoint.objectId isEqualToString:currentAnnotation.point.objectId]) {
+            oldAnnotation = currentAnnotation;
+            break;
+        }
+    }
+    
+    [self.mapView addAnnotation:newAnnotation];
+    [self.annotations addObject:newAnnotation];
+    if (oldAnnotation) {
+        [self.mapView removeAnnotation:oldAnnotation];
+        [self.annotations removeObject:oldAnnotation];
+    }
+    [self zoomMapViewToFitAnnotationsWithUserLocation:YES];
 }
 
 
@@ -125,7 +144,7 @@
 				}
 			}
             
-			// 2. Find currently presented point that didn't return with new results:
+			// 2. Find currently presented point that didn't return with new results.
 			NSMutableArray *annotationsToRemove = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
 			for (CYGPointAnnotation *currentAnnotation in self.annotations) {
 				BOOL found = NO;
@@ -246,6 +265,7 @@
     if (self) {
         [[CYGManager sharedManager] findCurrentLocation];
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
+        _tags = @[@"test"];
         //TODO: get cached tags in userDefaults self.tags == ??
 
         [[NSNotificationCenter defaultCenter] addObserver:self

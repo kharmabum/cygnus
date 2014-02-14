@@ -10,7 +10,6 @@
 #import <TSMessage.h>
 #import "CYGManager.h"
 #import "CYGMapViewController.h"
-#import "CYGProfileViewController.h"
 #import "CYGUser.h"
 #import "CYGPoint.h"
 

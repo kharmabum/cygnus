@@ -15,15 +15,15 @@
 #import "CYGPoint.h"
 #import "CYGUser.h"
 #import "CYGPointAnnotation.h"
+#import <TSMessages/TSMessage.h>
 
-@interface CYGPointCreationViewController () <MKMapViewDelegate, UIScrollViewDelegate, UITextFieldDelegate>
+@interface CYGPointCreationViewController () <MKMapViewDelegate, UIScrollViewDelegate, UITextFieldDelegate, PFLogInViewControllerDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic)  CYGPointAnnotation *annotation;
 @property (strong, nonatomic)  CYGPointCreationView *pointCreationView;
 @property (weak, nonatomic)  UITextField *activeField;
 @property (assign, nonatomic)  BOOL keyboardIsVisible;
-
-
+@property (strong, nonatomic)  UIAlertView *tagInputAlert;
 
 @end
 
@@ -31,17 +31,44 @@ static CGSize _kbSize;
 
 @implementation CYGPointCreationViewController
 
+#pragma mark - PFLogInViewControllerDelegate
+
+// Sent to the delegate when a PFUser is logged in.
+- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    if (user.isNew) {
+        NSLog(@"User signed up and logged in with Twitter!");
+    } else {
+        NSLog(@"User logged in with Twitter!");
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+// Sent to the delegate when the log in attempt fails.
+- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error
+{
+    NSLog(@"didFailToLogin");
+    
+}
+
+// Sent to the delegate when the log in screen is dismissed.
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController
+{
+    NSLog(@"didCancelLogin");
+    
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView == self.tagInputAlert) {
+        [self.pointCreationView.tagsTextField becomeFirstResponder];
+        self.tagInputAlert = nil;
+    }
+}
+
 #pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    return YES;
-}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -49,10 +76,6 @@ static CGSize _kbSize;
     [self scrollToActiveField];
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -61,6 +84,7 @@ static CGSize _kbSize;
     }
     else {
         [self.view endEditing:YES];
+        [self save];
     }
     return YES;
 }
@@ -76,7 +100,7 @@ static CGSize _kbSize;
     if (!annotationView) {
         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kCYGPointAnnotationIdentifier];
         annotationView.pinColor = MKPinAnnotationColorGreen;
-        annotationView.canShowCallout = YES;
+        annotationView.canShowCallout = NO;
         annotationView.draggable = YES;
     }
     return annotationView;
@@ -114,13 +138,12 @@ static CGSize _kbSize;
 }
 
 
-
 #pragma mark - Private
 
 - (void)scrollToActiveField
 {
     if (!_kbSize.height) return;
-    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.scrollViewContentView.yOrigin + self.activeField.yOrigin + self.activeField.height + _kbSize.height + 3) animated:YES];
+    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.scrollViewContentView.yOrigin + self.activeField.yOrigin + self.activeField.height + _kbSize.height + 4) animated:YES];
 }
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
@@ -157,17 +180,69 @@ static CGSize _kbSize;
     }
 }
 
+- (BOOL)fieldsAreValidWithAssignment
+{
+    // TAGS
+    NSString *tagText = self.pointCreationView.tagsTextField.text;
+    
+    // Check not empty
+    if (FTIsEmpty(tagText)) {
+        [self.pointCreationView.tagsTextField becomeFirstResponder];
+        return NO;
+    }
+    else {
+        // Get tags from comma-delimitted list
+        NSArray *tags = [[[tagText componentsSeparatedByString:@","].rac_sequence
+                          map:^id(NSString *tag) {
+                              return [tag stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters];
+                          }] array];
+        
+        // Check all tags are alphanumeric strings
+        BOOL allGood = YES;
+        for (NSString *tag in tags) {
+            if (![tag cyg_isAlphaNumeric]) {
+                allGood = NO;
+                break;
+            }
+        }
+        
+        if (allGood) {
+            self.point.tags = tags;
+        }
+        else {
+            self.tagInputAlert = [[UIAlertView alloc] initWithTitle:@"Bad input" message:@"Tags must be comma-delimitted, alphanumeric strings." delegate:self cancelButtonTitle:@"Got it!" otherButtonTitles:nil];
+            [self.tagInputAlert show];
+            return NO;
+        }
+    }
+    
+    // TITLE
+    NSString *titleText = self.pointCreationView.titleTextField.text;
+    if (!FTIsEmpty(titleText)) {
+        self.point.title = [titleText stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters];
+    }
+    
+    // AUTHOR
+    self.point.author = [CYGUser currentUser];
+
+    return YES;
+}
+
 - (void)save
 {
-    // TODO: Validation on points. must have tags, etc
-    
-     [self.point saveEventually:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            [self.navigationController popViewControllerAnimated:YES];
-    
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationPointAnnotationUpdated object:self.point];
-        }
-    }];
+    if ([self fieldsAreValidWithAssignment]) {
+        [self.navigationController popViewControllerAnimated:YES];
+        __block CYGPoint *newPoint = self.point;
+        [self.point saveEventually:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                [TSMessage showNotificationWithTitle:@"Success" subtitle:@"Point saved." type:TSMessageNotificationTypeSuccess];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationPointAnnotationUpdated object:newPoint];
+            }
+            else {
+                [TSMessage showNotificationWithTitle:@"Error" subtitle:@"Failed to save pin." type:TSMessageNotificationTypeError];
+            }
+        }];
+    }
 }
 
 
@@ -185,6 +260,15 @@ static CGSize _kbSize;
     self.pointCreationView.titleTextField.delegate = self;
     self.pointCreationView.tagsTextField.delegate = self;
     
+    UIButton *saveButton = [UIButton autoLayoutView];
+    [self.view addSubview:saveButton];
+    [saveButton pinToSuperviewEdges:(JRTViewPinBottomEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
+    [saveButton pinAttribute:NSLayoutAttributeWidth toSameAttributeOfItem:self.view];
+    [saveButton constrainToMinimumSize:CGSizeMake(0, 66)];
+    [saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
+    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    saveButton.backgroundColor = [UIColor cyg_orangeColor];
+    
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude),
                                                                    kCYGRegionSmallBufferInMeters,
                                                                    kCYGRegionSmallBufferInMeters);
@@ -196,10 +280,6 @@ static CGSize _kbSize;
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleEdit)];
     tapGestureRecognizer.cancelsTouchesInView = NO;
     [self.pointCreationView addGestureRecognizer:tapGestureRecognizer];
-    
-//    UIButton *÷
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -210,6 +290,13 @@ static CGSize _kbSize;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    if (![PFTwitterUtils isLinkedWithUser:[PFUser currentUser]]) {
+        PFLogInViewController *logInViewController = [[PFLogInViewController alloc] init];
+        logInViewController.delegate = self;
+        logInViewController.fields = PFLogInFieldsTwitter | PFLogInFieldsDismissButton;
+        logInViewController.logInView.logo = nil;
+        [self presentViewController:logInViewController animated:YES completion:NULL];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -230,7 +317,6 @@ static CGSize _kbSize;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _point = [CYGPoint object];
-        _point.author = [CYGUser currentUser];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWasShown:)
