@@ -70,10 +70,19 @@ static CGSize _kbSize;
 
 #pragma mark - UITextFieldDelegate
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (self.pointCreationView.mapViewIsOpen) {
+        [self hideMap];
+    }
+    return YES;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.activeField = textField;
     [self scrollToActiveField];
+
 }
 
 
@@ -137,14 +146,8 @@ static CGSize _kbSize;
     }
 }
 
+#pragma mark - Actions, Gestures, Notification Handlers
 
-#pragma mark - Private
-
-- (void)scrollToActiveField
-{
-    if (!_kbSize.height) return;
-    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.scrollViewContentView.yOrigin + self.activeField.yOrigin + self.activeField.height + _kbSize.height + 4) animated:YES];
-}
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
@@ -162,22 +165,46 @@ static CGSize _kbSize;
     self.keyboardIsVisible = NO;
     self.pointCreationView.scrollView.scrollEnabled = YES;
     [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, 0) animated:YES];
-
+    
 }
 
-- (void)toggleEdit
+- (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
 {
+    // End any editting occuring
     if (self.keyboardIsVisible) {
         [self.view endEditing:YES];
     }
-    else {
-        if (self.pointCreationView.tagsTextField.text.length) {
-            [self.pointCreationView.titleTextField becomeFirstResponder];
-        }
-        else {
-            [self.pointCreationView.tagsTextField becomeFirstResponder];
-        }
+    // Otherwise open map if applicable
+    else if ([self.pointCreationView.mapView
+             pointInside:[gestureRecognizer locationInView:self.pointCreationView.mapView]
+             withEvent:nil]) {
+        [self.pointCreationView openMapView];
+        [self.pointCreationView removeGestureRecognizer:gestureRecognizer];
+        UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:self action:@selector(hideMap)];
+        [self.navigationItem setRightBarButtonItem:close animated:YES];
     }
+    // Otherwise begin editting
+    else if (!self.pointCreationView.tagsTextField.text.length) {
+        [self.pointCreationView.tagsTextField becomeFirstResponder];
+    }
+    else {
+        [self.pointCreationView.titleTextField becomeFirstResponder];
+
+    }
+}
+
+- (void)hideMap
+{
+    [self.pointCreationView closeMapView];
+    [self addTapGestureRecognizer];
+}
+
+#pragma mark - Private
+
+- (void)scrollToActiveField
+{
+    if (!_kbSize.height) return;
+    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.scrollViewContentView.yOrigin + self.activeField.yOrigin + self.activeField.height + _kbSize.height + 4) animated:YES];
 }
 
 - (BOOL)fieldsAreValidWithAssignment
@@ -246,6 +273,14 @@ static CGSize _kbSize;
 }
 
 
+- (void)addTapGestureRecognizer
+{
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    tapGestureRecognizer.cancelsTouchesInView = NO;
+    [self.pointCreationView addGestureRecognizer:tapGestureRecognizer];
+}
+
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
@@ -266,7 +301,7 @@ static CGSize _kbSize;
     [saveButton pinAttribute:NSLayoutAttributeWidth toSameAttributeOfItem:self.view];
     [saveButton constrainToMinimumSize:CGSizeMake(0, 66)];
     [saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    [saveButton setTitle:@"Save →" forState:UIControlStateNormal];
     saveButton.backgroundColor = [UIColor cyg_orangeColor];
     
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude),
@@ -277,9 +312,7 @@ static CGSize _kbSize;
     self.annotation.isNewlyCreatedPoint = YES;
     [self.pointCreationView.mapView addAnnotation:self.annotation];
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleEdit)];
-    tapGestureRecognizer.cancelsTouchesInView = NO;
-    [self.pointCreationView addGestureRecognizer:tapGestureRecognizer];
+    [self addTapGestureRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -22,5 +22,7 @@
 @property (strong, nonatomic)  UITextField *titleTextField;
 @property (strong, nonatomic)  UITextField  *tagsTextField;
 
+- (void)openMapView;
+- (void)closeMapView;
 
 @end

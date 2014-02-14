@@ -8,14 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#ifndef DEBUG
-#undef NSLog
-#define NSLog(args, ...)
-#endif
-
-#define fequal(a,b) (fabs((a) - (b)) < FLT_EPSILON)
-#define fequalzero(a) (fabs(a) < FLT_EPSILON)
-
 #pragma mark - API
 
 extern NSString *const kCYGParseApplicationId;

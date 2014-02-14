@@ -13,6 +13,7 @@
 @import CoreGraphics;
 
 #import "CYGPointCreationView.h"
+#import <SSToolkit/SSLineView.h>
 
 @interface CYGPointCreationView () <UIScrollViewDelegate>
 
@@ -21,8 +22,6 @@
 @implementation CYGPointCreationView
 
 #pragma mark - UIScrollViewDelegate
-
-
 #define THRESHOLD  40
 #define SCALE 2
 
@@ -41,6 +40,39 @@
 }
 
 #pragma mark - Private
+
+- (void)openMapView
+{
+    
+    [self.mapView removeConstraints:self.mapView.constraints];
+    [self removeConstraints:self.constraints];
+    [self.mapView pinToSuperviewEdges:(JRTViewPinTopEdge) inset:0];
+    [self.mapView pinToSuperviewEdges:(JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
+    [self.mapView pinAttribute:NSLayoutAttributeHeight toSameAttributeOfItem:self];
+    [self.mapView setNeedsUpdateConstraints];
+
+    [self.scrollView removeConstraints:self.scrollView.constraints];
+    [self.scrollView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self];
+    [self.scrollView pinEdges:(JRTViewPinLeftEdge | JRTViewPinRightEdge) toSameEdgesOfView:self];
+    [self.scrollView constrainToMinimumSize:CGSizeMake(0, 1)];
+    [self.scrollView setNeedsUpdateConstraints];
+    
+    [UIView animateWithDuration:0.5f
+                     animations:^{
+                         
+                         [self.mapView layoutIfNeeded];
+                         [self.scrollView layoutIfNeeded];
+//                         [self.scrollView hide];
+                     } completion:^(BOOL finished) {
+                         
+                         
+                     }];
+}
+
+- (void)closeMapView
+{
+    
+}
 
 - (void)centerMapUserLocation
 {
@@ -96,6 +128,7 @@
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
         _mapViewIsOpen = NO;
+
         _mapView = [MKMapView autoLayoutView];
         [self addSubview:_mapView];
         [_mapView pinToSuperviewEdges:(JRTViewPinTopEdge) inset:-40];
@@ -113,10 +146,9 @@
         [_userLocationButton setAlpha:0];
         [_userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
 
-        
         _scrollView = [UIScrollView autoLayoutView];
         [self addSubview:_scrollView];
-        [_scrollView pinToSuperviewEdges:JRTViewPinAllEdges inset:0];
+        [_scrollView pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
         _scrollView.scrollEnabled = YES;
         _scrollView.alwaysBounceVertical = YES;
         _scrollView.delegate = self;
@@ -126,8 +158,7 @@
         [_scrollViewContentView pinToSuperviewEdges:JRTViewPinTopEdge inset:180];
         [_scrollViewContentView pinToSuperviewEdges:(JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
         [_scrollViewContentView pinAttribute:NSLayoutAttributeWidth toSameAttributeOfItem:self];
-        NSLayoutConstraint *heightConstraint =[_scrollViewContentView pinAttribute:NSLayoutAttributeHeight toSameAttributeOfItem:self];
-        heightConstraint.constant = -(_mapView.height);
+        [[_scrollViewContentView pinAttribute:NSLayoutAttributeHeight toSameAttributeOfItem:self] setConstant:-_mapView.height];
         _scrollViewContentView.backgroundColor = [UIColor whiteColor];
         _scrollViewContentView.opaque = YES;
         
@@ -147,14 +178,19 @@
         _tagsTextField.returnKeyType = UIReturnKeyNext;
         _tagsTextField.textColor = [UIColor lightGrayColor];
         
+        SSLineView *lineView = [[SSLineView alloc] init];
+        lineView.translatesAutoresizingMaskIntoConstraints = NO;
+        lineView.lineColor = [UIColor lightGrayColor];
+        [_scrollViewContentView addSubview:lineView];
+        [lineView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:_tagsTextField inset:4];
+        [lineView pinToSuperviewEdges:(JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:11];
+        [lineView constrainToHeight:1];
+        
         _titleLabel = [UILabel autoLayoutView];
         [_scrollViewContentView addSubview:_titleLabel];
         [_titleLabel pinToSuperviewEdges:(JRTViewPinLeftEdge) inset:11];
-        [_titleLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:_tagsTextField inset:8];
+        [_titleLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:_tagsTextField inset:10];
         _titleLabel.text = @"Name";
-        _titleTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _titleTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-
         _titleLabel.textColor = [UIColor darkGrayColor];
         
         _titleTextField = [UITextField autoLayoutView];
@@ -162,6 +198,8 @@
         [_titleTextField pinToSuperviewEdges:(JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:11];
         [_titleTextField pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:_titleLabel inset:3];
         _titleTextField.placeholder = @"(optional)";
+        _titleTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _titleTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _titleTextField.returnKeyType = UIReturnKeyDone;
         _titleTextField.textColor = [UIColor lightGrayColor];
 
