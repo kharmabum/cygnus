@@ -19,6 +19,7 @@
     #import <Parse/Parse.h>
     #import "CYGDefines.h"
     #import "FTAdditions.h"
+    #import "CYGAdditions.h"
     #import "UIView+Autolayout.h"
     #import "AFNetworking.h"
 #endif

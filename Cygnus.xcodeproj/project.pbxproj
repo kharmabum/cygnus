@@ -37,6 +37,8 @@
 		C9C52D5118AD425E0089B3B1 /* CYGPointCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D4F18AD425E0089B3B1 /* CYGPointCreationViewController.m */; };
 		C9C52D5418ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */; };
 		C9C52D5518ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */; };
+		C9C52D5818ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */; };
+		C9C52D5918ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */; };
 		C9CC592A18ABF5F8006FA0DD /* CYGManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CC592918ABF5F8006FA0DD /* CYGManager.m */; };
 		C9CC592B18ABF5F8006FA0DD /* CYGManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CC592918ABF5F8006FA0DD /* CYGManager.m */; };
 		C9CC593218AC4A16006FA0DD /* CYGPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CC593118AC4A16006FA0DD /* CYGPointAnnotation.m */; };
@@ -92,6 +94,9 @@
 		C9C52D4F18AD425E0089B3B1 /* CYGPointCreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGPointCreationViewController.m; sourceTree = "<group>"; };
 		C9C52D5218ADA0CD0089B3B1 /* CYGPointCreationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGPointCreationView.h; sourceTree = "<group>"; };
 		C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGPointCreationView.m; sourceTree = "<group>"; };
+		C9C52D5618ADE3560089B3B1 /* UIColor+CYGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+CYGAdditions.h"; sourceTree = "<group>"; };
+		C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+CYGAdditions.m"; sourceTree = "<group>"; };
+		C9C52D5B18ADE39F0089B3B1 /* CYGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGAdditions.h; sourceTree = "<group>"; };
 		C9CC592818ABF5F8006FA0DD /* CYGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGManager.h; sourceTree = "<group>"; };
 		C9CC592918ABF5F8006FA0DD /* CYGManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGManager.m; sourceTree = "<group>"; };
 		C9CC593018AC4A16006FA0DD /* CYGPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGPointAnnotation.h; sourceTree = "<group>"; };
@@ -220,6 +225,7 @@
 				C978710F18A8A5F600B25145 /* Models */,
 				C916A29A18A0E86C00FB480F /* Resources */,
 				C928812818A0D9D8006A4ACB /* Supporting Files */,
+				C9C52D5A18ADE35A0089B3B1 /* Categories */,
 			);
 			path = Cygnus;
 			sourceTree = "<group>";
@@ -266,6 +272,16 @@
 				C9CC593118AC4A16006FA0DD /* CYGPointAnnotation.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		C9C52D5A18ADE35A0089B3B1 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				C9C52D5B18ADE39F0089B3B1 /* CYGAdditions.h */,
+				C9C52D5618ADE3560089B3B1 /* UIColor+CYGAdditions.h */,
+				C9C52D5718ADE3560089B3B1 /* UIColor+CYGAdditions.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -410,6 +426,7 @@
 				C9CC592A18ABF5F8006FA0DD /* CYGManager.m in Sources */,
 				C978711A18A8ADF200B25145 /* CYGProfileViewController.m in Sources */,
 				C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */,
+				C9C52D5818ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9C52D5918ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */,
 				C978711718A8A78E00B25145 /* CYGPoint.m in Sources */,
 				C9CC592B18ABF5F8006FA0DD /* CYGManager.m in Sources */,
 				C9C52D5118AD425E0089B3B1 /* CYGPointCreationViewController.m in Sources */,

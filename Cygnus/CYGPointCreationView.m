@@ -103,7 +103,7 @@
         [_mapView constrainToHeight:340];
         _mapView.opaque = YES;
         _mapView.showsUserLocation = YES;
-        _mapView.tintColor = [UIColor colorWithHex:@"0x00FF91"];
+        _mapView.tintColor = [UIColor cyg_greenColor];
         
         _userLocationButton = [UIButton autoLayoutView];
         [_mapView addSubview:_userLocationButton];

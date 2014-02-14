@@ -24,14 +24,6 @@ extern NSString *const kCYGParseClientKey;
 extern NSString *const kCYGTwitterKey;
 extern NSString *const kCYGTwitterSecret;
 
-
-#pragma mark - Fonts
-
-extern NSString *const kCYGRegularFontName;
-extern NSString *const kCYGBoldFontName;
-extern NSString *const kCYGBoldItalicFontName;
-extern NSString *const kCYGItalicFontName;
-
 #pragma mark - Notifications
 
 extern NSString *const kCYGNotificationPointAnnotationUpdated;

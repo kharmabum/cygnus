@@ -182,7 +182,7 @@
     self.mapView.opaque = YES;
     self.mapView.showsUserLocation = YES;
     self.mapView.delegate = self;
-    self.mapView.tintColor = [UIColor colorWithHex:@"0x00FF91"];
+    self.mapView.tintColor = [UIColor cyg_greenColor];
 
     self.userLocationButton = [UIButton autoLayoutView];
     [self.mapView addSubview:self.userLocationButton];
@@ -203,8 +203,9 @@
     UIBarButtonItem *tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tag-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(addPoint)];
     UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshOnMapViewRegion)];
-    tagButton.tintColor = [UIColor colorWithHex:@"0x00C4FF"];
-    refreshButton.tintColor = [UIColor colorWithHex:@"0x00FF91"];
+    
+    tagButton.tintColor = [UIColor cyg_blueColor];
+    refreshButton.tintColor = [UIColor cyg_greenColor];
     listButton.tintColor = [UIColor whiteColor];
     self.toolbar.items = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];;
     
@@ -245,7 +246,6 @@
     if (self) {
         [[CYGManager sharedManager] findCurrentLocation];
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
-        self.tags = @[@"test"];
         //TODO: get cached tags in userDefaults self.tags == ??
 
         [[NSNotificationCenter defaultCenter] addObserver:self
