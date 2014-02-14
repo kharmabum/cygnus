@@ -11,6 +11,7 @@
 @import CoreGraphics;
 
 #import "CYGMapViewController.h"
+#import "CYGPointCreationViewController.h"
 #import "CYGManager.h"
 #import "CYGPoint.h"
 #import "CYGUser.h"
@@ -20,7 +21,7 @@
 
 @interface CYGMapViewController () <MKMapViewDelegate>
 
-@property (strong, nonatomic)  NSArray *filterTags;
+@property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  NSMutableArray *annotations;
 @property (strong, nonatomic)  MKMapView *mapView;
 @property (strong, nonatomic)  UIToolbar *toolbar;
@@ -41,7 +42,7 @@
     MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:kCYGPointAnnotationIdentifier];
     if (!annotationView) {
         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kCYGPointAnnotationIdentifier];
-        annotationView.pinColor = MKPinAnnotationColorPurple;
+        annotationView.pinColor = MKPinAnnotationColorGreen;
         annotationView.canShowCallout = YES;
         annotationView.draggable = YES;
         annotationView.animatesDrop = YES;
@@ -53,7 +54,7 @@
 
 - (void)centerMapUserLocation
 {
-    CLLocation *location = [[CYGManager sharedManager] currentLocation];
+    CLLocation *location = [[CYGManager sharedManager] currentLocation] ?: self.mapView.userLocation.location;
     if (location) {
         [self.mapView setCenterCoordinate:location.coordinate animated:YES];
     }
@@ -61,11 +62,16 @@
 
 - (void)zoomMapViewToFitAnnotationsWithUserLocation:(BOOL)fitToUserLocation
 {
-    NSArray *annotations = self.annotations;
+    NSArray *annotations = self.mapView.annotations;
     if (fitToUserLocation) {
         annotations = [annotations arrayByAddingObject:self.mapView.userLocation];
     }
     [self.mapView showAnnotations:annotations animated:YES];
+}
+
+- (void)pointAnnotationUpdated:(CYGPoint *)aPoint
+{
+    // TODO: Check to see if you editted point is currently visible.
 }
 
 
@@ -86,7 +92,7 @@
        nearGeoPoint:[PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude
                                            longitude:self.mapView.centerCoordinate.longitude]
    withinKilometers:filterDistanceKm];
-    [query whereKey:kCYGPointTagsKey containsAllObjectsInArray:self.filterTags];
+    [query whereKey:kCYGPointTagsKey containsAllObjectsInArray:self.tags];
     [query includeKey:kCYGPointAuthorKey];
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -145,34 +151,16 @@
 }
 
 
-/* FOR TESTING */
 - (void)addPoint
 {
-    static NSDateFormatter *_dateFormatter = nil;
-    if (_dateFormatter == nil) {
-        _dateFormatter = [[NSDateFormatter alloc] init];
-        _dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-        _dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-    }
-    
-    // TODO: Validation on points. must have tags, etc
-    
-    PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
-    __block CYGPoint *newPoint = [CYGPoint object];
-    newPoint.location = geoPoint;
-    newPoint.author = [CYGUser currentUser];
-    newPoint.tags = @[@"test"];
-    newPoint.title = [_dateFormatter stringFromDate:[NSDate date]];
-
-    [newPoint saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            CYGPointAnnotation *annotation = [[CYGPointAnnotation alloc] initWithPoint:newPoint];
-            [self.mapView addAnnotation:annotation];
-            [self.annotations addObject:annotation];
-            NSLog(@"Point Added: \n %@",[newPoint description]);
-            
-        }
-    }];
+    CYGPointCreationViewController *creationViewController = [[CYGPointCreationViewController alloc] init];
+    creationViewController.tags = [self.tags copy];
+    creationViewController.point.location = ({
+        CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude
+                                                                longitude:self.mapView.centerCoordinate.longitude];
+        [PFGeoPoint geoPointWithLocation:centerLocation];
+    });
+    [self.navigationController pushViewController:creationViewController animated:YES];
 }
 
 #pragma mark - NSOBject
@@ -187,47 +175,47 @@
     [super viewDidLoad];
     
     self.mapViewIsOpen = YES;
+    
     self.mapView = [MKMapView autoLayoutView];
+    [self.view addSubview:self.mapView];
+    [self.mapView pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
     self.mapView.opaque = YES;
     self.mapView.showsUserLocation = YES;
     self.mapView.delegate = self;
-    [self.view addSubview:self.mapView];
-    [self.mapView pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
-    
+    self.mapView.tintColor = [UIColor colorWithHex:@"0x00FF91"];
+
     self.userLocationButton = [UIButton autoLayoutView];
-    [self.userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
-    [self.userLocationButton setBackgroundImage:[UIImage imageNamed:@"user-location-icon"] forState:UIControlStateNormal];
-    [self.userLocationButton setAlpha:0.8];
     [self.mapView addSubview:self.userLocationButton];
     [self.userLocationButton pinToSuperviewEdges:JRTViewPinTopEdge inset:25];
     [self.userLocationButton pinToSuperviewEdges:JRTViewPinLeftEdge inset:10];
-    
+    [self.userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
+    [self.userLocationButton setBackgroundImage:[UIImage imageNamed:@"user-location-icon"] forState:UIControlStateNormal];
+    [self.userLocationButton setAlpha:0.8];
+
     self.toolbar = [UIToolbar autoLayoutView];
-    self.toolbar.translucent = YES;
     [self.view addSubview:self.toolbar];
     [self.toolbar pinToSuperviewEdges:(JRTViewPinBottomEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
-    [self.toolbar constrainToHeight:50];
+    [self.toolbar constrainToHeight:56];
+    self.toolbar.translucent = YES;
 
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
     UIBarButtonItem *tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tag-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(addPoint)];
     UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshOnMapViewRegion)];
-    NSArray *buttons = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];
-    self.toolbar.items = buttons;
+    tagButton.tintColor = [UIColor colorWithHex:@"0x00C4FF"];
+    refreshButton.tintColor = [UIColor colorWithHex:@"0x00FF91"];
+    listButton.tintColor = [UIColor whiteColor];
+    self.toolbar.items = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];;
     
-    [[[[RACObserve([CYGManager sharedManager], currentLocation)
-        ignore:nil]
-       take:1]
-      deliverOn:RACScheduler.mainThreadScheduler]
+    [[[[RACObserve([CYGManager sharedManager], currentLocation) ignore:nil] take:1] deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(CLLocation *location) {
          MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude),
-                                                                        kCYGRegionBufferInMeters,
-                                                                        kCYGRegionBufferInMeters);
+                                                                        kCYGRegionLargeBufferInMeters,
+                                                                        kCYGRegionLargeBufferInMeters);
          [self.mapView setRegion:region animated:NO];
          [self refreshOnMapViewRegion];
      }];
-    //TODO: get cached tags in userDefaults self.tags == ??
 }
 
 - (void)viewDidUnload {
@@ -257,10 +245,11 @@
     if (self) {
         [[CYGManager sharedManager] findCurrentLocation];
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
-        self.filterTags = @[@"test"];
-        
+        self.tags = @[@"test"];
+        //TODO: get cached tags in userDefaults self.tags == ??
+
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(refreshOnMapViewRegion)
+                                                 selector:@selector(pointAnnotationUpdated:)
                                                      name:kCYGNotificationPointAnnotationUpdated object:nil];
          }
     return self;

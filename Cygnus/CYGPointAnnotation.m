@@ -14,7 +14,21 @@
 @property (nonatomic, strong, readwrite) CYGPoint *point;
 
 @end
+
+static NSNumberFormatter *_numberFormatter = nil;
+
+
 @implementation CYGPointAnnotation
+
++ (NSNumberFormatter *)numberFormatter
+{
+    if (!_numberFormatter) {
+        _numberFormatter = [[NSNumberFormatter alloc] init];
+        _numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        _numberFormatter.maximumFractionDigits = 3;
+    }
+    return _numberFormatter;
+}
 
 #pragma mark - Initialization
 
@@ -23,42 +37,35 @@
     self = [super init];
     if (self) {
         _point = aPoint;
-        [self setGeoPoint:self.point.location];
-    }
+        _coordinate = CLLocationCoordinate2DMake(aPoint.location.latitude, aPoint.location.longitude);
+        
+        // Bindings
+        RAC(self, title) = [RACObserve(self.point, title) deliverOn:RACScheduler.mainThreadScheduler];
+        RAC(self, subtitle) = [[RACObserve(self.point, location) deliverOn:RACScheduler.mainThreadScheduler]
+                            map:^id(PFGeoPoint *geoPoint) {
+                                return [NSString stringWithFormat:@"%@, %@",
+                                        [[CYGPointAnnotation numberFormatter] stringFromNumber:@(geoPoint.latitude)],
+                                        [[CYGPointAnnotation numberFormatter] stringFromNumber:@(geoPoint.longitude)]];
+                            }];
+                            
+}
     return self;
 }
 
 #pragma mark - MKAnnotation
 
-// Called when the annotation is dragged and dropped. We update the geoPoint with the new coordinates.
+// Called when the annotation is dragged and dropped. Updates the backing point with new coordinates if it's not being created.
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {
-    PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:newCoordinate.latitude longitude:newCoordinate.longitude];
-    [self setGeoPoint:geoPoint];
-    self.point.location = geoPoint;
-    [self.point saveEventually:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationPointAnnotationUpdated object:self.point];
-            NSLog(@"Point annotation updated.");
-        }
-    }];
-}
-
-
-#pragma mark - ()
-
-- (void)setGeoPoint:(PFGeoPoint *)geoPoint {
-    _coordinate = CLLocationCoordinate2DMake(geoPoint.latitude, geoPoint.longitude);
-    
-    static NSNumberFormatter *_numberFormatter = nil;
-    if (_numberFormatter == nil) {
-        _numberFormatter = [[NSNumberFormatter alloc] init];
-        _numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-        _numberFormatter.maximumFractionDigits = 3;
+    _coordinate = newCoordinate;
+    self.point.location = [PFGeoPoint geoPointWithLatitude:newCoordinate.latitude longitude:newCoordinate.longitude];
+    if (!self.isNewlyCreatedPoint) {
+        [self.point saveEventually:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationPointAnnotationUpdated object:self.point];
+                NSLog(@"Point annotation updated.");
+            }
+        }];
     }
-    
-    _title = self.point.title;
-    _subtitle = [NSString stringWithFormat:@"%@, %@", [_numberFormatter stringFromNumber:@(geoPoint.latitude)],
-                 [_numberFormatter stringFromNumber:@(geoPoint.longitude)]];
 }
 
 @end

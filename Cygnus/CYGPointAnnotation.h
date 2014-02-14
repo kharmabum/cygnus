@@ -17,5 +17,7 @@
 @property (nonatomic, assign, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *subtitle;
+@property (assign, nonatomic)  BOOL isNewlyCreatedPoint;
+
 
 @end
