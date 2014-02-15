@@ -185,14 +185,14 @@
     
     self.activeView = [[CYGPointCreationView alloc] init];
     [self.view addSubview:self.activeView];
-    [self.activeView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
+    [self.activeView pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
     
     // Constraints
     
-    [self.mapView pinEdges:(CYGUIViewEdgePinTop | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
-    [self.mapView pinEdge:CYGUIViewEdgePinBottom toEdge:CYGUIViewEdgePinTop ofItem:self.toolbar];
+    [self.mapView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
+    [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.toolbar];
     
-    [self.toolbar pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+    [self.toolbar pinEdges:(FTUIViewEdgePinBottom | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
     [self.toolbar constrainToHeight:kCYGMapViewControllerTabBarHeight];
 
     // Actions

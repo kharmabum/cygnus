@@ -32,7 +32,7 @@
 //    self.mapViewIsOpen = YES;
 //    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
 //    if (!_animatingConstraintsOpenState) {
-//        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:self];
+//        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:self];
 //        [contentTopConstraint setConstant:-kCYGPointCreationsaveButtonHeight];
 //        _animatingConstraintsOpenState = @[contentTopConstraint];;
 //    }
@@ -164,31 +164,31 @@
         
         // Constraints
         
-        [_scrollView pinEdges:(CYGUIViewEdgePinTop | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+        [_scrollView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
         [[_scrollView constrainToHeightOfView:self] setConstant:-kCYGPointCreationSaveButtonHeight];
         [_scrollView constrainToWidthOfView:self];
         
-        //NSLayoutConstraint *contentTopConstraint = [[_contentView pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:180] firstObject];
-        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:self];
+        //NSLayoutConstraint *contentTopConstraint = [[_contentView pinEdges:FTUIViewEdgePinTop toSuperViewWithInset:180] firstObject];
+        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:self];
         [_contentView constrainToWidthOfView:self];
         [_contentView constrainToHeightOfView:self];
         
-        [_tagsLabel pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinTop) toSuperViewWithInset:11];
+        [_tagsLabel pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinTop) toSuperViewWithInset:11];
         
-        [_tagsTextField pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
-        [_tagsTextField pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
+        [_tagsTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
+        [_tagsTextField pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
 
-        [lineView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsTextField inset:4];
-        [lineView pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
+        [lineView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:4];
+        [lineView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
         [lineView constrainToHeight:1];
         
-        [_titleLabel pinEdges:CYGUIViewEdgePinLeft toSuperViewWithInset:11];
-        [_titleLabel pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsTextField inset:10];
+        [_titleLabel pinEdges:FTUIViewEdgePinLeft toSuperViewWithInset:11];
+        [_titleLabel pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:10];
 
-        [_titleTextField pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
-        [_titleTextField pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_titleLabel inset:3];
+        [_titleTextField pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
+        [_titleTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_titleLabel inset:3];
 
-        [_saveButton pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+        [_saveButton pinEdges:(FTUIViewEdgePinBottom | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
         [_saveButton constrainToWidthOfView:self];
         [_saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
 

@@ -314,14 +314,14 @@ static CGSize _kbSize;
     
     self.pointCreationView = [[CYGPointCreationView alloc] init];
     [self.view addSubview:self.pointCreationView];
-    [self.pointCreationView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
+    [self.pointCreationView pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
 //    self.pointCreationView.mapView.delegate = self;
     self.pointCreationView.titleTextField.delegate = self;
     self.pointCreationView.tagsTextField.delegate = self;
 
 //    UIButton *saveButton = [UIButton autoLayoutView];
 //    [self.view addSubview:saveButton];
-//    [saveButton pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+//    [saveButton pinEdges:(FTUIViewEdgePinBottom | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
 //    [saveButton constrainToWidthOfView:self.view];
 //    [saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
 //    [saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
