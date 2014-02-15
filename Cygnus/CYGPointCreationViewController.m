@@ -17,7 +17,7 @@
 #import "CYGPointAnnotation.h"
 #import <TSMessages/TSMessage.h>
 
-@interface CYGPointCreationViewController () <MKMapViewDelegate, UIScrollViewDelegate, UITextFieldDelegate, PFLogInViewControllerDelegate, UIAlertViewDelegate>
+@interface CYGPointCreationViewController () <MKMapViewDelegate, UITextFieldDelegate, PFLogInViewControllerDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic)  CYGPointAnnotation *annotation;
 @property (strong, nonatomic)  CYGPointCreationView *pointCreationView;
@@ -75,10 +75,10 @@ static CGSize _kbSize;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (self.pointCreationView.mapViewIsOpen) {
-        [self hideMap];
-        return NO;
-    }
+//    if (self.pointCreationView.mapViewIsOpen) {
+//        [self hideMap];
+//        return NO;
+//    }
     return YES;
 }
 
@@ -118,36 +118,36 @@ static CGSize _kbSize;
     return annotationView;
 }
 
-- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
-{
-    MKAnnotationView *aV;
-    for (aV in views) {
-        if ([aV.annotation isKindOfClass:[MKUserLocation class]]) {
-            continue;
-        }
-        MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
-        if (!MKMapRectContainsPoint(self.pointCreationView.mapView.visibleMapRect, point)) {
-            continue;   
-        }
-        CGRect endFrame = aV.frame;
-        aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);
-        [UIView animateWithDuration:0.5 delay:0.04 * [views indexOfObject:aV] options:UIViewAnimationOptionCurveLinear animations:^{
-            aV.frame = endFrame;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                [UIView animateWithDuration:0.05 animations:^{
-                    aV.transform = CGAffineTransformMakeScale(1.0, 0.8);
-                } completion:^(BOOL finished) {
-                    if (finished) {
-                        [UIView animateWithDuration:0.1 animations:^{
-                            aV.transform = CGAffineTransformIdentity;
-                        }];
-                    }
-                }];
-            }
-        }];
-    }
-}
+//- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+//{
+//    MKAnnotationView *aV;
+//    for (aV in views) {
+//        if ([aV.annotation isKindOfClass:[MKUserLocation class]]) {
+//            continue;
+//        }
+//        MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
+//        if (!MKMapRectContainsPoint(self.pointCreationView.mapView.visibleMapRect, point)) {
+//            continue;
+//        }
+//        CGRect endFrame = aV.frame;
+//        aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);
+//        [UIView animateWithDuration:0.5 delay:0.04 * [views indexOfObject:aV] options:UIViewAnimationOptionCurveLinear animations:^{
+//            aV.frame = endFrame;
+//        } completion:^(BOOL finished) {
+//            if (finished) {
+//                [UIView animateWithDuration:0.05 animations:^{
+//                    aV.transform = CGAffineTransformMakeScale(1.0, 0.8);
+//                } completion:^(BOOL finished) {
+//                    if (finished) {
+//                        [UIView animateWithDuration:0.1 animations:^{
+//                            aV.transform = CGAffineTransformIdentity;
+//                        }];
+//                    }
+//                }];
+//            }
+//        }];
+//    }
+//}
 
 #pragma mark - Actions, Gestures, Notification Handlers
 
@@ -170,35 +170,35 @@ static CGSize _kbSize;
     [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, 0) animated:YES];
     
 }
-
-- (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
-{
-    // End any editting occuring
-    if (self.keyboardIsVisible) {
-        [self.view endEditing:YES];
-    }
-    // Otherwise open map if applicable
-    else if ([self.pointCreationView.mapView
-             pointInside:[gestureRecognizer locationInView:self.pointCreationView.mapView]
-             withEvent:nil]
-             && ![self.pointCreationView.scrollViewContentView
-                 pointInside:[gestureRecognizer locationInView:self.pointCreationView.scrollViewContentView]
-                 withEvent:nil]) {
-                 [self showMap];
-    }
-    // Otherwise begin editting
-    else if (!self.pointCreationView.tagsTextField.text.length) {
-        [self.pointCreationView.tagsTextField becomeFirstResponder];
-    }
-    else {
-        [self.pointCreationView.titleTextField becomeFirstResponder];
-
-    }
-}
+//
+//- (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
+//{
+//    // End any editting occuring
+//    if (self.keyboardIsVisible) {
+//        [self.view endEditing:YES];
+//    }
+//    // Otherwise open map if applicable
+//    else if ([self.pointCreationView.mapView
+//             pointInside:[gestureRecognizer locationInView:self.pointCreationView.mapView]
+//             withEvent:nil]
+//             && ![self.pointCreationView.scrollViewContentView
+//                 pointInside:[gestureRecognizer locationInView:self.pointCreationView.scrollViewContentView]
+//                 withEvent:nil]) {
+//                 [self showMap];
+//    }
+//    // Otherwise begin editting
+//    else if (!self.pointCreationView.tagsTextField.text.length) {
+//        [self.pointCreationView.tagsTextField becomeFirstResponder];
+//    }
+//    else {
+//        [self.pointCreationView.titleTextField becomeFirstResponder];
+//
+//    }
+//}
 
 - (void)showMap
 {
-    [self.pointCreationView openMapView];
+//    [self.pointCreationView openMapView];
     [self.pointCreationView removeGestureRecognizer:self.tapGestureRecognizer];
     UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithTitle:@"Close"
                                                               style:UIBarButtonItemStylePlain
@@ -209,7 +209,7 @@ static CGSize _kbSize;
 
 - (void)hideMap
 {
-    [self.pointCreationView closeMapView];
+//    [self.pointCreationView closeMapView];
     [self.navigationItem setRightBarButtonItem:nil];
     [self addTapGestureRecognizer];
 }
@@ -300,7 +300,7 @@ static CGSize _kbSize;
     else
         kbHeight = (_kbSize.width) ?: 162;
     
-    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.scrollViewContentView.yOrigin + self.activeField.yOrigin + self.activeField.height + kbHeight + 4) animated:YES];
+    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.contentView.yOrigin + self.activeField.yOrigin + self.activeField.height + kbHeight + 4) animated:YES];
 }
 
 
@@ -315,25 +315,25 @@ static CGSize _kbSize;
     self.pointCreationView = [[CYGPointCreationView alloc] init];
     [self.view addSubview:self.pointCreationView];
     [self.pointCreationView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
-    self.pointCreationView.mapView.delegate = self;
+//    self.pointCreationView.mapView.delegate = self;
     self.pointCreationView.titleTextField.delegate = self;
     self.pointCreationView.tagsTextField.delegate = self;
 
-    UIButton *saveButton = [UIButton autoLayoutView];
-    [self.view addSubview:saveButton];
-    [saveButton pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
-    [saveButton constrainToWidthOfView:self.view];
-    [saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
-    [saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setTitle:@"Save →" forState:UIControlStateNormal];
-    saveButton.backgroundColor = [UIColor cyg_orangeColor];
+//    UIButton *saveButton = [UIButton autoLayoutView];
+//    [self.view addSubview:saveButton];
+//    [saveButton pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+//    [saveButton constrainToWidthOfView:self.view];
+//    [saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
+//    [saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
+//    [saveButton setTitle:@"Save →" forState:UIControlStateNormal];
+//    saveButton.backgroundColor = [UIColor cyg_orangeColor];
     
     // Pre-initialize MapRegion to make less jumpy
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude),
                                                                    kCYGRegionSmallBufferInMeters,
                                                                    kCYGRegionSmallBufferInMeters);
-    [self.pointCreationView.mapView setRegion:region animated:NO];
-    self.pointCreationView.mapView.centerCoordinate = CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude);
+//    [self.pointCreationView.mapView setRegion:region animated:NO];
+//    self.pointCreationView.mapView.centerCoordinate = CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude);
 
 
     [self addTapGestureRecognizer];
@@ -363,11 +363,11 @@ static CGSize _kbSize;
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude),
                                                                        kCYGRegionSmallBufferInMeters,
                                                                        kCYGRegionSmallBufferInMeters);
-        [self.pointCreationView.mapView setRegion:region animated:NO];
-        self.pointCreationView.mapView.centerCoordinate = CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude);
+//        [self.pointCreationView.mapView setRegion:region animated:NO];
+//        self.pointCreationView.mapView.centerCoordinate = CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude);
         self.annotation = [[CYGPointAnnotation alloc] initWithPoint:self.point];
         self.annotation.isNewlyCreatedPoint = YES;
-        [self.pointCreationView.mapView addAnnotation:self.annotation];
+//        [self.pointCreationView.mapView addAnnotation:self.annotation];
         self.firstAppearance = NO;
     }
 }

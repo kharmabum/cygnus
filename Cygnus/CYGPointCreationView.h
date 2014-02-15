@@ -13,18 +13,13 @@
 
 @interface CYGPointCreationView : UIView
 
-@property (strong, nonatomic)  MKMapView *mapView;
-@property (strong, nonatomic)  UIButton *userLocationButton;
-@property (assign, nonatomic)  BOOL mapViewIsOpen;
+@property (strong, nonatomic)  UIView *contentView;
 @property (strong, nonatomic)  UIScrollView *scrollView;
-@property (strong, nonatomic)  UIView *scrollViewContentView;
-
 @property (strong, nonatomic)  UILabel *titleLabel;
 @property (strong, nonatomic)  UILabel *tagsLabel;
 @property (strong, nonatomic)  UITextField *titleTextField;
 @property (strong, nonatomic)  UITextField  *tagsTextField;
+@property (strong, nonatomic)  UIButton *saveButton;
 
-- (void)openMapView;
-- (void)closeMapView;
 
 @end

@@ -25,81 +25,63 @@
 
 @implementation CYGPointCreationView
 
-#pragma mark - UIScrollViewDelegate
-
 #pragma mark - Private
 
-- (void)openMapView
-{
-    self.mapViewIsOpen = YES;
-    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
-    if (!_animatingConstraintsOpenState) {
-        NSLayoutConstraint *contentTopConstraint = [_scrollViewContentView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:self];
-        [contentTopConstraint setConstant:-kCYGPointCreationSaveButtonHeight];
-        _animatingConstraintsOpenState = @[contentTopConstraint];;
-    }
-    else {
-        [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
-    }
-    
-    [UIView animateWithDuration:0.3f
-                     animations:^{
-                         [self layoutIfNeeded];
-                     } completion:^(BOOL finished) {
-                         self.scrollView.alpha = 0;
-                         [UIView animateWithDuration:0.5f animations:^{
-                             self.userLocationButton.alpha = 0.8;
-                         }];
-                     }];
-}
+//- (void)openMapView
+//{
+//    self.mapViewIsOpen = YES;
+//    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
+//    if (!_animatingConstraintsOpenState) {
+//        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:self];
+//        [contentTopConstraint setConstant:-kCYGPointCreationsaveButtonHeight];
+//        _animatingConstraintsOpenState = @[contentTopConstraint];;
+//    }
+//    else {
+//        [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
+//    }
+//    
+//    [UIView animateWithDuration:0.3f
+//                     animations:^{
+//                         [self layoutIfNeeded];
+//                     } completion:^(BOOL finished) {
+//                         self.scrollView.alpha = 0;
+//                         [UIView animateWithDuration:0.5f animations:^{
+//                             self.userLocationButton.alpha = 0.8;
+//                         }];
+//                     }];
+//}
+//
+//- (void)closeMapView
+//{
+//    self.mapViewIsOpen = NO;
+//    for (NSObject<MKAnnotation> *annotation in [self.mapView selectedAnnotations])
+//        [self.mapView deselectAnnotation:(id <MKAnnotation>)annotation animated:NO];
+//    
+//    [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
+//    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
+//
+//    [UIView animateWithDuration:0.3f
+//                     animations:^{
+//                         self.userLocationButton.alpha = 0;
+//                         [self layoutIfNeeded];
+//                     } completion:^(BOOL finished){
+//                         self.scrollView.alpha = 1;
+//                         CLLocationCoordinate2D coordinate;
+//                         for (id <MKAnnotation>annotation in self.mapView.annotations) {
+//                             if (![annotation isMemberOfClass:[MKUserLocation class]]) {
+//                                 coordinate = [annotation coordinate];
+//                                 break;
+//                             }
+//                         }
+//                         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude),
+//                                                                                        kCYGRegionSmallBufferInMeters,
+//                                                                                        kCYGRegionSmallBufferInMeters);
+//                         [self.mapView setRegion:region animated:NO];
+//                     }];
+//
+//    
+//}
 
-- (void)closeMapView
-{
-    self.mapViewIsOpen = NO;
-    for (NSObject<MKAnnotation> *annotation in [self.mapView selectedAnnotations])
-        [self.mapView deselectAnnotation:(id <MKAnnotation>)annotation animated:NO];
-    
-    [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
-    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
-
-    [UIView animateWithDuration:0.3f
-                     animations:^{
-                         self.userLocationButton.alpha = 0;
-                         [self layoutIfNeeded];
-                     } completion:^(BOOL finished){
-                         self.scrollView.alpha = 1;
-                         CLLocationCoordinate2D coordinate;
-                         for (id <MKAnnotation>annotation in self.mapView.annotations) {
-                             if (![annotation isMemberOfClass:[MKUserLocation class]]) {
-                                 coordinate = [annotation coordinate];
-                                 break;
-                             }
-                         }
-                         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude),
-                                                                                        kCYGRegionSmallBufferInMeters,
-                                                                                        kCYGRegionSmallBufferInMeters);
-                         [self.mapView setRegion:region animated:NO];
-                     }];
-
-    
-}
-
-- (void)centerMapUserLocation
-{
-    CLLocation *location = self.mapView.userLocation.location;
-    if (location) {
-        [self.mapView setCenterCoordinate:location.coordinate animated:YES];
-    }
-}
-
-- (void)zoomMapViewToFitAnnotationsWithUserLocation:(BOOL)fitToUserLocation
-{
-    NSArray *annotations = self.mapView.annotations;
-    if (fitToUserLocation) {
-        annotations = [annotations arrayByAddingObject:self.mapView.userLocation];
-    }
-    [self.mapView showAnnotations:annotations animated:YES];
-}
 
 - (void)setDynamicText
 {
@@ -127,61 +109,29 @@
 
 #pragma mark - UIView
 
-- (void)updateConstraints
-{
-    [super updateConstraints];
-}
-
 - (id)init
 {
     self = [super init];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        _mapViewIsOpen = NO;
-
-        _mapView = [MKMapView autoLayoutView];
-        [self addSubview:_mapView];
-        [_mapView pinEdges:(CYGUIViewEdgePinTop | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
-        _mapView.opaque = YES;
-        _mapView.showsUserLocation = YES;
-        _mapView.tintColor = [UIColor cyg_greenColor];
-        
-        _userLocationButton = [UIButton autoLayoutView];
-        [_mapView addSubview:_userLocationButton];
-        [_userLocationButton pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:75];
-        [_userLocationButton pinEdges:CYGUIViewEdgePinLeft toSuperViewWithInset:10];
-        [_userLocationButton setBackgroundImage:[UIImage imageNamed:@"user-location-icon"] forState:UIControlStateNormal];
-        [_userLocationButton setAlpha:0];
-        [_userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
-
+        self.alpha = 0;
         _scrollView = [UIScrollView autoLayoutView];
         [self addSubview:_scrollView];
-        [_scrollView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
-        [_scrollView constrainToHeightOfView:self];
-        [_scrollView constrainToWidthOfView:self];
         _scrollView.scrollEnabled = YES;
         _scrollView.alwaysBounceVertical = YES;
         
-        _scrollViewContentView = [UIView autoLayoutView];
-        [_scrollView addSubview:_scrollViewContentView];
-        NSLayoutConstraint *contentTopConstraint = [[_scrollViewContentView pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:180] firstObject];
-        [_scrollViewContentView pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
-        [_scrollViewContentView constrainToWidthOfView:self];
-        [_scrollViewContentView constrainToHeightOfView:self];
-        [_mapView pinEdge:CYGUIViewEdgePinBottom toEdge:CYGUIViewEdgePinTop ofItem:_scrollViewContentView];
-        _scrollViewContentView.backgroundColor = [UIColor whiteColor];
-        _scrollViewContentView.opaque = YES;
+        _contentView = [UIView autoLayoutView];
+        [_scrollView addSubview:_contentView];
+        _contentView.backgroundColor = [UIColor whiteColor];
+        _contentView.opaque = YES;
         
         _tagsLabel = [UILabel autoLayoutView];
-        [_scrollViewContentView addSubview:_tagsLabel];
-        [_tagsLabel pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinTop) toSuperViewWithInset:11];
+        [_contentView addSubview:_tagsLabel];
         _tagsLabel.text = @"Tags";
         _tagsLabel.textColor = [UIColor darkGrayColor];
         
         _tagsTextField = [UITextField autoLayoutView];
-        [_scrollViewContentView addSubview:_tagsTextField];
-        [_tagsTextField pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
-        [_tagsTextField pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
+        [_contentView addSubview:_tagsTextField];
         _tagsTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _tagsTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _tagsTextField.placeholder = @"(comma separated)";
@@ -191,29 +141,57 @@
         SSLineView *lineView = [[SSLineView alloc] init];
         lineView.translatesAutoresizingMaskIntoConstraints = NO;
         lineView.lineColor = [UIColor lightGrayColor];
-        [_scrollViewContentView addSubview:lineView];
-        [lineView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsTextField inset:4];
-        [lineView pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
-        [lineView constrainToHeight:1];
+        [_contentView addSubview:lineView];
         
         _titleLabel = [UILabel autoLayoutView];
-        [_scrollViewContentView addSubview:_titleLabel];
-        [_titleLabel pinEdges:CYGUIViewEdgePinLeft toSuperViewWithInset:11];
-        [_titleLabel pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsTextField inset:10];
+        [_contentView addSubview:_titleLabel];
         _titleLabel.text = @"Name";
         _titleLabel.textColor = [UIColor darkGrayColor];
         
         _titleTextField = [UITextField autoLayoutView];
-        [_scrollViewContentView addSubview:_titleTextField];
-        [_titleTextField pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
-        [_titleTextField pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_titleLabel inset:3];
+        [_contentView addSubview:_titleTextField];
         _titleTextField.placeholder = @"(optional)";
         _titleTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _titleTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _titleTextField.returnKeyType = UIReturnKeyDone;
         _titleTextField.textColor = [UIColor lightGrayColor];
         
-        // Open and Closed Map Constraints
+        _saveButton = [UIButton autoLayoutView];
+        [_contentView addSubview:_saveButton];
+        [_saveButton setTitle:@"Save →" forState:UIControlStateNormal];
+        _saveButton.backgroundColor = [UIColor cyg_orangeColor];
+        _saveButton.alpha = 0;
+        
+        // Constraints
+        
+        [_scrollView pinEdges:(CYGUIViewEdgePinTop | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+        [[_scrollView constrainToHeightOfView:self] setConstant:-kCYGPointCreationSaveButtonHeight];
+        [_scrollView constrainToWidthOfView:self];
+        
+        //NSLayoutConstraint *contentTopConstraint = [[_contentView pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:180] firstObject];
+        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:self];
+        [_contentView constrainToWidthOfView:self];
+        [_contentView constrainToHeightOfView:self];
+        
+        [_tagsLabel pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinTop) toSuperViewWithInset:11];
+        
+        [_tagsTextField pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
+        [_tagsTextField pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
+
+        [lineView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsTextField inset:4];
+        [lineView pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
+        [lineView constrainToHeight:1];
+        
+        [_titleLabel pinEdges:CYGUIViewEdgePinLeft toSuperViewWithInset:11];
+        [_titleLabel pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_tagsTextField inset:10];
+
+        [_titleTextField pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:11];
+        [_titleTextField pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:_titleLabel inset:3];
+
+        [_saveButton pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+        [_saveButton constrainToWidthOfView:self];
+        [_saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
+
         _animatingConstraintsClosedState = @[contentTopConstraint];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
