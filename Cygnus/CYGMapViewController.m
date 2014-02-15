@@ -197,7 +197,7 @@
     
     self.mapView = [MKMapView autoLayoutView];
     [self.view addSubview:self.mapView];
-    [self.mapView pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
+    [self.mapView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
     self.mapView.opaque = YES;
     self.mapView.showsUserLocation = YES;
     self.mapView.delegate = self;
@@ -205,15 +205,15 @@
 
     self.userLocationButton = [UIButton autoLayoutView];
     [self.mapView addSubview:self.userLocationButton];
-    [self.userLocationButton pinToSuperviewEdges:JRTViewPinTopEdge inset:25];
-    [self.userLocationButton pinToSuperviewEdges:JRTViewPinLeftEdge inset:10];
+    [self.userLocationButton pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:25];
+    [self.userLocationButton pinEdges:CYGUIViewEdgePinLeft toSuperViewWithInset:10];
     [self.userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
     [self.userLocationButton setBackgroundImage:[UIImage imageNamed:@"user-location-icon"] forState:UIControlStateNormal];
     [self.userLocationButton setAlpha:0.8];
 
     self.toolbar = [UIToolbar autoLayoutView];
     [self.view addSubview:self.toolbar];
-    [self.toolbar pinToSuperviewEdges:(JRTViewPinBottomEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
+    [self.toolbar pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
     [self.toolbar constrainToHeight:56];
     self.toolbar.translucent = YES;
 

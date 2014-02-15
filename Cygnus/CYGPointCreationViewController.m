@@ -21,7 +21,7 @@
 
 @property (strong, nonatomic)  CYGPointAnnotation *annotation;
 @property (strong, nonatomic)  CYGPointCreationView *pointCreationView;
-@property (weak, nonatomic)  UITextField *activeField;
+@property (weak, nonatomic)    UITextField *activeField;
 @property (assign, nonatomic)  BOOL keyboardIsVisible;
 @property (strong, nonatomic)  UIAlertView *tagInputAlert;
 
@@ -82,7 +82,6 @@ static CGSize _kbSize;
 {
     self.activeField = textField;
     [self scrollToActiveField];
-
 }
 
 
@@ -203,6 +202,11 @@ static CGSize _kbSize;
 
 - (void)scrollToActiveField
 {
+    //#define kKeyboardHeightPortrait 216
+    //#define kKeyboardHeightLandscape 140
+    //if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+
+
     if (!_kbSize.height) return;
     [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.scrollViewContentView.yOrigin + self.activeField.yOrigin + self.activeField.height + _kbSize.height + 4) animated:YES];
 }
@@ -290,15 +294,15 @@ static CGSize _kbSize;
     
     self.pointCreationView = [[CYGPointCreationView alloc] init];
     [self.view addSubview:self.pointCreationView];
-    [self.pointCreationView pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
+    [self.pointCreationView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
     self.pointCreationView.mapView.delegate = self;
     self.pointCreationView.titleTextField.delegate = self;
     self.pointCreationView.tagsTextField.delegate = self;
-    
+
     UIButton *saveButton = [UIButton autoLayoutView];
     [self.view addSubview:saveButton];
-    [saveButton pinToSuperviewEdges:(JRTViewPinBottomEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge) inset:0];
-    [saveButton pinAttribute:NSLayoutAttributeWidth toSameAttributeOfItem:self.view];
+    [saveButton pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+    [saveButton constrainToWidthOfView:self.view];
     [saveButton constrainToMinimumSize:CGSizeMake(0, 66)];
     [saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
     [saveButton setTitle:@"Save →" forState:UIControlStateNormal];
