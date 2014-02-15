@@ -197,7 +197,8 @@
     
     self.mapView = [MKMapView autoLayoutView];
     [self.view addSubview:self.mapView];
-    [self.mapView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
+    [self.mapView pinEdges:(CYGUIViewEdgePinTop | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
+    [self.mapView pinEdges:(CYGUIViewEdgePinBottom) toSuperViewWithInset:kCYGMapViewControllerTabBarHeight];
     self.mapView.opaque = YES;
     self.mapView.showsUserLocation = YES;
     self.mapView.delegate = self;
@@ -214,8 +215,7 @@
     self.toolbar = [UIToolbar autoLayoutView];
     [self.view addSubview:self.toolbar];
     [self.toolbar pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
-    [self.toolbar constrainToHeight:56];
-    self.toolbar.translucent = YES;
+    [self.toolbar constrainToHeight:kCYGMapViewControllerTabBarHeight];
 
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];

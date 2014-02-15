@@ -9,6 +9,8 @@
 
 @class MKMapView;
 
+@class CYGPointAnnotation;
+
 @interface CYGPointCreationView : UIView
 
 @property (strong, nonatomic)  MKMapView *mapView;

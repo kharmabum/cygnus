@@ -48,6 +48,14 @@ extern double const kCYGMaxFilterDistanceInKilometers;
 extern double const kCYGMinFilterDistanceInKilometers;
 extern double const kCYGMaxQueryLimit;
 
+#pragma mark - UI
+
+extern NSInteger const kCYGPointCreationMapViewOffset;
+extern NSInteger const kCYGPointCreationSaveButtonHeight;
+extern NSInteger const kCYGMapViewControllerTabBarHeight;
+extern double const kCYGPointCreationViewParalaxScale;
+
+
 
 #pragma mark - Misc
 

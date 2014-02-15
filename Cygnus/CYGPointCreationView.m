@@ -14,6 +14,7 @@
 
 #import "CYGPointCreationView.h"
 #import <SSToolkit/SSLineView.h>
+#import "CYGPointAnnotation.h"
 
 @interface CYGPointCreationView () <UIScrollViewDelegate>
 
@@ -25,52 +26,61 @@
 @implementation CYGPointCreationView
 
 #pragma mark - UIScrollViewDelegate
-#define THRESHOLD  40
-#define SCALE 2
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    float offsetY = self.scrollView.contentOffset.y;
-    // Resistance is controlled by the division operation.
-    if (offsetY < 0) {
-        //        float scale = ABS(offsetY/THRESHOLD);
-        //        self.authorContainerView.alpha = 1 - scale;
-        self.mapView.yOrigin = -THRESHOLD-offsetY/SCALE;
-    }
-}
 
 #pragma mark - Private
 
 - (void)openMapView
 {
+    self.mapViewIsOpen = YES;
     [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
     if (!_animatingConstraintsOpenState) {
-        _animatingConstraintsOpenState = @[
-                                           [[self.mapView pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:0] firstObject],
-                                           [self.mapView constrainToHeightOfView:self],
-                                           [self.scrollView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:self]
-                                           ];;
+        NSLayoutConstraint *contentTopConstraint = [_scrollViewContentView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinBottom ofItem:self];
+        [contentTopConstraint setConstant:-kCYGPointCreationSaveButtonHeight];
+        _animatingConstraintsOpenState = @[contentTopConstraint];;
     }
     else {
         [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
     }
-//    [self.mapView setNeedsUpdateConstraints];
-//    [self.scrollView setNeedsUpdateConstraints];
-
-    [UIView animateWithDuration:0.5f
+    
+    [UIView animateWithDuration:0.3f
                      animations:^{
                          [self layoutIfNeeded];
-//                         [self.scrollView hide];
                      } completion:^(BOOL finished) {
-                         
-                         
+                         self.scrollView.alpha = 0;
+                         [UIView animateWithDuration:0.5f animations:^{
+                             self.userLocationButton.alpha = 0.8;
+                         }];
                      }];
 }
 
 - (void)closeMapView
 {
+    self.mapViewIsOpen = NO;
+    for (NSObject<MKAnnotation> *annotation in [self.mapView selectedAnnotations])
+        [self.mapView deselectAnnotation:(id <MKAnnotation>)annotation animated:NO];
+    
+    [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
+    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
+
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         self.userLocationButton.alpha = 0;
+                         [self layoutIfNeeded];
+                     } completion:^(BOOL finished){
+                         self.scrollView.alpha = 1;
+                         CLLocationCoordinate2D coordinate;
+                         for (id <MKAnnotation>annotation in self.mapView.annotations) {
+                             if (![annotation isMemberOfClass:[MKUserLocation class]]) {
+                                 coordinate = [annotation coordinate];
+                                 break;
+                             }
+                         }
+                         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude),
+                                                                                        kCYGRegionSmallBufferInMeters,
+                                                                                        kCYGRegionSmallBufferInMeters);
+                         [self.mapView setRegion:region animated:NO];
+                     }];
+
     
 }
 
@@ -131,9 +141,7 @@
 
         _mapView = [MKMapView autoLayoutView];
         [self addSubview:_mapView];
-        NSArray *topMapConstraints = [_mapView pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:-40];
-        [_mapView pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
-        NSLayoutConstraint *mapHeightConstraint = [_mapView constrainToHeight:340];
+        [_mapView pinEdges:(CYGUIViewEdgePinTop | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
         _mapView.opaque = YES;
         _mapView.showsUserLocation = YES;
         _mapView.tintColor = [UIColor cyg_greenColor];
@@ -148,18 +156,19 @@
 
         _scrollView = [UIScrollView autoLayoutView];
         [self addSubview:_scrollView];
-        [_scrollView pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight | CYGUIViewEdgePinBottom) toSuperViewWithInset:0];
-        NSLayoutConstraint *scrollViewTopConstraint = [_scrollView pinEdge:CYGUIViewEdgePinTop toEdge:CYGUIViewEdgePinTop ofItem:self];
+        [_scrollView pinEdges:CYGUIViewEdgePinAll toSuperViewWithInset:0];
+        [_scrollView constrainToHeightOfView:self];
+        [_scrollView constrainToWidthOfView:self];
         _scrollView.scrollEnabled = YES;
         _scrollView.alwaysBounceVertical = YES;
-        _scrollView.delegate = self;
         
         _scrollViewContentView = [UIView autoLayoutView];
         [_scrollView addSubview:_scrollViewContentView];
-        [_scrollViewContentView pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:180];
+        NSLayoutConstraint *contentTopConstraint = [[_scrollViewContentView pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:180] firstObject];
         [_scrollViewContentView pinEdges:(CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
         [_scrollViewContentView constrainToWidthOfView:self];
-        [[_scrollViewContentView constrainToHeightOfView:self] setConstant:-_mapView.height];
+        [_scrollViewContentView constrainToHeightOfView:self];
+        [_mapView pinEdge:CYGUIViewEdgePinBottom toEdge:CYGUIViewEdgePinTop ofItem:_scrollViewContentView];
         _scrollViewContentView.backgroundColor = [UIColor whiteColor];
         _scrollViewContentView.opaque = YES;
         
@@ -205,16 +214,14 @@
         _titleTextField.textColor = [UIColor lightGrayColor];
         
         // Open and Closed Map Constraints
-        _animatingConstraintsClosedState = @[
-                                             [topMapConstraints firstObject],
-                                             mapHeightConstraint,
-                                             scrollViewTopConstraint
-                                             ];
+        _animatingConstraintsClosedState = @[contentTopConstraint];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(preferredContentSizeChanged)
                                                      name:UIContentSizeCategoryDidChangeNotification
                                                    object:nil];
+        
+
 
     }
     return self;
