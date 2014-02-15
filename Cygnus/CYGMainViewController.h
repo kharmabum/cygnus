@@ -9,6 +9,6 @@
 @import Foundation;
 @import UIKit;
 
-@interface CYGMapViewController : UIViewController
+@interface CYGMainViewController : UIViewController
 
 @end

@@ -9,7 +9,7 @@
 #import "CYGAppDelegate.h"
 #import <TSMessage.h>
 #import "CYGManager.h"
-#import "CYGMapViewController.h"
+#import "CYGMainViewController.h"
 #import "CYGUser.h"
 #import "CYGPoint.h"
 
@@ -32,7 +32,7 @@
     [PFTwitterUtils initializeWithConsumerKey:kCYGTwitterKey consumerSecret:kCYGTwitterSecret];
     
     UINavigationController *navigationController = [[UINavigationController alloc] init];
-    [navigationController pushViewController:[[CYGMapViewController alloc] init] animated:NO];
+    [navigationController pushViewController:[[CYGMainViewController alloc] init] animated:NO];
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
     [TSMessage setDefaultViewController: self.window.rootViewController];

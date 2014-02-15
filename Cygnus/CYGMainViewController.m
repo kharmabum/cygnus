@@ -10,27 +10,27 @@
 @import CoreLocation;
 @import CoreGraphics;
 
-#import "CYGMapViewController.h"
+#import "CYGMainViewController.h"
 #import "CYGPointCreationViewController.h"
 #import "CYGManager.h"
 #import "CYGPoint.h"
 #import "CYGUser.h"
+#import "CYGMapView.h"
 #import "CYGPointAnnotation.h"
 #import "MRProgress.h"
 #import "TSMessage.h"
 
-@interface CYGMapViewController () <MKMapViewDelegate>
+@interface CYGMainViewController () <MKMapViewDelegate>
 
 @property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  NSMutableArray *annotations;
-@property (strong, nonatomic)  MKMapView *mapView;
+@property (strong, nonatomic)  CYGMapView *mapView;
 @property (strong, nonatomic)  UIToolbar *toolbar;
-@property (strong, nonatomic)  UIButton *userLocationButton;
 @property (assign, nonatomic)  BOOL mapViewIsOpen;
 
 @end
 
-@implementation CYGMapViewController
+@implementation CYGMainViewController
 
 
 #pragma mark - MKMapViewDelegate
@@ -50,49 +50,29 @@
     return annotationView;
 }
 
-#pragma mark - Private
+#pragma mark - Actions, Gestures, Notification Handlers
 
-- (void)centerMapUserLocation
+- (void)pointAnnotationDidUpdate:(NSNotification*)aNotification
 {
-    CLLocation *location = [[CYGManager sharedManager] currentLocation] ?: self.mapView.userLocation.location;
-    if (location) {
-        [self.mapView setCenterCoordinate:location.coordinate animated:YES];
-    }
-}
-
-- (void)zoomMapViewToFitAnnotationsWithUserLocation:(BOOL)fitToUserLocation
-{
-    NSArray *annotations = self.mapView.annotations;
-    if (fitToUserLocation) {
-        annotations = [annotations arrayByAddingObject:self.mapView.userLocation];
-    }
-    [self.mapView showAnnotations:annotations animated:YES];
-}
-
-- (void)pointAnnotationUpdated:(NSNotification*)aNotification
-{
-    CYGPoint *newPoint = aNotification.object;
-    if (![newPoint.tags isEqualToArray:self.tags]) return;
-    
-    // Find presented annotation that's just been updated.
-    CYGPointAnnotation *oldAnnotation;
-    CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:newPoint];
-    for (CYGPointAnnotation *currentAnnotation in self.annotations) {
-        if ([newPoint.objectId isEqualToString:currentAnnotation.point.objectId]) {
-            oldAnnotation = currentAnnotation;
+    CYGPoint *updatedPoint = aNotification.object;
+    BOOL shouldBeOnMap = YES;
+    for (NSString *tag in self.tags) {
+        if (![updatedPoint.tags containsObject:tag]) {
+            shouldBeOnMap = NO;
             break;
         }
     }
-    
-    [self.mapView addAnnotation:newAnnotation];
-    [self.annotations addObject:newAnnotation];
-    if (oldAnnotation) {
-        [self.mapView removeAnnotation:oldAnnotation];
-        [self.annotations removeObject:oldAnnotation];
+    if (shouldBeOnMap) {
+        CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:updatedPoint];
+        CYGPointAnnotation *oldAnnotation = [self.mapView updateWithAnnotation:newAnnotation];
+        [self.annotations addObject:newAnnotation];
+        if (oldAnnotation) [self.annotations removeObject:oldAnnotation];
+
     }
-    [self zoomMapViewToFitAnnotationsWithUserLocation:YES];
+    
 }
 
+#pragma mark - Private
 
 - (void)refreshOnMapViewRegion
 {
@@ -164,7 +144,7 @@
 			[self.annotations addObjectsFromArray:newPointAnnotations];
 			[self.annotations removeObjectsInArray:annotationsToRemove];
             [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
-            [self zoomMapViewToFitAnnotationsWithUserLocation:YES];
+            [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
 		}
     }];
 }
@@ -192,25 +172,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.mapViewIsOpen = YES;
     
-    self.mapView = [MKMapView autoLayoutView];
+    self.mapView = [[CYGMapView alloc] init];
     [self.view addSubview:self.mapView];
     [self.mapView pinEdges:(CYGUIViewEdgePinTop | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
     [self.mapView pinEdges:(CYGUIViewEdgePinBottom) toSuperViewWithInset:kCYGMapViewControllerTabBarHeight];
-    self.mapView.opaque = YES;
-    self.mapView.showsUserLocation = YES;
     self.mapView.delegate = self;
-    self.mapView.tintColor = [UIColor cyg_greenColor];
-
-    self.userLocationButton = [UIButton autoLayoutView];
-    [self.mapView addSubview:self.userLocationButton];
-    [self.userLocationButton pinEdges:CYGUIViewEdgePinTop toSuperViewWithInset:25];
-    [self.userLocationButton pinEdges:CYGUIViewEdgePinLeft toSuperViewWithInset:10];
-    [self.userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
-    [self.userLocationButton setBackgroundImage:[UIImage imageNamed:@"user-location-icon"] forState:UIControlStateNormal];
-    [self.userLocationButton setAlpha:0.8];
 
     self.toolbar = [UIToolbar autoLayoutView];
     [self.view addSubview:self.toolbar];
@@ -226,7 +194,7 @@
     tagButton.tintColor = [UIColor cyg_blueColor];
     refreshButton.tintColor = [UIColor cyg_greenColor];
     listButton.tintColor = [UIColor whiteColor];
-    self.toolbar.items = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];;
+    self.toolbar.items = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];
     
     [[[[RACObserve([CYGManager sharedManager], currentLocation) ignore:nil] take:1] deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(CLLocation *location) {
@@ -269,7 +237,7 @@
         //TODO: get cached tags in userDefaults self.tags == ??
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(pointAnnotationUpdated:)
+                                                 selector:@selector(pointAnnotationDidUpdate:)
                                                      name:kCYGNotificationPointAnnotationUpdated object:nil];
          }
     return self;
