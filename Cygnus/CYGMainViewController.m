@@ -16,6 +16,7 @@
 #import "CYGPoint.h"
 #import "CYGUser.h"
 #import "CYGMapView.h"
+#import "CYGToolbar.h"
 #import "CYGPointAnnotation.h"
 #import "MRProgress.h"
 #import "TSMessage.h"
@@ -25,8 +26,7 @@
 @property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  NSMutableArray *annotations;
 @property (strong, nonatomic)  CYGMapView *mapView;
-@property (strong, nonatomic)  UIToolbar *toolbar;
-@property (assign, nonatomic)  BOOL mapViewIsOpen;
+@property (strong, nonatomic)  CYGToolbar *toolbar;
 
 @end
 
@@ -76,8 +76,8 @@
 
 - (void)refreshOnMapViewRegion
 {
-    [MRProgressOverlayView showOverlayAddedTo:self.navigationController.view animated:YES];
-    
+//    [MRProgressOverlayView showOverlayAddedTo:self.navigationController.view animated:YES];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     MKMapRect mRect = self.mapView.visibleMapRect;
     MKMapPoint eastMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect));
     MKMapPoint westMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect));
@@ -98,11 +98,13 @@
         NSLog(@"\n OBJECTS RETRIEVED: %lu \n ", (unsigned long)objects.count);
         
 		if (error) {
-            [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+//            [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching points." type:TSMessageNotificationTypeError];
 		} else {
             if (objects.count == 0) {
-                [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+//                [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 [TSMessage showNotificationWithTitle:@"No results." subtitle:@"Sorry! :(" type:TSMessageNotificationTypeError];
                 [self.mapView removeAnnotations:self.annotations];
                 [self.annotations removeAllObjects];
@@ -143,7 +145,8 @@
 			[self.mapView addAnnotations:newPointAnnotations];
 			[self.annotations addObjectsFromArray:newPointAnnotations];
 			[self.annotations removeObjectsInArray:annotationsToRemove];
-            [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+//            [MRProgressOverlayView dismissOverlayForView:self.navigationController.view animated:YES];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
 		}
     }];
@@ -154,11 +157,8 @@
 {
     CYGPointCreationViewController *creationViewController = [[CYGPointCreationViewController alloc] init];
     creationViewController.tags = [self.tags copy];
-    creationViewController.point.location = ({
-        CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude
-                                                                longitude:self.mapView.centerCoordinate.longitude];
-        [PFGeoPoint geoPointWithLocation:centerLocation];
-    });
+    creationViewController.point.location = [PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude
+                                                                   longitude:self.mapView.centerCoordinate.longitude];
     [self.navigationController pushViewController:creationViewController animated:YES];
 }
 
@@ -172,7 +172,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.mapViewIsOpen = YES;
     
     self.mapView = [[CYGMapView alloc] init];
     [self.view addSubview:self.mapView];
@@ -180,28 +179,16 @@
     [self.mapView pinEdges:(CYGUIViewEdgePinBottom) toSuperViewWithInset:kCYGMapViewControllerTabBarHeight];
     self.mapView.delegate = self;
 
-    self.toolbar = [UIToolbar autoLayoutView];
+    self.toolbar = [[CYGToolbar alloc] init];
     [self.view addSubview:self.toolbar];
     [self.toolbar pinEdges:(CYGUIViewEdgePinBottom | CYGUIViewEdgePinLeft | CYGUIViewEdgePinRight) toSuperViewWithInset:0];
     [self.toolbar constrainToHeight:kCYGMapViewControllerTabBarHeight];
-
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
-    UIBarButtonItem *tagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tag-icon"] style:UIBarButtonItemStylePlain target:nil action:nil];
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(addPoint)];
-    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshOnMapViewRegion)];
-    
-    tagButton.tintColor = [UIColor cyg_blueColor];
-    refreshButton.tintColor = [UIColor cyg_greenColor];
-    listButton.tintColor = [UIColor whiteColor];
-    self.toolbar.items = @[listButton, flexibleSpace, tagButton, flexibleSpace, addButton, flexibleSpace, refreshButton];
+    [self.toolbar.addButton addTarget:self action:@selector(addPoint) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar.refreshButton addTarget:self action:@selector(refreshOnMapViewRegion) forControlEvents:UIControlEventTouchUpInside];
     
     [[[[RACObserve([CYGManager sharedManager], currentLocation) ignore:nil] take:1] deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(CLLocation *location) {
-         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude),
-                                                                        kCYGRegionLargeBufferInMeters,
-                                                                        kCYGRegionLargeBufferInMeters);
-         [self.mapView setRegion:region animated:NO];
+         [self.mapView focusOnCoordinate:location.coordinate withBufferDistance:kCYGRegionLargeBufferInMeters];
          [self refreshOnMapViewRegion];
      }];
 }
@@ -217,6 +204,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self performBlockOnMainThread:^{
+            [self.toolbar animateButtonColors];
+        } afterDelay:0.3];
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -235,11 +229,10 @@
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
         _tags = @[@"test"];
         //TODO: get cached tags in userDefaults self.tags == ??
-
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(pointAnnotationDidUpdate:)
                                                      name:kCYGNotificationPointAnnotationUpdated object:nil];
-         }
+    }
     return self;
 }
 

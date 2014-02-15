@@ -31,11 +31,11 @@
     [self showAnnotations:annotations animated:YES];
 }
 
-- (void)focusOnCoordinate:(CLLocationCoordinate2D)coordinate
+- (void)focusOnCoordinate:(CLLocationCoordinate2D)coordinate withBufferDistance:(CLLocationDistance)buffer;
 {
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude),
-                                                                   kCYGRegionSmallBufferInMeters,
-                                                                   kCYGRegionSmallBufferInMeters);
+                                                                   buffer,
+                                                                   buffer);
     [self setRegion:region animated:NO];
 }
 

@@ -71,7 +71,6 @@
 
 - (void)applyStylesheet
 {
-    [[UIToolbar appearance] setBarTintColor:[UIColor colorWithWhite:0.10 alpha:1]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithWhite:0.18 alpha:1]];
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlack];
     [self.window setTintColor:[UIColor cyg_orangeColor]];

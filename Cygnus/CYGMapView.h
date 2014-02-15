@@ -16,7 +16,7 @@
 
 - (void)centerMapUserLocation;
 - (void)zoomToFitAnnotationsWithUserLocation:(BOOL)fitToUserLocation;
-- (void)focusOnCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)focusOnCoordinate:(CLLocationCoordinate2D)coordinate withBufferDistance:(CLLocationDistance)buffer;
 - (CYGPointAnnotation *)updateWithAnnotation:(CYGPointAnnotation *)annotation;
 
 @end
