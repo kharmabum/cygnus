@@ -258,18 +258,24 @@
 
 - (void)switchToMapViewWithCompletion:(void (^)(void))completion
 {
-    if (!self.activeViewController) return;
-    
-    [self.activeViewController willMoveToParentViewController:nil];
-    
-    
-    
-    //animations
-    
-    
-    
-    [self.activeViewController.view removeFromSuperview];
-    [self.activeViewController removeFromParentViewController];
+    if (self.activeViewController) {
+        [self.activeViewController willMoveToParentViewController:nil];
+        [self.partialMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
+        [self.fullMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"install")];
+        [UIView animateWithDuration:0.4f
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                             self.mapView.userLocationButton.alpha = 1.0;
+                         } completion:^(BOOL finished) {
+                             [self.activeViewController.view removeFromSuperview];
+                             [self.activeViewController removeFromParentViewController];
+                             self.activeViewController = nil;
+                             if (completion) completion();
+                         }];
+    }
+    else {
+        if (completion) completion();
+    }
 }
 
 - (void)switchToListView
@@ -314,7 +320,7 @@
         [self.annotations addObject:newAnnotation];
         [self.mapView focusOnCoordinate:newAnnotation.coordinate withBufferDistance:kCYGRegionSmallBufferInMeters];
         
-        completion();
+        if (completion) completion();
     }];
     
     // Require user be logged in (for Parse saveEventually:)
@@ -334,14 +340,30 @@
     [self switchToMapViewWithCompletion:^{
         
         [self addChildViewController:childViewController];
-        [self.view addSubview:childViewController.view];
+        [self.view insertSubview:childViewController.view belowSubview:self.mapView];
+        [childViewController.view pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight | FTUIViewEdgePinBottom) toSuperViewWithInset:0];
+        [childViewController.view constrainToWidthOfView:self.view];
+        [self.view layoutIfNeeded];
         
         //animations with completion
-        [childViewController didMoveToParentViewController:self];
-        self.activeViewController = childViewController;
+        [self.fullMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
+        self.partialMapConstraints = @[
+                                       [self.toolbar pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:childViewController.view],
+                                       [self.mapView constrainToHeight:140]
+                                       ];
+        
+        [UIView animateWithDuration:0.3f
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                             self.mapView.userLocationButton.alpha = 0;
+                         } completion:^(BOOL finished) {
+                             
+                             [childViewController didMoveToParentViewController:self];
+                             self.activeViewController = childViewController;
+                             if (completion) completion();
+                         }];
     }];
 }
-
 
 #pragma mark - UIViewController
 
@@ -357,13 +379,14 @@
     self.toolbar = [[CYGToolbar alloc] init];
     [self.view addSubview:self.toolbar];
     [self.toolbar.addButton addTarget:self action:@selector(switchToPointCreationView) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar.listButton addTarget:self action:@selector(switchToMapView) forControlEvents:UIControlEventTouchUpInside];
     [self.toolbar.refreshButton addTarget:self action:@selector(refreshOnMapViewRegion) forControlEvents:UIControlEventTouchUpInside];
     
     // Constraints
     
     [self.mapView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
     [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.toolbar];
-    
+
     [self.toolbar pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
     NSLayoutConstraint *toolBarBottomContraint = [[self.toolbar pinEdges:(FTUIViewEdgePinBottom) toSuperViewWithInset:0] firstObject];
     [self.toolbar constrainToHeight:kCYGMapViewControllerTabBarHeight];
@@ -377,6 +400,7 @@
          [self.mapView focusOnCoordinate:location.coordinate withBufferDistance:kCYGRegionLargeBufferInMeters];
          [self refreshOnMapViewRegion];
      }];
+    
 }
 
 - (void)viewDidUnload {

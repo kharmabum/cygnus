@@ -155,7 +155,7 @@
         _titleTextField.textColor = [UIColor lightGrayColor];
         
         _saveButton = [UIButton autoLayoutView];
-        [_contentView addSubview:_saveButton];
+        [self addSubview:_saveButton];
         [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
         _saveButton.backgroundColor = [UIColor cyg_orangeColor];
         

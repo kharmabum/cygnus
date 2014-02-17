@@ -16,7 +16,7 @@
 
 @interface CYGPointCreationViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic)  CYGPointCreationView *pointCreationView;
+@property (strong, nonatomic)  CYGPointCreationView *view;
 @property (weak, nonatomic)    UITextField *activeField;
 @property (strong, nonatomic)  UIAlertView *tagInputAlert;
 @property (assign, nonatomic)  BOOL keyboardIsVisible;
@@ -42,8 +42,8 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.pointCreationView.tagsTextField){
-        [self.pointCreationView.titleTextField becomeFirstResponder];
+    if (textField == self.view.tagsTextField){
+        [self.view.titleTextField becomeFirstResponder];
     }
     else {
         [self.view endEditing:YES];
@@ -88,11 +88,11 @@
 - (BOOL)fieldsAreValidWithAssignment
 {
     // TAGS
-    NSString *tagText = self.pointCreationView.tagsTextField.text;
+    NSString *tagText = self.view.tagsTextField.text;
     
     // Check not empty
     if (FTIsEmpty(tagText)) {
-        [self.pointCreationView.tagsTextField becomeFirstResponder];
+        [self.view.tagsTextField becomeFirstResponder];
         return NO;
     }
     else {
@@ -122,7 +122,7 @@
     }
     
     // TITLE
-    NSString *titleText = self.pointCreationView.titleTextField.text;
+    NSString *titleText = self.view.titleTextField.text;
     if (!FTIsEmpty(titleText)) {
         self.point.title = [titleText stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters];
     }
@@ -165,16 +165,16 @@
 
 #pragma mark - UIViewController
 
+- (void)loadView
+{
+     self.view = [[CYGPointCreationView alloc] init];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.pointCreationView = [[CYGPointCreationView alloc] init];
-    [self.view addSubview:self.pointCreationView];
-    self.pointCreationView.titleTextField.delegate = self;
-    self.pointCreationView.tagsTextField.delegate = self;
-    
-    [self.pointCreationView pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
-
+   
+    self.view.titleTextField.delegate = self;
+    self.view.tagsTextField.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
