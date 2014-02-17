@@ -2,83 +2,34 @@
 //  CYGPointCreationViewController.m
 //  Cygnus
 //
-//  Created by IO on 2/13/14.
+//  Created by IO on 2/17/14.
 //  Copyright (c) 2014 Fototropik. All rights reserved.
 //
 
-@import MapKit;
-@import CoreLocation;
-@import CoreGraphics;
 #import "CYGPointCreationViewController.h"
-#import "CYGPointCreationView.h"
 #import "CYGManager.h"
 #import "CYGPoint.h"
 #import "CYGUser.h"
 #import "CYGPointAnnotation.h"
+#import "CYGPointCreationView.h"
 #import <TSMessages/TSMessage.h>
 
-@interface CYGPointCreationViewController () <MKMapViewDelegate, UITextFieldDelegate, PFLogInViewControllerDelegate, UIAlertViewDelegate>
+@interface CYGPointCreationViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic)  CYGPointAnnotation *annotation;
 @property (strong, nonatomic)  CYGPointCreationView *pointCreationView;
 @property (weak, nonatomic)    UITextField *activeField;
-@property (assign, nonatomic)  BOOL keyboardIsVisible;
-@property (assign, nonatomic)  BOOL firstAppearance;
 @property (strong, nonatomic)  UIAlertView *tagInputAlert;
-@property (strong, nonatomic)  UIGestureRecognizer *tapGestureRecognizer;
-
+@property (assign, nonatomic)  BOOL keyboardIsVisible;
+@property (assign) CGFloat keyboardHeight;
 
 @end
 
-static CGSize _kbSize;
-
 @implementation CYGPointCreationViewController
-
-#pragma mark - PFLogInViewControllerDelegate
-
-// Sent to the delegate when a PFUser is logged in.
-- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
-    if (user.isNew) {
-        NSLog(@"User signed up and logged in with Twitter!");
-    } else {
-        NSLog(@"User logged in with Twitter!");
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-// Sent to the delegate when the log in attempt fails.
-- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error
-{
-    NSLog(@"didFailToLogin");
-    
-}
-
-// Sent to the delegate when the log in screen is dismissed.
-- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController
-{
-    NSLog(@"didCancelLogin");
-    
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (alertView == self.tagInputAlert) {
-        [self.pointCreationView.tagsTextField becomeFirstResponder];
-        self.tagInputAlert = nil;
-    }
-}
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-//    if (self.pointCreationView.mapViewIsOpen) {
-//        [self hideMap];
-//        return NO;
-//    }
     return YES;
 }
 
@@ -102,53 +53,6 @@ static CGSize _kbSize;
 }
 
 
-#pragma mark - MKMapViewDelegate
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-    if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
-    
-    MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:kCYGPointAnnotationIdentifier];
-    if (!annotationView) {
-        annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kCYGPointAnnotationIdentifier];
-        annotationView.pinColor = MKPinAnnotationColorGreen;
-        annotationView.canShowCallout = NO;
-        annotationView.draggable = YES;
-    }
-    return annotationView;
-}
-
-//- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
-//{
-//    MKAnnotationView *aV;
-//    for (aV in views) {
-//        if ([aV.annotation isKindOfClass:[MKUserLocation class]]) {
-//            continue;
-//        }
-//        MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
-//        if (!MKMapRectContainsPoint(self.pointCreationView.mapView.visibleMapRect, point)) {
-//            continue;
-//        }
-//        CGRect endFrame = aV.frame;
-//        aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);
-//        [UIView animateWithDuration:0.5 delay:0.04 * [views indexOfObject:aV] options:UIViewAnimationOptionCurveLinear animations:^{
-//            aV.frame = endFrame;
-//        } completion:^(BOOL finished) {
-//            if (finished) {
-//                [UIView animateWithDuration:0.05 animations:^{
-//                    aV.transform = CGAffineTransformMakeScale(1.0, 0.8);
-//                } completion:^(BOOL finished) {
-//                    if (finished) {
-//                        [UIView animateWithDuration:0.1 animations:^{
-//                            aV.transform = CGAffineTransformIdentity;
-//                        }];
-//                    }
-//                }];
-//            }
-//        }];
-//    }
-//}
-
 #pragma mark - Actions, Gestures, Notification Handlers
 
 
@@ -156,66 +60,30 @@ static CGSize _kbSize;
 {
     self.keyboardIsVisible = YES;
     NSDictionary* info = [aNotification userInfo];
-    _kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    self.pointCreationView.scrollView.scrollEnabled = NO;
+    self.keyboardHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
     [self scrollToActiveField];
 }
 
-
-// Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
     self.keyboardIsVisible = NO;
-    self.pointCreationView.scrollView.scrollEnabled = YES;
-    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, 0) animated:YES];
+//    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, 0) animated:YES];
     
-}
-//
-//- (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
-//{
-//    // End any editting occuring
-//    if (self.keyboardIsVisible) {
-//        [self.view endEditing:YES];
-//    }
-//    // Otherwise open map if applicable
-//    else if ([self.pointCreationView.mapView
-//             pointInside:[gestureRecognizer locationInView:self.pointCreationView.mapView]
-//             withEvent:nil]
-//             && ![self.pointCreationView.scrollViewContentView
-//                 pointInside:[gestureRecognizer locationInView:self.pointCreationView.scrollViewContentView]
-//                 withEvent:nil]) {
-//                 [self showMap];
-//    }
-//    // Otherwise begin editting
-//    else if (!self.pointCreationView.tagsTextField.text.length) {
-//        [self.pointCreationView.tagsTextField becomeFirstResponder];
-//    }
-//    else {
-//        [self.pointCreationView.titleTextField becomeFirstResponder];
-//
-//    }
-//}
-
-- (void)showMap
-{
-//    [self.pointCreationView openMapView];
-    [self.pointCreationView removeGestureRecognizer:self.tapGestureRecognizer];
-    UIBarButtonItem *close = [[UIBarButtonItem alloc] initWithTitle:@"Close"
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:self
-                                                             action:@selector(hideMap)];
-    [self.navigationItem setRightBarButtonItem:close animated:YES];
-}
-
-- (void)hideMap
-{
-//    [self.pointCreationView closeMapView];
-    [self.navigationItem setRightBarButtonItem:nil];
-    [self addTapGestureRecognizer];
 }
 
 
 #pragma mark - Private
+
+- (void)scrollToActiveField
+{
+    CGFloat kbHeight;
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+        kbHeight = (self.keyboardHeight) ?: 216.0;
+    else
+        kbHeight = (self.keyboardHeight) ?: 162;
+    
+//    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.contentView.yOrigin + self.activeField.yOrigin + self.activeField.height + kbHeight + 4) animated:YES];
+}
 
 - (BOOL)fieldsAreValidWithAssignment
 {
@@ -261,7 +129,7 @@ static CGSize _kbSize;
     
     // AUTHOR
     self.point.author = [CYGUser currentUser];
-
+    
     return YES;
 }
 
@@ -283,93 +151,38 @@ static CGSize _kbSize;
 }
 
 
-- (void)addTapGestureRecognizer
-{
-    if (!_tapGestureRecognizer) {
-        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-        _tapGestureRecognizer.cancelsTouchesInView = NO;
-    }
-    [self.pointCreationView addGestureRecognizer:self.tapGestureRecognizer];
-}
+#pragma mark - NSObject
 
-- (void)scrollToActiveField
+- (void)dealloc
 {
-    CGFloat kbHeight;
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
-        kbHeight = (_kbSize.height) ?: 216.0;
-    else
-        kbHeight = (_kbSize.width) ?: 162;
-    
-    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, - self.pointCreationView.scrollView.height + self.pointCreationView.contentView.yOrigin + self.activeField.yOrigin + self.activeField.height + kbHeight + 4) animated:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
-
 
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setNeedsStatusBarAppearanceUpdate];
-    self.firstAppearance = YES;
-    self.title = @"Add Point";
     
     self.pointCreationView = [[CYGPointCreationView alloc] init];
     [self.view addSubview:self.pointCreationView];
-    [self.pointCreationView pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
-//    self.pointCreationView.mapView.delegate = self;
     self.pointCreationView.titleTextField.delegate = self;
     self.pointCreationView.tagsTextField.delegate = self;
-
-//    UIButton *saveButton = [UIButton autoLayoutView];
-//    [self.view addSubview:saveButton];
-//    [saveButton pinEdges:(FTUIViewEdgePinBottom | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
-//    [saveButton constrainToWidthOfView:self.view];
-//    [saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
-//    [saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-//    [saveButton setTitle:@"Save →" forState:UIControlStateNormal];
-//    saveButton.backgroundColor = [UIColor cyg_orangeColor];
     
-    // Pre-initialize MapRegion to make less jumpy
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude),
-                                                                   kCYGRegionSmallBufferInMeters,
-                                                                   kCYGRegionSmallBufferInMeters);
-//    [self.pointCreationView.mapView setRegion:region animated:NO];
-//    self.pointCreationView.mapView.centerCoordinate = CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude);
+    [self.pointCreationView pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
 
-
-    [self addTapGestureRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO];
-    self.navigationController.navigationBar.translucent = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    // Require user be logged in (for saveEventually:)
-    if (![PFTwitterUtils isLinkedWithUser:[PFUser currentUser]]) {
-        PFLogInViewController *logInViewController = [[PFLogInViewController alloc] init];
-        logInViewController.delegate = self;
-        logInViewController.fields = PFLogInFieldsTwitter | PFLogInFieldsDismissButton;
-        logInViewController.logInView.logo = nil;
-        [self presentViewController:logInViewController animated:YES completion:NULL];
-    }
-    
-    
-    // Initialize MKMapRegion (wtf autolayout)
-    if (self.firstAppearance) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude),
-                                                                       kCYGRegionSmallBufferInMeters,
-                                                                       kCYGRegionSmallBufferInMeters);
-//        [self.pointCreationView.mapView setRegion:region animated:NO];
-//        self.pointCreationView.mapView.centerCoordinate = CLLocationCoordinate2DMake(self.point.location.latitude, self.point.location.longitude);
-        self.annotation = [[CYGPointAnnotation alloc] initWithPoint:self.point];
-        self.annotation.isNewlyCreatedPoint = YES;
-//        [self.pointCreationView.mapView addAnnotation:self.annotation];
-        self.firstAppearance = NO;
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -381,16 +194,10 @@ static CGSize _kbSize;
     [super viewDidDisappear:animated];
 }
 
-- (UIStatusBarStyle) preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        _point = [CYGPoint object];
-        
+    if (self) {        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWasShown:)
                                                      name:UIKeyboardDidShowNotification object:nil];
@@ -400,25 +207,6 @@ static CGSize _kbSize;
                                                      name:UIKeyboardWillHideNotification object:nil];
     }
     return self;
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self.pointCreationView setNeedsUpdateConstraints];
-    [self.pointCreationView setNeedsLayout];
-}
-
-
-#pragma mark - NSObject
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
 }
 
 

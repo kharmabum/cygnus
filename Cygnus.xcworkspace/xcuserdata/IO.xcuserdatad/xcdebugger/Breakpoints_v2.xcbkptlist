@@ -40,13 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cygnus/CYGPointCreationViewController.m"
-            timestampString = "414135857.585797"
+            timestampString = "414367071.8349"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "-hideMap"
-            landmarkType = "5">
+            startingLineNumber = "387"
+            endingLineNumber = "387">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -13,6 +13,8 @@
 
 @interface CYGPointCreationView : UIView
 
+@property (strong, nonatomic)  UIView *contentView;
+@property (strong, nonatomic)  UIScrollView *scrollView;
 @property (strong, nonatomic)  UILabel *titleLabel;
 @property (strong, nonatomic)  UILabel *tagsLabel;
 @property (strong, nonatomic)  UITextField *titleTextField;

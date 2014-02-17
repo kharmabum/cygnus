@@ -31,9 +31,8 @@
     [Parse setApplicationId:kCYGParseApplicationId clientKey:kCYGParseClientKey];
     [PFTwitterUtils initializeWithConsumerKey:kCYGTwitterKey consumerSecret:kCYGTwitterSecret];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    [navigationController pushViewController:[[CYGMainViewController alloc] init] animated:NO];
-    self.window.rootViewController = navigationController;
+  
+    self.window.rootViewController = [[CYGMainViewController alloc] init];
     [self.window makeKeyAndVisible];
     [TSMessage setDefaultViewController: self.window.rootViewController];
     

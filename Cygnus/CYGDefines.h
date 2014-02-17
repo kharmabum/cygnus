@@ -50,10 +50,8 @@ extern double const kCYGMaxQueryLimit;
 
 #pragma mark - UI
 
-extern NSInteger const kCYGPointCreationMapViewOffset;
 extern NSInteger const kCYGPointCreationSaveButtonHeight;
 extern NSInteger const kCYGMapViewControllerTabBarHeight;
-extern double const kCYGPointCreationViewParalaxScale;
 
 
 

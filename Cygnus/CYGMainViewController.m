@@ -11,6 +11,9 @@
 @import CoreGraphics;
 
 #import "CYGMainViewController.h"
+#import "CYGListViewController.h"
+#import "CYGTagsViewController.h"
+#import "CYGPointCreationViewController.h"
 #import "CYGManager.h"
 #import "CYGPoint.h"
 #import "CYGUser.h"
@@ -21,20 +24,42 @@
 #import "MRProgress.h"
 #import "TSMessage.h"
 
-@interface CYGMainViewController () <MKMapViewDelegate>
+@interface CYGMainViewController () <MKMapViewDelegate, UITextFieldDelegate, PFLogInViewControllerDelegate>
+
+@property (strong, nonatomic, readwrite) CYGListViewController *listViewController;
+@property (strong, nonatomic, readwrite) CYGTagsViewController *tagsViewController;
+@property (strong, nonatomic, readwrite) CYGPointCreationViewController *pointCreationViewController;
+@property (strong, nonatomic) UIViewController *activeViewController;
 
 @property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  NSMutableArray *annotations;
+@property (strong, nonatomic)  CYGPointAnnotation *focusedPointAnnotation;
 @property (strong, nonatomic)  CYGMapView *mapView;
 @property (strong, nonatomic)  CYGToolbar *toolbar;
+@property (assign, nonatomic)  BOOL keyboardIsVisible;
+@property (strong, nonatomic)  UITapGestureRecognizer *tapGestureRecognizer;
 
-@property (strong, nonatomic)  UIView *activeView;
-
+@property (strong, nonatomic)  NSArray *fullMapConstraints;
+@property (strong, nonatomic)  NSArray *partialMapConstraints;
 
 @end
 
 @implementation CYGMainViewController
 
+#pragma mark - PFLogInViewControllerDelegate
+
+// Sent to the delegate when a PFUser is logged in.
+- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    if (user.isNew) {
+        debug(@"User signed up and logged in with Twitter!");
+    }
+    else {
+        debug(@"User logged in with Twitter!");
+    }
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error { NSLog(@"didFailToLogin"); }
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController { NSLog(@"didCancelLogin"); }
 
 #pragma mark - MKMapViewDelegate
 
@@ -47,10 +72,40 @@
         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kCYGPointAnnotationIdentifier];
         annotationView.pinColor = MKPinAnnotationColorGreen;
         annotationView.canShowCallout = YES;
-        annotationView.draggable = YES;
-        annotationView.animatesDrop = YES;
+        annotationView.draggable = NO;
     }
     return annotationView;
+}
+
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+    MKAnnotationView *aV;
+    for (aV in views) {
+        if ([aV.annotation isKindOfClass:[MKUserLocation class]]) {
+            continue;
+        }
+        MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
+        if (!MKMapRectContainsPoint(self.mapView.visibleMapRect, point)) {
+            continue;
+        }
+        CGRect endFrame = aV.frame;
+        aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);
+        [UIView animateWithDuration:0.5 delay:0.04 * [views indexOfObject:aV] options:UIViewAnimationOptionCurveLinear animations:^{
+            aV.frame = endFrame;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                [UIView animateWithDuration:0.05 animations:^{
+                    aV.transform = CGAffineTransformMakeScale(1.0, 0.8);
+                } completion:^(BOOL finished) {
+                    if (finished) {
+                        [UIView animateWithDuration:0.1 animations:^{
+                            aV.transform = CGAffineTransformIdentity;
+                        }];
+                    }
+                }];
+            }
+        }];
+    }
 }
 
 #pragma mark - Actions, Gestures, Notification Handlers
@@ -75,7 +130,45 @@
     
 }
 
+
+- (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
+{
+    // End any editting.
+    if (self.keyboardIsVisible) {
+        [self.view endEditing:YES];
+    }
+    // Otherwise if map-tap, open map.
+    else if ([self.mapView pointInside:[gestureRecognizer locationInView:self.mapView] withEvent:nil]) {
+        [self openMapView];
+    }
+}
+
+
 #pragma mark - Private
+
+- (void)clearMap
+{
+    [self.mapView removeAnnotations:self.annotations];
+    [self.annotations removeAllObjects];
+}
+
+- (void)openMapView
+{
+    
+}
+
+- (void)closeMapView
+{
+    
+}
+
+- (void)addTapGestureRecognizer
+{
+    if (!_tapGestureRecognizer) {
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    }
+    [self.view addGestureRecognizer:self.tapGestureRecognizer];
+}
 
 - (void)refreshOnMapViewRegion
 {
@@ -106,8 +199,7 @@
             if (objects.count == 0) {
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 [TSMessage showNotificationWithTitle:@"No results." subtitle:@"Sorry! :(" type:TSMessageNotificationTypeError];
-                [self.mapView removeAnnotations:self.annotations];
-                [self.annotations removeAllObjects];
+                [self clearMap];
                 return;
             }
             
@@ -151,21 +243,105 @@
     }];
 }
 
-
-- (void)addPoint
-{
-//    CYGPointCreationViewController *creationViewController = [[CYGPointCreationViewController alloc] init];
-//    creationViewController.tags = [self.tags copy];
-//    creationViewController.point.location = [PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude
-//                                                                   longitude:self.mapView.centerCoordinate.longitude];
-//    [self.navigationController pushViewController:creationViewController animated:YES];
-}
-
 #pragma mark - NSOBject
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kCYGNotificationPointAnnotationUpdated object:nil];
 }
+
+#pragma mark - CYGMainViewController
+
+- (void)switchToMapView
+{
+    [self switchToMapViewWithCompletion:NULL];
+}
+
+- (void)switchToMapViewWithCompletion:(void (^)(void))completion
+{
+    if (!self.activeViewController) return;
+    
+    [self.activeViewController willMoveToParentViewController:nil];
+    
+    
+    
+    //animations
+    
+    
+    
+    [self.activeViewController.view removeFromSuperview];
+    [self.activeViewController removeFromParentViewController];
+}
+
+- (void)switchToListView
+{
+    [self switchToListViewWithCompletion:NULL];
+}
+
+- (void)switchToTagView
+{
+    [self switchToTagViewWithCompletion:NULL];
+}
+
+- (void)switchToPointCreationView
+{
+    [self switchToPointCreationViewWithCompletion:NULL];
+}
+
+- (void)switchToListViewWithCompletion:(void (^)(void))completion
+{
+    [self switchToChildViewController:self.pointCreationViewController withCompletion:completion];
+}
+
+- (void)switchToTagViewWithCompletion:(void (^)(void))completion
+{
+    [self switchToChildViewController:self.pointCreationViewController withCompletion:completion];
+}
+
+- (void)switchToPointCreationViewWithCompletion:(void (^)(void))completion
+{
+ 
+    [self switchToChildViewController:self.pointCreationViewController withCompletion:^{
+        
+        CYGPoint *newPoint = [[CYGPoint alloc] init];
+        newPoint.location = [PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+        CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:newPoint];
+        newAnnotation.isNewlyCreatedPoint = YES;
+        
+        self.pointCreationViewController.point = newPoint;
+        
+        [self clearMap];
+        [self.mapView addAnnotation:newAnnotation];
+        [self.annotations addObject:newAnnotation];
+        [self.mapView focusOnCoordinate:newAnnotation.coordinate withBufferDistance:kCYGRegionSmallBufferInMeters];
+        
+        completion();
+    }];
+    
+    // Require user be logged in (for Parse saveEventually:)
+    if (![PFTwitterUtils isLinkedWithUser:[PFUser currentUser]]) {
+        PFLogInViewController *logInViewController = [[PFLogInViewController alloc] init];
+        logInViewController.delegate = self;
+        logInViewController.fields = PFLogInFieldsTwitter; //| PFLogInFieldsDismissButton;
+        logInViewController.logInView.logo = nil;
+        [self presentViewController:logInViewController animated:YES completion:NULL];
+    }
+
+    
+}
+
+- (void)switchToChildViewController:(UIViewController *)childViewController withCompletion:(void (^)(void))completion
+{
+    [self switchToMapViewWithCompletion:^{
+        
+        [self addChildViewController:childViewController];
+        [self.view addSubview:childViewController.view];
+        
+        //animations with completion
+        [childViewController didMoveToParentViewController:self];
+        self.activeViewController = childViewController;
+    }];
+}
+
 
 #pragma mark - UIViewController
 
@@ -180,23 +356,22 @@
 
     self.toolbar = [[CYGToolbar alloc] init];
     [self.view addSubview:self.toolbar];
-    [self.toolbar.addButton addTarget:self action:@selector(addPoint) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar.addButton addTarget:self action:@selector(switchToPointCreationView) forControlEvents:UIControlEventTouchUpInside];
     [self.toolbar.refreshButton addTarget:self action:@selector(refreshOnMapViewRegion) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.activeView = [[CYGPointCreationView alloc] init];
-    [self.view addSubview:self.activeView];
-    [self.activeView pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
     
     // Constraints
     
     [self.mapView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
     [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.toolbar];
     
-    [self.toolbar pinEdges:(FTUIViewEdgePinBottom | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
+    [self.toolbar pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
+    NSLayoutConstraint *toolBarBottomContraint = [[self.toolbar pinEdges:(FTUIViewEdgePinBottom) toSuperViewWithInset:0] firstObject];
     [self.toolbar constrainToHeight:kCYGMapViewControllerTabBarHeight];
 
-    // Actions
-    
+    self.fullMapConstraints = @[toolBarBottomContraint];
+
+    // Additional setup
+    [[CYGManager sharedManager] findCurrentLocation];
     [[[[RACObserve([CYGManager sharedManager], currentLocation) ignore:nil] take:1] deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(CLLocation *location) {
          [self.mapView focusOnCoordinate:location.coordinate withBufferDistance:kCYGRegionLargeBufferInMeters];
@@ -210,7 +385,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -237,7 +411,9 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [[CYGManager sharedManager] findCurrentLocation];
+        _listViewController = [[CYGListViewController alloc] init];
+        _tagsViewController = [[CYGTagsViewController alloc] init];
+        _pointCreationViewController = [[CYGPointCreationViewController alloc] init];
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
         _tags = @[@"test"];
         //TODO: get cached tags in userDefaults self.tags == ??

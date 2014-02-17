@@ -18,9 +18,8 @@
 
 @interface CYGPointCreationView () <UIScrollViewDelegate>
 
-@property (strong, nonatomic)  UIView *contentView;
-@property (strong, nonatomic)  NSArray *animatingConstraintsOpenState;
-@property (strong, nonatomic)  NSArray *animatingConstraintsClosedState;
+@property (strong, nonatomic) NSArray *animatingConstraintsOpenState;
+@property (strong, nonatomic) NSArray *animatingConstraintsClosedState;
 
 @end
 
@@ -115,11 +114,14 @@
     self = [super init];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.opaque = YES;
-        self.backgroundColor = [UIColor whiteColor];
+        
+        _scrollView = [UIScrollView autoLayoutView];
+        [self addSubview:_scrollView];
+        _scrollView.scrollEnabled = YES;
+        _scrollView.alwaysBounceVertical = YES;
         
         _contentView = [UIView autoLayoutView];
-        [self addSubview:_contentView];
+        [_scrollView addSubview:_contentView];
         _contentView.backgroundColor = [UIColor whiteColor];
         _contentView.opaque = YES;
         
@@ -156,15 +158,21 @@
         
         _saveButton = [UIButton autoLayoutView];
         [_contentView addSubview:_saveButton];
-        [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
+        [_saveButton setTitle:@"Save →" forState:UIControlStateNormal];
         _saveButton.backgroundColor = [UIColor cyg_orangeColor];
+        _saveButton.alpha = 0;
         
         // Constraints
         
-        [_contentView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
-        [_contentView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:_saveButton];
+        [_scrollView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
+        [[_scrollView constrainToHeightOfView:self] setConstant:-kCYGPointCreationSaveButtonHeight];
+        [_scrollView constrainToWidthOfView:self];
+        
+        //NSLayoutConstraint *contentTopConstraint = [[_contentView pinEdges:FTUIViewEdgePinTop toSuperViewWithInset:180] firstObject];
+        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:self];
         [_contentView constrainToWidthOfView:self];
-
+        [_contentView constrainToHeightOfView:self];
+        
         [_tagsLabel pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinTop) toSuperViewWithInset:11];
         
         [_tagsTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
@@ -184,10 +192,15 @@
         [_saveButton constrainToWidthOfView:self];
         [_saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
 
+        _animatingConstraintsClosedState = @[contentTopConstraint];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(preferredContentSizeChanged)
                                                      name:UIContentSizeCategoryDidChangeNotification
                                                    object:nil];
+        
+
+
     }
     return self;
 }

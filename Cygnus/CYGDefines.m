@@ -46,10 +46,8 @@ double const kCYGMaxQueryLimit = 1000;
 
 #pragma mark - UI
 
-double const kCYGPointCreationViewParalaxScale = 1.8;
 NSInteger const kCYGPointCreationSaveButtonHeight = 66;
 NSInteger const kCYGMapViewControllerTabBarHeight  = 56;
-NSInteger const kCYGPointCreationMapViewOffset = 100;
 
 
 #pragma mark - Misc
