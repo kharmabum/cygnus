@@ -355,14 +355,16 @@
         
         [self addChildViewController:childViewController];
         [self.view insertSubview:childViewController.view belowSubview:self.mapView];
-        [childViewController.view pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight | FTUIViewEdgePinBottom) toSuperViewWithInset:0];
         [childViewController.view constrainToWidthOfView:self.view];
+        [childViewController.view pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.toolbar];
+        [childViewController.view pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
         [self.view layoutIfNeeded];
-        
+
+
         //animations with completion
         [self.fullMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
         self.partialMapConstraints = @[
-                                       [self.toolbar pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:childViewController.view],
+                                       [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:childViewController.view],
                                        [self.mapView constrainToHeight:140]
                                        ];
         
@@ -400,13 +402,12 @@
     // Constraints
     
     [self.mapView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
-    [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.toolbar];
+    NSLayoutConstraint *mapViewBottomConstraint = [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.toolbar];
 
-    [self.toolbar pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
-    NSLayoutConstraint *toolBarBottomContraint = [[self.toolbar pinEdges:(FTUIViewEdgePinBottom) toSuperViewWithInset:0] firstObject];
+    [self.toolbar pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight | FTUIViewEdgePinBottom) toSuperViewWithInset:0];
     [self.toolbar constrainToHeight:kCYGMapViewControllerTabBarHeight];
 
-    self.fullMapConstraints = @[toolBarBottomContraint];
+    self.fullMapConstraints = @[mapViewBottomConstraint];
 
     // Additional setup
     [[CYGManager sharedManager] findCurrentLocation];
