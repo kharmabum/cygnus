@@ -18,5 +18,8 @@
 
 - (void)animateButtonColors;
 
+- (void)startSpinningRefreshButton;
+- (void)stopSpinningRefreshButton;
+
 
 @end

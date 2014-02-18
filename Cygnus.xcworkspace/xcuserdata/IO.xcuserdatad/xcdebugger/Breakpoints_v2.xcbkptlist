@@ -54,13 +54,57 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cygnus/CYGMainViewController.m"
-            timestampString = "414371036.336601"
+            timestampString = "414374380.663731"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "311"
-            endingLineNumber = "311"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
             landmarkName = "-switchToPointCreationViewWithCompletion:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__65-[CYGMainViewController switchToPointCreationViewWithCompletion:]_block_invoke"
+                  moduleName = "Cygnus"
+                  urlString = "file:///Users/IO/Google%20Drive/Development/Projects/Fototropik/Cygnus/Cygnus/CYGMainViewController.m"
+                  timestampString = "414374380.728421"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "324"
+                  endingLineNumber = "324"
+                  offsetFromSymbolStart = "1210">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_236"
+                  moduleName = "Cygnus"
+                  urlString = "file:///Users/IO/Google%20Drive/Development/Projects/Fototropik/Cygnus/Cygnus/CYGMainViewController.m"
+                  timestampString = "414374380.728709"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "324"
+                  endingLineNumber = "324"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_237"
+                  moduleName = "Cygnus"
+                  urlString = "file:///Users/IO/Google%20Drive/Development/Projects/Fototropik/Cygnus/Cygnus/CYGMainViewController.m"
+                  timestampString = "414374380.728979"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "324"
+                  endingLineNumber = "324"
+                  offsetFromSymbolStart = "17">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

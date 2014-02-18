@@ -170,9 +170,20 @@
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
+- (void)animateNetworkActivity:(BOOL)shouldAnimate
+{
+    if (shouldAnimate) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [self.toolbar startSpinningRefreshButton];
+    } else {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [self.toolbar stopSpinningRefreshButton];
+    }
+}
+
 - (void)refreshOnMapViewRegion
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [self animateNetworkActivity:YES];
     MKMapRect mRect = self.mapView.visibleMapRect;
     MKMapPoint eastMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect));
     MKMapPoint westMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect));
@@ -193,11 +204,13 @@
         NSLog(@"\n OBJECTS RETRIEVED: %lu \n ", (unsigned long)objects.count);
         
 		if (error) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [self animateNetworkActivity:NO];
             [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching points." type:TSMessageNotificationTypeError];
-		} else {
+		}
+        else {
+            
             if (objects.count == 0) {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                [self animateNetworkActivity:NO];
                 [TSMessage showNotificationWithTitle:@"No results." subtitle:@"Sorry! :(" type:TSMessageNotificationTypeError];
                 [self clearMap];
                 return;
@@ -237,7 +250,7 @@
 			[self.mapView addAnnotations:newPointAnnotations];
 			[self.annotations addObjectsFromArray:newPointAnnotations];
 			[self.annotations removeObjectsInArray:annotationsToRemove];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [self animateNetworkActivity:NO];
             [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
 		}
     }];

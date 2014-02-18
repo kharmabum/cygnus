@@ -14,10 +14,47 @@
 @property (strong, nonatomic)  UIView *secondButtonContainerView;
 @property (strong, nonatomic)  UIView *thirdButtonContainerView;
 @property (strong, nonatomic)  UIView *fourthButtonContainerView;
+@property (assign, nonatomic)  BOOL animatingRefresh;
+@property (assign, nonatomic)  NSUInteger rotations;
+
 
 @end
 
 @implementation CYGToolbar
+
+- (void) spinRefreshButton
+{
+    // this spin completes 360 degrees every 2 seconds
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveLinear
+                     animations: ^{
+                         self.refreshButton.transform = CGAffineTransformRotate(self.refreshButton.transform, M_PI/2.0f);
+                     }
+                     completion: ^(BOOL finished) {
+                         if (finished) {
+                             self.rotations++;
+                             debug(@"%i", self.rotations);
+                             debug(@"%i", (self.rotations % 4));
+                             debug(@"%i", self.animatingRefresh);
+                             if (self.animatingRefresh || (self.rotations % 4)) {
+                                 [self spinRefreshButton];
+                             }
+                         }
+                     }];
+}
+
+- (void)startSpinningRefreshButton {
+    if (!self.animatingRefresh) {
+        self.animatingRefresh = YES;
+        self.rotations = 0;
+        [self spinRefreshButton];
+    }
+}
+
+- (void)stopSpinningRefreshButton {
+    self.animatingRefresh = NO;
+}
 
 - (void)animateButtonColors
 {
