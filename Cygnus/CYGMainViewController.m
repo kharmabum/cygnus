@@ -303,6 +303,7 @@
                              [self.mapView setScrollEnabled:YES];
                              [self.mapView setPitchEnabled:YES];
                              [self.mapView setRotateEnabled:YES];
+                             self.toolbar.refreshButton.enabled = YES;
                              
                              [self.activeViewController.view removeFromSuperview];
                              [self.activeViewController removeFromParentViewController];
@@ -352,6 +353,7 @@
         
         self.pointCreationViewController.point = newPoint;
         
+        self.toolbar.refreshButton.enabled = NO;
         [self clearMap];
         [self.mapView addAnnotation:newAnnotation];
         [self.annotations addObject:newAnnotation];
