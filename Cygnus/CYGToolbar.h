@@ -21,5 +21,4 @@
 - (void)startSpinningRefreshButton;
 - (void)stopSpinningRefreshButton;
 
-
 @end

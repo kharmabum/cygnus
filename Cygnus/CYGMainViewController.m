@@ -279,6 +279,7 @@
                          animations:^{
                              [self.view layoutIfNeeded];
                              self.mapView.userLocationButton.alpha = 1.0;
+                             self.toolbar.listButton.transform = CGAffineTransformRotate(self.toolbar.listButton.transform, M_PI/2.0f);
                          } completion:^(BOOL finished) {
                              [self.activeViewController.view removeFromSuperview];
                              [self.activeViewController removeFromParentViewController];
@@ -369,6 +370,7 @@
                          animations:^{
                              [self.view layoutIfNeeded];
                              self.mapView.userLocationButton.alpha = 0;
+                             self.toolbar.listButton.transform = CGAffineTransformRotate(self.toolbar.listButton.transform, M_PI/2.0f);
                          } completion:^(BOOL finished) {
                              
                              [childViewController didMoveToParentViewController:self];

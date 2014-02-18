@@ -15,7 +15,8 @@
 @property (strong, nonatomic)  UIView *thirdButtonContainerView;
 @property (strong, nonatomic)  UIView *fourthButtonContainerView;
 @property (assign, nonatomic)  BOOL animatingRefresh;
-@property (assign, nonatomic)  NSUInteger rotations;
+@property (assign, nonatomic)  NSUInteger refreshRotations;
+@property (assign, nonatomic)  NSUInteger listRotations;
 
 
 @end
@@ -24,8 +25,7 @@
 
 - (void) spinRefreshButton
 {
-    // this spin completes 360 degrees every 2 seconds
-    [UIView animateWithDuration: 0.5f
+    [UIView animateWithDuration: 0.4f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveLinear
                      animations: ^{
@@ -33,11 +33,8 @@
                      }
                      completion: ^(BOOL finished) {
                          if (finished) {
-                             self.rotations++;
-                             debug(@"%i", self.rotations);
-                             debug(@"%i", (self.rotations % 4));
-                             debug(@"%i", self.animatingRefresh);
-                             if (self.animatingRefresh || (self.rotations % 4)) {
+                             self.refreshRotations++;
+                             if (self.animatingRefresh || (self.refreshRotations % 4)) {
                                  [self spinRefreshButton];
                              }
                          }
@@ -47,7 +44,7 @@
 - (void)startSpinningRefreshButton {
     if (!self.animatingRefresh) {
         self.animatingRefresh = YES;
-        self.rotations = 0;
+        self.refreshRotations = 0;
         [self spinRefreshButton];
     }
 }
