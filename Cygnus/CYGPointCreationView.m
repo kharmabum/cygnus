@@ -76,7 +76,7 @@
         [_contentView addSubview:_tagsTextField];
         _tagsTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _tagsTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _tagsTextField.placeholder = @"(comma separated)";
+        _tagsTextField.placeholder = @"(separate with spaces)";
         _tagsTextField.returnKeyType = UIReturnKeyNext;
         _tagsTextField.textColor = [UIColor lightGrayColor];
         

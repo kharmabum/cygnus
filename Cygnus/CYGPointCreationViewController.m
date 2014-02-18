@@ -95,14 +95,17 @@
     }
     else {
         // Get tags from comma-delimitted list
-        NSArray *tags = [[[tagText componentsSeparatedByString:@","].rac_sequence
+        NSArray *tags = [[[tagText componentsSeparatedByString:@" "].rac_sequence
                           map:^id(NSString *tag) {
                               return [tag stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters];
-                          }] array];
+                          }]
+                          array];
         
+        // Make unique
+        NSOrderedSet *tagsSet = [NSOrderedSet orderedSetWithArray:tags];
         // Check all tags are alphanumeric strings
         BOOL allGood = YES;
-        for (NSString *tag in tags) {
+        for (NSString *tag in tagsSet) {
             if (![tag cyg_isAlphaNumeric]) {
                 allGood = NO;
                 break;
@@ -110,10 +113,10 @@
         }
         
         if (allGood) {
-            self.point.tags = tags;
+            self.point.tags = [tagsSet array];
         }
         else {
-            self.tagInputAlert = [[UIAlertView alloc] initWithTitle:@"Bad input" message:@"Tags must be comma-delimitted, alphanumeric strings." delegate:self cancelButtonTitle:@"Got it!" otherButtonTitles:nil];
+            self.tagInputAlert = [[UIAlertView alloc] initWithTitle:@"Bad input" message:@"Tags must be space-delimitted, alphanumeric strings." delegate:self cancelButtonTitle:@"Lol, OK." otherButtonTitles:nil];
             [self.tagInputAlert show];
             return NO;
         }
