@@ -58,7 +58,7 @@
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude),
                                                                    buffer,
                                                                    buffer);
-    [self setRegion:region animated:NO];
+    [self setRegion:region animated:YES];
 }
 
 
