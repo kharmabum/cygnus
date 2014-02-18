@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class CYGMainViewController;
+
 @interface CYGListViewController : UIViewController
+
+@property (strong, nonatomic)  CYGMainViewController *mainViewController;
 
 @end

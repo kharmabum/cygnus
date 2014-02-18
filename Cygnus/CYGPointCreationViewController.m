@@ -7,16 +7,18 @@
 //
 
 #import "CYGPointCreationViewController.h"
+#import "CYGMainViewController.h"
 #import "CYGManager.h"
 #import "CYGPoint.h"
 #import "CYGUser.h"
 #import "CYGPointAnnotation.h"
 #import "CYGPointCreationView.h"
 #import <TSMessages/TSMessage.h>
+#import "MRProgress.h"
 
 @interface CYGPointCreationViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic, readwrite)  CYGPointCreationView *view;
+@property (strong, nonatomic)  CYGPointCreationView *view;
 @property (weak, nonatomic)    UITextField *activeField;
 @property (strong, nonatomic)  UIAlertView *tagInputAlert;
 @property (assign, nonatomic)  BOOL keyboardIsVisible;
@@ -136,7 +138,7 @@
         }
         
         if (allGood) {
-            self.point.tags = [tagsSet array];
+            self.point.tags = self.tags = [tagsSet array];
         }
         else {
             self.tagInputAlert = [[UIAlertView alloc] initWithTitle:@"Bad input" message:@"Tags must be space-delimitted, alphanumeric strings." delegate:self cancelButtonTitle:@"Lol, OK." otherButtonTitles:nil];
@@ -160,14 +162,16 @@
 - (void)save
 {
     if ([self fieldsAreValidWithAssignment]) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [MRProgressOverlayView showOverlayAddedTo:self.mainViewController.view animated:YES];
         CYGPoint *newPoint = self.point;
         [self.point saveEventually:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
-                [TSMessage showNotificationWithTitle:@"Success" subtitle:@"Point saved." type:TSMessageNotificationTypeSuccess];
+                [MRProgressOverlayView dismissOverlayForView:self.mainViewController.view animated:YES];
+                [self.mainViewController switchToMapView];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationPointAnnotationUpdated object:newPoint];
             }
             else {
+                [MRProgressOverlayView dismissOverlayForView:self.mainViewController.view animated:YES];
                 [TSMessage showNotificationWithTitle:@"Error" subtitle:@"Failed to save pin." type:TSMessageNotificationTypeError];
             }
         }];
@@ -189,6 +193,13 @@
 
 #pragma mark - UIViewController
 
+- (void)didMoveToParentViewController:(UIViewController *)parent
+{
+    if (parent) {
+        self.view.titleTextField.text = @"";
+    }
+}
+
 - (void)loadView
 {
      self.view = [[CYGPointCreationView alloc] init];
@@ -200,6 +211,12 @@
     self.view.titleTextField.delegate = self;
     self.view.tagsTextField.delegate = self;
     [self.view.saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
+    
+    RAC(self.view.tagsTextField, text) = [[RACObserve(self, tags) deliverOn:RACScheduler.mainThreadScheduler]
+                                          map:^id(NSArray *tags) {
+                                              return [tags componentsJoinedByString:@" "];
+                                          }];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {

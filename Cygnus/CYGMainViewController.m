@@ -181,7 +181,7 @@
 - (void)openMapWhileEditing
 {
     [self.partialMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
-    self.partialMapConstraints = @[[self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.pointCreationViewController.view.saveButton]];
+    self.partialMapConstraints = @[[self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:((CYGPointCreationView *)self.pointCreationViewController.view).saveButton]];
     
     [UIView animateWithDuration:0.4f
                      animations:^{
@@ -405,6 +405,7 @@
         newAnnotation.isNewlyCreatedPoint = YES;
         
         self.pointCreationViewController.point = newPoint;
+        self.pointCreationViewController.tags = [self.tags copy];
         
         self.toolbar.refreshButton.enabled = NO;
         [self clearMap];
@@ -539,6 +540,10 @@
         _listViewController = [[CYGListViewController alloc] init];
         _tagsViewController = [[CYGTagsViewController alloc] init];
         _pointCreationViewController = [[CYGPointCreationViewController alloc] init];
+        _listViewController.mainViewController = self;
+        _tagsViewController.mainViewController = self;
+        _pointCreationViewController.mainViewController = self;
+        
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
         _tags = @[@"test"];
         //TODO: get cached tags in userDefaults self.tags == ??

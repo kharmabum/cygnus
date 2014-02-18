@@ -134,9 +134,6 @@
         
         [_titleLengthLabel pinEdges:FTUIViewEdgePinRight toSuperViewWithInset:11];
         [_titleLengthLabel pinAttribute:NSLayoutAttributeCenterY toSameAttributeOfItem:_titleTextField];
-        
-        
-        
 
         [_saveButton pinEdges:(FTUIViewEdgePinBottom | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
         [_saveButton constrainToMinimumSize:CGSizeMake(0, kCYGPointCreationSaveButtonHeight)];
