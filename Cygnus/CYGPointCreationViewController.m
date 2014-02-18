@@ -16,7 +16,7 @@
 
 @interface CYGPointCreationViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic)  CYGPointCreationView *view;
+@property (strong, nonatomic, readwrite)  CYGPointCreationView *view;
 @property (weak, nonatomic)    UITextField *activeField;
 @property (strong, nonatomic)  UIAlertView *tagInputAlert;
 @property (assign, nonatomic)  BOOL keyboardIsVisible;

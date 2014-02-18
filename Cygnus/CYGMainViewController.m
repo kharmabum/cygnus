@@ -33,11 +33,9 @@
 
 @property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  NSMutableArray *annotations;
-@property (strong, nonatomic)  CYGPointAnnotation *focusedPointAnnotation;
 @property (strong, nonatomic)  CYGMapView *mapView;
 @property (strong, nonatomic)  CYGToolbar *toolbar;
 @property (assign, nonatomic)  BOOL keyboardIsVisible;
-@property (strong, nonatomic)  UITapGestureRecognizer *tapGestureRecognizer;
 
 @property (strong, nonatomic)  NSArray *fullMapConstraints;
 @property (strong, nonatomic)  NSArray *partialMapConstraints;
@@ -130,16 +128,18 @@
             [self switchToMapView];
         }
         else {
-            
+            [self openMapWhileEditing];
         }
         
     }
 }
 
-
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     self.keyboardIsVisible = YES;
+    if ([self mapIsOpenForEditing]) {
+        [self closeMapWhileEditing];
+    }
 }
 
 - (void)keyboardWasHidden:(NSNotification*)aNotification
@@ -172,6 +172,50 @@
 
 
 #pragma mark - Private
+
+- (BOOL)mapIsOpenForEditing
+{
+    return (self.activeViewController == self.pointCreationViewController && self.mapView.userLocationButton.alpha);
+}
+
+- (void)openMapWhileEditing
+{
+    [self.partialMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
+    self.partialMapConstraints = @[[self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.pointCreationViewController.view.saveButton]];
+    
+    [UIView animateWithDuration:0.4f
+                     animations:^{
+                         [self.view layoutIfNeeded];
+                         self.mapView.userLocationButton.alpha = 1.0;
+                     } completion:^(BOOL finished) {
+                         [self.mapView setZoomEnabled:YES];
+                         [self.mapView setScrollEnabled:YES];
+                         [self.mapView setPitchEnabled:YES];
+                         [self.mapView setRotateEnabled:YES];
+                     }];
+}
+
+- (void)closeMapWhileEditing
+{
+    [self.partialMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
+    self.partialMapConstraints = @[
+                                   [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.activeViewController.view],
+                                   [self.mapView constrainToHeight:150]
+                                   ];
+    
+    [self.mapView setZoomEnabled:NO];
+    [self.mapView setScrollEnabled:NO];
+    [self.mapView setPitchEnabled:NO];
+    [self.mapView setRotateEnabled:NO];
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         [self.view layoutIfNeeded];
+                         self.mapView.userLocationButton.alpha = 0;
+                     } completion:^(BOOL finished) {
+                         CLLocationCoordinate2D coordinate = ((CYGPointAnnotation *)[self.annotations firstObject]).coordinate;
+                         [self.mapView focusOnCoordinate:coordinate withBufferDistance:kCYGRegionSmallBufferInMeters];
+                     }];
+}
 
 - (void)clearMap
 {

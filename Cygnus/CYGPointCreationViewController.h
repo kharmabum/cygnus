@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class CYGPoint, CYGPointAnnotation;
+@class CYGPoint, CYGPointAnnotation, CYGPointCreationView;
 
 @interface CYGPointCreationViewController : UIViewController
 
+@property (strong, nonatomic, readonly)  CYGPointCreationView *view;
 @property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  CYGPoint *point;
 
