@@ -299,8 +299,10 @@
                              self.mapView.userLocationButton.alpha = 1.0;
                              self.toolbar.listButton.transform = CGAffineTransformRotate(self.toolbar.listButton.transform, M_PI/2.0f);
                          } completion:^(BOOL finished) {
-                             [self.mapView setZoomEnabled:NO];
-                             [self.mapView setScrollEnabled:NO];
+                             [self.mapView setZoomEnabled:YES];
+                             [self.mapView setScrollEnabled:YES];
+                             [self.mapView setPitchEnabled:YES];
+                             [self.mapView setRotateEnabled:YES];
                              
                              [self.activeViewController.view removeFromSuperview];
                              [self.activeViewController removeFromParentViewController];
@@ -392,6 +394,8 @@
         
         [self.mapView setZoomEnabled:NO];
         [self.mapView setScrollEnabled:NO];
+        [self.mapView setPitchEnabled:NO];
+        [self.mapView setRotateEnabled:NO];
         [UIView animateWithDuration:0.3f
                          animations:^{
                              [self.view layoutIfNeeded];
