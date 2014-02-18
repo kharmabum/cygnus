@@ -54,11 +54,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cygnus/CYGMainViewController.m"
-            timestampString = "414382942.130119"
+            timestampString = "414383498.96509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "361"
-            endingLineNumber = "361"
+            startingLineNumber = "362"
+            endingLineNumber = "362"
             landmarkName = "-switchToPointCreationViewWithCompletion:"
             landmarkType = "5">
          </BreakpointContent>

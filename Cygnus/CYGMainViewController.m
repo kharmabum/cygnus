@@ -155,20 +155,7 @@
 - (void)listButtonPressed
 {
     if (self.activeViewController) {
-        __block BOOL switchFromPointCreationView = NO;
-        if (self.activeViewController == self.pointCreationViewController) {
-            [self clearMap];
-            switchFromPointCreationView = YES;
-        }
-        
-        [self switchToMapViewWithCompletion:^{
-            if (switchFromPointCreationView) {
-                [self refreshOnMapViewRegion];
-            }
-            else {
-                [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
-            }
-        }];
+        [self switchToMapView];
     } else {
         [self switchToListViewWithCompletion:^{
             [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
@@ -191,7 +178,8 @@
             }
             else {
                 [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
-            }        }];
+            }
+        }];
     }
 }
 
@@ -302,7 +290,20 @@
 
 - (void)switchToMapView
 {
-    [self switchToMapViewWithCompletion:NULL];
+    __block BOOL switchFromPointCreationView = NO;
+    if (self.activeViewController == self.pointCreationViewController) {
+        [self clearMap];
+        switchFromPointCreationView = YES;
+    }
+    
+    [self switchToMapViewWithCompletion:^{
+        if (switchFromPointCreationView) {
+            [self refreshOnMapViewRegion];
+        }
+        else {
+            [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
+        }
+    }];
 }
 
 - (void)switchToMapViewWithCompletion:(void (^)(void))completion
