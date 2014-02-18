@@ -28,66 +28,10 @@
 
 #pragma mark - Private
 
-//- (void)openMapView
-//{
-//    self.mapViewIsOpen = YES;
-//    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
-//    if (!_animatingConstraintsOpenState) {
-//        NSLayoutConstraint *contentTopConstraint = [_contentView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:self];
-//        [contentTopConstraint setConstant:-kCYGPointCreationsaveButtonHeight];
-//        _animatingConstraintsOpenState = @[contentTopConstraint];;
-//    }
-//    else {
-//        [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
-//    }
-//    
-//    [UIView animateWithDuration:0.3f
-//                     animations:^{
-//                         [self layoutIfNeeded];
-//                     } completion:^(BOOL finished) {
-//                         self.scrollView.alpha = 0;
-//                         [UIView animateWithDuration:0.5f animations:^{
-//                             self.userLocationButton.alpha = 0.8;
-//                         }];
-//                     }];
-//}
-//
-//- (void)closeMapView
-//{
-//    self.mapViewIsOpen = NO;
-//    for (NSObject<MKAnnotation> *annotation in [self.mapView selectedAnnotations])
-//        [self.mapView deselectAnnotation:(id <MKAnnotation>)annotation animated:NO];
-//    
-//    [self.animatingConstraintsOpenState makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
-//    [self.animatingConstraintsClosedState makeObjectsPerformSelector:NSSelectorFromString(@"install")];
-//
-//    [UIView animateWithDuration:0.3f
-//                     animations:^{
-//                         self.userLocationButton.alpha = 0;
-//                         [self layoutIfNeeded];
-//                     } completion:^(BOOL finished){
-//                         self.scrollView.alpha = 1;
-//                         CLLocationCoordinate2D coordinate;
-//                         for (id <MKAnnotation>annotation in self.mapView.annotations) {
-//                             if (![annotation isMemberOfClass:[MKUserLocation class]]) {
-//                                 coordinate = [annotation coordinate];
-//                                 break;
-//                             }
-//                         }
-//                         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude),
-//                                                                                        kCYGRegionSmallBufferInMeters,
-//                                                                                        kCYGRegionSmallBufferInMeters);
-//                         [self.mapView setRegion:region animated:NO];
-//                     }];
-//
-//    
-//}
-
-
 - (void)setDynamicText
 {
     self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    self.tagsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.tagsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     self.titleTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     self.tagsTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
@@ -158,6 +102,8 @@
         [self addSubview:_saveButton];
         [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
         _saveButton.backgroundColor = [UIColor cyg_orangeColor];
+        
+        [self setDynamicText];
         
         // Constraints
         

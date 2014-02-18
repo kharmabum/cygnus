@@ -7,12 +7,21 @@
 //
 
 #import "CYGListViewController.h"
+#import "CYGListView.h"
 
 @interface CYGListViewController ()
+
+@property (strong, nonatomic)  CYGListView *view;
+
 
 @end
 
 @implementation CYGListViewController
+
+- (void)loadView
+{
+    self.view = [[CYGListView alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,6 +54,5 @@
     }
     return self;
 }
-
 
 @end

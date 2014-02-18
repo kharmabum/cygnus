@@ -7,14 +7,22 @@
 //
 
 #import "CYGTagsViewController.h"
+#import "CYGTagsView.h"
 
 @interface CYGTagsViewController ()
+
+@property (strong, nonatomic)  CYGTagsView *view;
 
 @end
 
 @implementation CYGTagsViewController
 
 #pragma mark - UIViewController
+
+- (void)loadView
+{
+    self.view = [[CYGTagsView alloc] init];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -37,7 +45,6 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 }
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

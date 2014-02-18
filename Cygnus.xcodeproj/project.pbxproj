@@ -37,6 +37,10 @@
 		C997D86318B2A6F000E47C20 /* CYGPointCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C997D86118B2A6F000E47C20 /* CYGPointCreationViewController.m */; };
 		C997D86618B2A82000E47C20 /* CYGTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C997D86518B2A82000E47C20 /* CYGTagsViewController.m */; };
 		C997D86718B2A82000E47C20 /* CYGTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C997D86518B2A82000E47C20 /* CYGTagsViewController.m */; };
+		C997D86A18B2EB1300E47C20 /* CYGTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C997D86918B2EB1300E47C20 /* CYGTagsView.m */; };
+		C997D86B18B2EB1300E47C20 /* CYGTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C997D86918B2EB1300E47C20 /* CYGTagsView.m */; };
+		C997D86E18B2EB1D00E47C20 /* CYGListView.m in Sources */ = {isa = PBXBuildFile; fileRef = C997D86D18B2EB1D00E47C20 /* CYGListView.m */; };
+		C997D86F18B2EB1D00E47C20 /* CYGListView.m in Sources */ = {isa = PBXBuildFile; fileRef = C997D86D18B2EB1D00E47C20 /* CYGListView.m */; };
 		C9A01C7A18AF6EBD005324CE /* CYGMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A01C7918AF6EBD005324CE /* CYGMapView.m */; };
 		C9A01C7B18AF6EBD005324CE /* CYGMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A01C7918AF6EBD005324CE /* CYGMapView.m */; };
 		C9A01C7E18AF7684005324CE /* CYGToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A01C7D18AF7684005324CE /* CYGToolbar.m */; };
@@ -102,6 +106,10 @@
 		C997D86118B2A6F000E47C20 /* CYGPointCreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGPointCreationViewController.m; sourceTree = "<group>"; };
 		C997D86418B2A82000E47C20 /* CYGTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGTagsViewController.h; sourceTree = "<group>"; };
 		C997D86518B2A82000E47C20 /* CYGTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGTagsViewController.m; sourceTree = "<group>"; };
+		C997D86818B2EB1300E47C20 /* CYGTagsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGTagsView.h; sourceTree = "<group>"; };
+		C997D86918B2EB1300E47C20 /* CYGTagsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGTagsView.m; sourceTree = "<group>"; };
+		C997D86C18B2EB1D00E47C20 /* CYGListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGListView.h; sourceTree = "<group>"; };
+		C997D86D18B2EB1D00E47C20 /* CYGListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGListView.m; sourceTree = "<group>"; };
 		C9A01C7818AF6EBD005324CE /* CYGMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGMapView.h; sourceTree = "<group>"; };
 		C9A01C7918AF6EBD005324CE /* CYGMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGMapView.m; sourceTree = "<group>"; };
 		C9A01C7C18AF7684005324CE /* CYGToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGToolbar.h; sourceTree = "<group>"; };
@@ -190,12 +198,16 @@
 		C916A29C18A0E89300FB480F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C9C52D5218ADA0CD0089B3B1 /* CYGPointCreationView.h */,
-				C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */,
 				C9A01C7818AF6EBD005324CE /* CYGMapView.h */,
 				C9A01C7918AF6EBD005324CE /* CYGMapView.m */,
 				C9A01C7C18AF7684005324CE /* CYGToolbar.h */,
 				C9A01C7D18AF7684005324CE /* CYGToolbar.m */,
+				C997D86C18B2EB1D00E47C20 /* CYGListView.h */,
+				C997D86D18B2EB1D00E47C20 /* CYGListView.m */,
+				C997D86818B2EB1300E47C20 /* CYGTagsView.h */,
+				C997D86918B2EB1300E47C20 /* CYGTagsView.m */,
+				C9C52D5218ADA0CD0089B3B1 /* CYGPointCreationView.h */,
+				C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -439,6 +451,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C997D86A18B2EB1300E47C20 /* CYGTagsView.m in Sources */,
 				C9CC593218AC4A16006FA0DD /* CYGPointAnnotation.m in Sources */,
 				C9A01C7A18AF6EBD005324CE /* CYGMapView.m in Sources */,
 				C997D85A18B2A6DB00E47C20 /* CYGListViewController.m in Sources */,
@@ -450,6 +463,7 @@
 				C9C52D5418ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */,
 				C997D86218B2A6F000E47C20 /* CYGPointCreationViewController.m in Sources */,
 				C9C52D5E18ADF2630089B3B1 /* NSString+CYGAdditions.m in Sources */,
+				C997D86E18B2EB1D00E47C20 /* CYGListView.m in Sources */,
 				C928812E18A0D9D8006A4ACB /* main.m in Sources */,
 				C9CC592A18ABF5F8006FA0DD /* CYGManager.m in Sources */,
 				C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */,
@@ -467,8 +481,10 @@
 				C997D85B18B2A6DB00E47C20 /* CYGListViewController.m in Sources */,
 				C9CC592B18ABF5F8006FA0DD /* CYGManager.m in Sources */,
 				C997D86718B2A82000E47C20 /* CYGTagsViewController.m in Sources */,
+				C997D86B18B2EB1300E47C20 /* CYGTagsView.m in Sources */,
 				C9C52D5F18ADF2630089B3B1 /* NSString+CYGAdditions.m in Sources */,
 				C9A01C7F18AF7684005324CE /* CYGToolbar.m in Sources */,
+				C997D86F18B2EB1D00E47C20 /* CYGListView.m in Sources */,
 				C9D3A53618A0E5CB00FD8193 /* CYGDefines.m in Sources */,
 				C9C52D5518ADA0CD0089B3B1 /* CYGPointCreationView.m in Sources */,
 				C9A01C7B18AF6EBD005324CE /* CYGMapView.m in Sources */,

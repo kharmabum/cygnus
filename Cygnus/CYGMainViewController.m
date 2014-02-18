@@ -110,6 +110,28 @@
 
 #pragma mark - Actions, Gestures, Notification Handlers
 
+- (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (self.keyboardIsVisible) {
+        [self.view endEditing:YES];
+    }
+    else if ([self.mapView pointInside:[gestureRecognizer locationInView:self.mapView] withEvent:nil]) {
+        [self switchToMapView];
+    }
+}
+
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    self.keyboardIsVisible = YES;
+}
+
+- (void)keyboardWasHidden:(NSNotification*)aNotification
+{
+    self.keyboardIsVisible = NO;
+}
+
+
 - (void)pointAnnotationDidUpdate:(NSNotification*)aNotification
 {
     CYGPoint *updatedPoint = aNotification.object;
@@ -130,16 +152,53 @@
     
 }
 
-
-- (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
+- (void)listButtonPressed
 {
-    // End any editting.
-    if (self.keyboardIsVisible) {
-        [self.view endEditing:YES];
+    if (self.activeViewController) {
+        __block BOOL switchFromPointCreationView = NO;
+        if (self.activeViewController == self.pointCreationViewController) {
+            [self clearMap];
+            switchFromPointCreationView = YES;
+        }
+        
+        [self switchToMapViewWithCompletion:^{
+            if (switchFromPointCreationView) {
+                [self refreshOnMapViewRegion];
+            }
+            else {
+                [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
+            }
+        }];
+    } else {
+        [self switchToListViewWithCompletion:^{
+            [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
+        }];
     }
-    // Otherwise if map-tap, open map.
-    else if ([self.mapView pointInside:[gestureRecognizer locationInView:self.mapView] withEvent:nil]) {
-        [self openMapView];
+}
+
+- (void)tagButtonPressed
+{
+    if (self.activeViewController != self.tagsViewController) {
+        __block BOOL switchFromPointCreationView = NO;
+        if (self.activeViewController == self.pointCreationViewController) {
+            [self clearMap];
+            switchFromPointCreationView = YES;
+        }
+        
+        [self switchToTagViewWithCompletion:^{
+            if (switchFromPointCreationView) {
+                [self refreshOnMapViewRegion];
+            }
+            else {
+                [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
+            }        }];
+    }
+}
+
+- (void)addButtonPressed
+{
+    if (self.activeViewController != self.pointCreationViewController) {
+        [self switchToPointCreationView];
     }
 }
 
@@ -150,24 +209,6 @@
 {
     [self.mapView removeAnnotations:self.annotations];
     [self.annotations removeAllObjects];
-}
-
-- (void)openMapView
-{
-    
-}
-
-- (void)closeMapView
-{
-    
-}
-
-- (void)addTapGestureRecognizer
-{
-    if (!_tapGestureRecognizer) {
-        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    }
-    [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
 - (void)animateNetworkActivity:(BOOL)shouldAnimate
@@ -256,11 +297,6 @@
     }];
 }
 
-#pragma mark - NSOBject
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kCYGNotificationPointAnnotationUpdated object:nil];
-}
 
 #pragma mark - CYGMainViewController
 
@@ -309,12 +345,12 @@
 
 - (void)switchToListViewWithCompletion:(void (^)(void))completion
 {
-    [self switchToChildViewController:self.pointCreationViewController withCompletion:completion];
+    [self switchToChildViewController:self.listViewController withCompletion:completion];
 }
 
 - (void)switchToTagViewWithCompletion:(void (^)(void))completion
 {
-    [self switchToChildViewController:self.pointCreationViewController withCompletion:completion];
+    [self switchToChildViewController:self.tagsViewController withCompletion:completion];
 }
 
 - (void)switchToPointCreationViewWithCompletion:(void (^)(void))completion
@@ -365,7 +401,7 @@
         [self.fullMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
         self.partialMapConstraints = @[
                                        [self.mapView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:childViewController.view],
-                                       [self.mapView constrainToHeight:140]
+                                       [self.mapView constrainToHeight:150]
                                        ];
         
         [UIView animateWithDuration:0.3f
@@ -386,7 +422,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     // View
     
     self.mapView = [[CYGMapView alloc] init];
@@ -395,9 +431,14 @@
 
     self.toolbar = [[CYGToolbar alloc] init];
     [self.view addSubview:self.toolbar];
-    [self.toolbar.addButton addTarget:self action:@selector(switchToPointCreationView) forControlEvents:UIControlEventTouchUpInside];
-    [self.toolbar.listButton addTarget:self action:@selector(switchToMapView) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar.listButton addTarget:self action:@selector(listButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar.tagButton addTarget:self action:@selector(tagButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.toolbar.addButton addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.toolbar.refreshButton addTarget:self action:@selector(refreshOnMapViewRegion) forControlEvents:UIControlEventTouchUpInside];
+    
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [self.view addGestureRecognizer:tapGestureRecognizer];
+    
     
     // Constraints
     
@@ -460,8 +501,32 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(pointAnnotationDidUpdate:)
                                                      name:kCYGNotificationPointAnnotationUpdated object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWasShown:)
+                                                     name:UIKeyboardDidShowNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWasHidden:)
+                                                     name:UIKeyboardDidHideNotification object:nil];
     }
     return self;
 }
+
+#pragma mark - NSObject
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kCYGNotificationPointAnnotationUpdated object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidHideNotification
+                                                  object:nil];
+}
+
 
 @end

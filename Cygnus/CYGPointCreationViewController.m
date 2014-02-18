@@ -47,7 +47,6 @@
     }
     else {
         [self.view endEditing:YES];
-        [self save];
     }
     return YES;
 }
@@ -208,6 +207,5 @@
     }
     return self;
 }
-
 
 @end
