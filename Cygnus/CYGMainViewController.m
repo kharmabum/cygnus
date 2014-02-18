@@ -292,12 +292,16 @@
         [self.activeViewController willMoveToParentViewController:nil];
         [self.partialMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
         [self.fullMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"install")];
+        
         [UIView animateWithDuration:0.4f
                          animations:^{
                              [self.view layoutIfNeeded];
                              self.mapView.userLocationButton.alpha = 1.0;
                              self.toolbar.listButton.transform = CGAffineTransformRotate(self.toolbar.listButton.transform, M_PI/2.0f);
                          } completion:^(BOOL finished) {
+                             [self.mapView setZoomEnabled:NO];
+                             [self.mapView setScrollEnabled:NO];
+                             
                              [self.activeViewController.view removeFromSuperview];
                              [self.activeViewController removeFromParentViewController];
                              self.activeViewController = nil;
@@ -385,6 +389,9 @@
                                        [self.mapView constrainToHeight:150]
                                        ];
         
+        
+        [self.mapView setZoomEnabled:NO];
+        [self.mapView setScrollEnabled:NO];
         [UIView animateWithDuration:0.3f
                          animations:^{
                              [self.view layoutIfNeeded];
