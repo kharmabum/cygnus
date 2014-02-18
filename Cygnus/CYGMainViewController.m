@@ -203,19 +203,13 @@
 - (void)refreshOnMapViewRegion
 {
     [self animateNetworkActivity:YES];
-    MKMapRect mRect = self.mapView.visibleMapRect;
-    MKMapPoint eastMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect));
-    MKMapPoint westMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect));
-    CLLocationDistance filterDistanceKm = MKMetersBetweenMapPoints(eastMapPoint, westMapPoint)/1000;
-    filterDistanceKm = MAX(kCYGMinFilterDistanceInKilometers, filterDistanceKm);
-    filterDistanceKm = MIN(kCYGMaxFilterDistanceInKilometers, filterDistanceKm);
     
     PFQuery *query = [CYGPoint query];
     [query setLimit:kCYGMaxQueryLimit];
     [query whereKey:kCYGPointLocationKey
        nearGeoPoint:[PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude
                                            longitude:self.mapView.centerCoordinate.longitude]
-   withinKilometers:filterDistanceKm];
+   withinKilometers:kCYGMaxFilterDistanceInKilometers];
     [query whereKey:kCYGPointTagsKey containsAllObjectsInArray:self.tags];
     [query includeKey:kCYGPointAuthorKey];
 
