@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic)  UILabel *titleLabel;
 @property (strong, nonatomic)  UILabel *tagsLabel;
+@property (strong, nonatomic)  UILabel *titleLengthLabel;
 @property (strong, nonatomic)  UITextField *titleTextField;
 @property (strong, nonatomic)  UITextField  *tagsTextField;
 @property (strong, nonatomic)  UIButton *saveButton;

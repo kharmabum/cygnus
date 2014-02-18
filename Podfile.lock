@@ -36,7 +36,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.4.0)
   - FormatterKit/UnitOfInformationFormatter (1.4.0)
   - FormatterKit/URLRequestFormatter (1.4.0)
-  - FTAdditions (0.1.4)
+  - FTAdditions (0.1.5)
   - HexColors (2.2.1)
   - InAppSettings (1.0.0)
   - M13ProgressSuite (1.0.0)
@@ -85,7 +85,7 @@ SPEC CHECKSUMS:
   Facebook-iOS-SDK: c09f7d80db5c48170ff834bc03ebe774c49d1f5b
   FlurrySDK: 508afbd655fe2ff935d3e9543cb1c8aa432794de
   FormatterKit: 475c602b6098d69c3255c65cfe6cb6a27c175f57
-  FTAdditions: 78a07609a4b4f404bf88677e2855020325415002
+  FTAdditions: 9c0d0b299b1e4d1f197a2299f3209f86c9543fde
   HexColors: 3a68db077cd6572a8f7d4aa1add284dd2436a934
   InAppSettings: 2fe591691130c78df0abd5bfa7b29aacf2a9df19
   M13ProgressSuite: 34c28a6eb72313660b4676ec2f05742a665700a7

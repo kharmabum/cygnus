@@ -30,6 +30,10 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    if (textField == self.view.titleTextField) {
+        int remainder = 25 - textField.text.length;
+        self.view.titleLengthLabel.text = [NSString stringWithFormat:@"(%d)", remainder];
+    }
     return YES;
 }
 
@@ -37,6 +41,25 @@
 {
     self.activeField = textField;
     [self scrollToActiveField];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == self.view.titleTextField) {
+        NSUInteger oldLength = [textField.text length];
+        NSUInteger replacementLength = [string length];
+        NSUInteger rangeLength = range.length;
+        NSUInteger newLength = oldLength - rangeLength + replacementLength;
+        BOOL returnKey = [string rangeOfString: @"\n"].location != NSNotFound;
+        
+        if ((newLength <= 25)|| returnKey) {
+            self.view.titleLengthLabel.text = [NSString stringWithFormat:@"(%d)", 25 - newLength];
+            return YES;
+        } else {
+            return (newLength < textField.text.length);
+        }
+    }
+    return YES;
 }
 
 

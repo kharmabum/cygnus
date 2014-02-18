@@ -32,6 +32,7 @@
 {
     self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     self.tagsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.titleLengthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     self.titleTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     self.tagsTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
@@ -98,6 +99,11 @@
         _titleTextField.returnKeyType = UIReturnKeyDone;
         _titleTextField.textColor = [UIColor lightGrayColor];
         
+        _titleLengthLabel = [UILabel autoLayoutView];
+        [_contentView addSubview:_titleLengthLabel];
+        _titleLengthLabel.text = @"(25)";
+        _titleLengthLabel.textColor = [UIColor lightGrayColor];
+        
         _saveButton = [UIButton autoLayoutView];
         [self addSubview:_saveButton];
         [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
@@ -125,6 +131,12 @@
 
         [_titleTextField pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
         [_titleTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_titleLabel inset:3];
+        
+        [_titleLengthLabel pinEdges:FTUIViewEdgePinRight toSuperViewWithInset:11];
+        [_titleLengthLabel pinAttribute:NSLayoutAttributeCenterY toSameAttributeOfItem:_titleTextField];
+        
+        
+        
 
         [_saveButton pinEdges:(FTUIViewEdgePinBottom | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
 //        [_saveButton constrainToWidthOfView:self];
