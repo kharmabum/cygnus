@@ -126,7 +126,13 @@
         [self.view endEditing:YES];
     }
     else if (self.activeViewController && [self.mapView pointInside:[gestureRecognizer locationInView:self.mapView] withEvent:nil]) {
-        [self switchToMapView];
+        if (self.activeViewController != self.pointCreationViewController) {
+            [self switchToMapView];
+        }
+        else {
+            
+        }
+        
     }
 }
 
@@ -141,35 +147,19 @@
     self.keyboardIsVisible = NO;
 }
 
-
 - (void)listButtonPressed
 {
     if (self.activeViewController) {
         [self switchToMapView];
     } else {
-        [self switchToListViewWithCompletion:^{
-            [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
-        }];
+        [self switchToListView];
     }
 }
 
 - (void)tagButtonPressed
 {
     if (self.activeViewController != self.tagsViewController) {
-        BOOL switchFromPointCreationView = NO;
-        if (self.activeViewController == self.pointCreationViewController) {
-            [self clearMap];
-            switchFromPointCreationView = YES;
-        }
-        
-        [self switchToTagViewWithCompletion:^{
-            if (switchFromPointCreationView) {
-                [self refreshOnMapViewRegion];
-            }
-            else {
-                [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
-            }
-        }];
+        [self switchToTagView];
     }
 }
 
@@ -322,12 +312,27 @@
 
 - (void)switchToListView
 {
-    [self switchToListViewWithCompletion:NULL];
+    [self switchToListViewWithCompletion:^{
+        [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
+    }];
 }
 
 - (void)switchToTagView
 {
-    [self switchToTagViewWithCompletion:NULL];
+    BOOL switchFromPointCreationView = NO;
+    if (self.activeViewController == self.pointCreationViewController) {
+        [self clearMap];
+        switchFromPointCreationView = YES;
+    }
+    
+    [self switchToTagViewWithCompletion:^{
+        if (switchFromPointCreationView) {
+            [self refreshOnMapViewRegion];
+        }
+        else {
+            [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
+        }
+    }];
 }
 
 - (void)switchToPointCreationView
