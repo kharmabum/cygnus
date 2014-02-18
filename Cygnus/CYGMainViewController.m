@@ -115,7 +115,7 @@
     if (self.keyboardIsVisible) {
         [self.view endEditing:YES];
     }
-    else if ([self.mapView pointInside:[gestureRecognizer locationInView:self.mapView] withEvent:nil]) {
+    else if (self.activeViewController && [self.mapView pointInside:[gestureRecognizer locationInView:self.mapView] withEvent:nil]) {
         [self switchToMapView];
     }
 }
@@ -131,26 +131,6 @@
     self.keyboardIsVisible = NO;
 }
 
-
-- (void)pointAnnotationDidUpdate:(NSNotification*)aNotification
-{
-    CYGPoint *updatedPoint = aNotification.object;
-    BOOL shouldBeOnMap = YES;
-    for (NSString *tag in self.tags) {
-        if (![updatedPoint.tags containsObject:tag]) {
-            shouldBeOnMap = NO;
-            break;
-        }
-    }
-    if (shouldBeOnMap) {
-        CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:updatedPoint];
-        CYGPointAnnotation *oldAnnotation = [self.mapView updateWithAnnotation:newAnnotation];
-        [self.annotations addObject:newAnnotation];
-        if (oldAnnotation) [self.annotations removeObject:oldAnnotation];
-
-    }
-    
-}
 
 - (void)listButtonPressed
 {
@@ -499,9 +479,6 @@
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
         _tags = @[@"test"];
         //TODO: get cached tags in userDefaults self.tags == ??
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(pointAnnotationDidUpdate:)
-                                                     name:kCYGNotificationPointAnnotationUpdated object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWasShown:)
@@ -518,9 +495,6 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kCYGNotificationPointAnnotationUpdated object:nil];
-
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidShowNotification
                                                   object:nil];

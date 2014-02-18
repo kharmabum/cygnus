@@ -67,7 +67,6 @@
 {
     self.keyboardIsVisible = NO;
 //    [self.pointCreationView.scrollView setContentOffset:CGPointMake(0.0, 0) animated:YES];
-    
 }
 
 
@@ -174,6 +173,7 @@
    
     self.view.titleTextField.delegate = self;
     self.view.tagsTextField.delegate = self;
+    [self.view.saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
