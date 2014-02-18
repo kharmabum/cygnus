@@ -69,9 +69,9 @@
     if (!annotationView) {
         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:kCYGPointAnnotationIdentifier];
         annotationView.pinColor = MKPinAnnotationColorGreen;
-        annotationView.canShowCallout = YES;
-        annotationView.draggable = NO;
     }
+    annotationView.canShowCallout = (self.activeViewController != self.pointCreationViewController);
+    annotationView.draggable = (self.activeViewController == self.pointCreationViewController);
     return annotationView;
 }
 
@@ -84,7 +84,7 @@
         }
         MKMapPoint point =  MKMapPointForCoordinate(aV.annotation.coordinate);
         if (!MKMapRectContainsPoint(self.mapView.visibleMapRect, point)) {
-            continue;
+        continue;
         }
         CGRect endFrame = aV.frame;
         aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - self.view.frame.size.height, aV.frame.size.width, aV.frame.size.height);

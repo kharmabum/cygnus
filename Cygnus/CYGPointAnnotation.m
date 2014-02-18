@@ -16,6 +16,7 @@
 @end
 
 static NSNumberFormatter *_numberFormatter = nil;
+static NSDateFormatter *_dateFormatter = nil;
 
 
 @implementation CYGPointAnnotation
@@ -30,6 +31,16 @@ static NSNumberFormatter *_numberFormatter = nil;
     return _numberFormatter;
 }
 
++ (NSDateFormatter *)dateFormatter
+{
+    if (!_dateFormatter) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        _dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+        _dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    }
+    return _dateFormatter;
+}
+
 #pragma mark - Initialization
 
 - (id)initWithPoint:(CYGPoint *)aPoint
@@ -40,7 +51,11 @@ static NSNumberFormatter *_numberFormatter = nil;
         _coordinate = CLLocationCoordinate2DMake(aPoint.location.latitude, aPoint.location.longitude);
         
         // Bindings
-        RAC(self, title) = [RACObserve(self.point, title) deliverOn:RACScheduler.mainThreadScheduler];
+        __weak __typeof(&*self)weakSelf = self;
+        RAC(self, title) = [[RACObserve(self.point, title) deliverOn:RACScheduler.mainThreadScheduler]
+                            map:^id(NSString *title) {
+                                return (title) ?: [[CYGPointAnnotation dateFormatter] stringFromDate:weakSelf.point.createdAt];
+                            }];
         RAC(self, subtitle) = [[RACObserve(self.point, location) deliverOn:RACScheduler.mainThreadScheduler]
                             map:^id(PFGeoPoint *geoPoint) {
                                 return [NSString stringWithFormat:@"%@, %@",
