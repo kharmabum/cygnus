@@ -110,6 +110,16 @@
 
 #pragma mark - Actions, Gestures, Notification Handlers
 
+- (void)handleLongPressGesture:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        if (!self.activeViewController) {
+            CLLocationCoordinate2D coordinate = [self.mapView convertPoint:[gestureRecognizer locationInView:self.mapView] toCoordinateFromView:self.mapView];
+            [self switchToPointCreationViewWithCompletion:NULL andCoordinate:coordinate];
+        }
+    }
+}
+
 - (void)handleTapGesture:(UIGestureRecognizer *)gestureRecognizer
 {
     if (self.keyboardIsVisible) {
@@ -146,7 +156,7 @@
 - (void)tagButtonPressed
 {
     if (self.activeViewController != self.tagsViewController) {
-        __block BOOL switchFromPointCreationView = NO;
+        BOOL switchFromPointCreationView = NO;
         if (self.activeViewController == self.pointCreationViewController) {
             [self clearMap];
             switchFromPointCreationView = YES;
@@ -270,7 +280,7 @@
 
 - (void)switchToMapView
 {
-    __block BOOL switchFromPointCreationView = NO;
+    BOOL switchFromPointCreationView = NO;
     if (self.activeViewController == self.pointCreationViewController) {
         [self clearMap];
         switchFromPointCreationView = YES;
@@ -328,7 +338,7 @@
 
 - (void)switchToPointCreationView
 {
-    [self switchToPointCreationViewWithCompletion:NULL];
+    [self switchToPointCreationViewWithCompletion:NULL andCoordinate:CLLocationCoordinate2DMake(-MAXFLOAT, -MAXFLOAT)];
 }
 
 - (void)switchToListViewWithCompletion:(void (^)(void))completion
@@ -341,13 +351,13 @@
     [self switchToChildViewController:self.tagsViewController withCompletion:completion];
 }
 
-- (void)switchToPointCreationViewWithCompletion:(void (^)(void))completion
+- (void)switchToPointCreationViewWithCompletion:(void (^)(void))completion andCoordinate:(CLLocationCoordinate2D)aCoordinate
 {
- 
     [self switchToChildViewController:self.pointCreationViewController withCompletion:^{
-        
+
+        CLLocationCoordinate2D newCoordinate = (CLLocationCoordinate2DIsValid(aCoordinate)) ? aCoordinate : self.mapView.centerCoordinate;
         CYGPoint *newPoint = [[CYGPoint alloc] init];
-        newPoint.location = [PFGeoPoint geoPointWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+        newPoint.location = [PFGeoPoint geoPointWithLatitude:newCoordinate.latitude longitude:newCoordinate.longitude];
         CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:newPoint];
         newAnnotation.isNewlyCreatedPoint = YES;
         
@@ -358,7 +368,6 @@
         [self.mapView addAnnotation:newAnnotation];
         [self.annotations addObject:newAnnotation];
         [self.mapView focusOnCoordinate:newAnnotation.coordinate withBufferDistance:kCYGRegionSmallBufferInMeters];
-        
         if (completion) completion();
     }];
     
@@ -370,8 +379,6 @@
         logInViewController.logInView.logo = nil;
         [self presentViewController:logInViewController animated:YES completion:NULL];
     }
-
-    
 }
 
 - (void)switchToChildViewController:(UIViewController *)childViewController withCompletion:(void (^)(void))completion
@@ -384,7 +391,6 @@
         [childViewController.view pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:self.toolbar];
         [childViewController.view pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
         [self.view layoutIfNeeded];
-
 
         //animations with completion
         [self.fullMapConstraints makeObjectsPerformSelector:NSSelectorFromString(@"remove")];
@@ -404,7 +410,6 @@
                              self.mapView.userLocationButton.alpha = 0;
                              self.toolbar.listButton.transform = CGAffineTransformRotate(self.toolbar.listButton.transform, M_PI/2.0f);
                          } completion:^(BOOL finished) {
-                             
                              [childViewController didMoveToParentViewController:self];
                              self.activeViewController = childViewController;
                              if (completion) completion();
@@ -433,7 +438,9 @@
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
-    
+    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    [self.mapView addGestureRecognizer:longPressGestureRecognizer];
+ 
     // Constraints
     
     [self.mapView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];

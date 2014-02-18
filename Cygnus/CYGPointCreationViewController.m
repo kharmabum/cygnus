@@ -161,7 +161,7 @@
 {
     if ([self fieldsAreValidWithAssignment]) {
         [self.navigationController popViewControllerAnimated:YES];
-        __block CYGPoint *newPoint = self.point;
+        CYGPoint *newPoint = self.point;
         [self.point saveEventually:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 [TSMessage showNotificationWithTitle:@"Success" subtitle:@"Point saved." type:TSMessageNotificationTypeSuccess];

@@ -55,10 +55,10 @@
 
 - (void)animateButtonColors
 {
-    __block UIImage *listButtonImage = [_listButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    __block UIImage *tagButtonImage = [_tagButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    __block UIImage *addButtonImage = [_addButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    __block UIImage *refreshButtonImage = [_refreshButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *listButtonImage = [_listButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *tagButtonImage = [_tagButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *addButtonImage = [_addButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *refreshButtonImage = [_refreshButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [UIView transitionWithView:self
                       duration:0.2f
                        options:UIViewAnimationOptionTransitionCrossDissolve

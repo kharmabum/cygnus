@@ -23,7 +23,6 @@
 
 - (void)switchToListViewWithCompletion:(void (^)(void))completion;
 - (void)switchToTagViewWithCompletion:(void (^)(void))completion;
-- (void)switchToPointCreationViewWithCompletion:(void (^)(void))completion;
-
+- (void)switchToPointCreationViewWithCompletion:(void (^)(void))completion andCoordinate:(CLLocationCoordinate2D)aCoordinate;
 
 @end
