@@ -33,8 +33,8 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     if (textField == self.view.titleTextField) {
-        int remainder = 25 - textField.text.length;
-        self.view.titleLengthLabel.text = [NSString stringWithFormat:@"(%d)", remainder];
+        NSUInteger remainder = 25 - textField.text.length;
+        self.view.titleLengthLabel.text = [NSString stringWithFormat:@"(%lu)", (unsigned long)remainder];
     }
     return YES;
 }
@@ -55,7 +55,7 @@
         BOOL returnKey = [string rangeOfString: @"\n"].location != NSNotFound;
         
         if ((newLength <= 25)|| returnKey) {
-            self.view.titleLengthLabel.text = [NSString stringWithFormat:@"(%d)", 25 - newLength];
+            self.view.titleLengthLabel.text = [NSString stringWithFormat:@"(%lu)", (unsigned long)(25 - newLength)];
             return YES;
         } else {
             return (newLength < textField.text.length);

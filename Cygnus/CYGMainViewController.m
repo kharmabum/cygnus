@@ -33,6 +33,7 @@
 
 @property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  NSMutableArray *annotations;
+@property (strong, nonatomic)  CYGPointAnnotation *pointCreationAnnotation;
 @property (strong, nonatomic)  CYGMapView *mapView;
 @property (strong, nonatomic)  CYGToolbar *toolbar;
 @property (assign, nonatomic)  BOOL keyboardIsVisible;
@@ -134,6 +135,24 @@
     }
 }
 
+- (void)pointAnnotationDidUpdate:(NSNotification*)aNotification
+{
+    CYGPoint *updatedPoint = aNotification.object;
+    BOOL shouldBeOnMap = YES;
+    for (NSString *tag in self.tags) {
+        if (![updatedPoint.tags containsObject:tag]) {
+            shouldBeOnMap = NO;
+            break;
+        }
+    }
+    if (shouldBeOnMap) {
+        CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:updatedPoint];
+        CYGPointAnnotation *oldAnnotation = [self.mapView updateWithAnnotation:newAnnotation];
+        [self.annotations addObject:newAnnotation];
+        if (oldAnnotation) [self.annotations removeObject:oldAnnotation];
+    }
+}
+
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     self.keyboardIsVisible = YES;
@@ -168,8 +187,10 @@
     if (self.activeViewController != self.pointCreationViewController) {
         [self switchToPointCreationView];
     }
+    else if ([self mapIsOpenForEditing]) {
+        [self closeMapWhileEditing];
+    }
 }
-
 
 #pragma mark - Private
 
@@ -217,12 +238,6 @@
                      }];
 }
 
-- (void)clearMap
-{
-    [self.mapView removeAnnotations:self.annotations];
-    [self.annotations removeAllObjects];
-}
-
 - (void)animateNetworkActivity:(BOOL)shouldAnimate
 {
     if (shouldAnimate) {
@@ -259,12 +274,13 @@
             if (objects.count == 0) {
                 [self animateNetworkActivity:NO];
                 [TSMessage showNotificationWithTitle:@"No results." subtitle:@"Sorry! :(" type:TSMessageNotificationTypeError];
-                [self clearMap];
+                [self.mapView removeAnnotations:self.annotations];
+                [self.annotations removeAllObjects];
                 return;
             }
             
 			// 1. Find genuinely new points:
-			NSMutableArray *newPointAnnotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
+			NSMutableArray *pointCreationAnnotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
 			for (CYGPoint *newPoint in objects) {
 				BOOL found = NO;
 				for (CYGPointAnnotation *currentAnnotation in self.annotations) {
@@ -274,7 +290,7 @@
 					}
 				}
 				if (!found) {
-					[newPointAnnotations addObject:[[CYGPointAnnotation alloc] initWithPoint:newPoint]];
+					[pointCreationAnnotations addObject:[[CYGPointAnnotation alloc] initWithPoint:newPoint]];
 				}
 			}
             
@@ -294,8 +310,8 @@
 			}
             
 			[self.mapView removeAnnotations:annotationsToRemove];
-			[self.mapView addAnnotations:newPointAnnotations];
-			[self.annotations addObjectsFromArray:newPointAnnotations];
+			[self.mapView addAnnotations:pointCreationAnnotations];
+			[self.annotations addObjectsFromArray:pointCreationAnnotations];
 			[self.annotations removeObjectsInArray:annotationsToRemove];
             [self animateNetworkActivity:NO];
             [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
@@ -308,19 +324,14 @@
 
 - (void)switchToMapView
 {
-    BOOL switchFromPointCreationView = NO;
     if (self.activeViewController == self.pointCreationViewController) {
-        [self clearMap];
-        switchFromPointCreationView = YES;
+        [self.mapView removeAnnotation:self.pointCreationAnnotation];
+        [self.mapView addAnnotations:self.annotations];
+        self.pointCreationAnnotation = nil;
     }
     
     [self switchToMapViewWithCompletion:^{
-        if (switchFromPointCreationView) {
-            [self refreshOnMapViewRegion];
-        }
-        else {
-            [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
-        }
+        [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
     }];
 }
 
@@ -363,19 +374,15 @@
 
 - (void)switchToTagView
 {
-    BOOL switchFromPointCreationView = NO;
+    
     if (self.activeViewController == self.pointCreationViewController) {
-        [self clearMap];
-        switchFromPointCreationView = YES;
+        [self.mapView removeAnnotation:self.pointCreationAnnotation];
+        [self.mapView addAnnotations:self.annotations];
+        self.pointCreationAnnotation = nil;
     }
     
     [self switchToTagViewWithCompletion:^{
-        if (switchFromPointCreationView) {
-            [self refreshOnMapViewRegion];
-        }
-        else {
-            [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
-        }
+        [self.mapView zoomToFitAnnotationsWithUserLocation:YES];
     }];
 }
 
@@ -408,9 +415,9 @@
         self.pointCreationViewController.tags = [self.tags copy];
         
         self.toolbar.refreshButton.enabled = NO;
-        [self clearMap];
+        [self.mapView removeAnnotations:self.annotations];
         [self.mapView addAnnotation:newAnnotation];
-        [self.annotations addObject:newAnnotation];
+        self.pointCreationAnnotation = newAnnotation;
         [self.mapView focusOnCoordinate:newAnnotation.coordinate withBufferDistance:kCYGRegionSmallBufferInMeters animated:YES];
         if (completion) completion();
     }];
@@ -549,6 +556,10 @@
         //TODO: get cached tags in userDefaults self.tags == ??
         
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(pointAnnotationDidUpdate:)
+                                                     name:kCYGNotificationPointAnnotationUpdated object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWasShown:)
                                                      name:UIKeyboardDidShowNotification object:nil];
         
@@ -563,8 +574,12 @@
 
 - (void)dealloc
 {
+ 
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardDidShowNotification
+                                                    name:kCYGNotificationPointAnnotationUpdated
+                                                  object:nil];
+     [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                     name:UIKeyboardDidShowNotification
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidHideNotification
