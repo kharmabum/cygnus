@@ -116,6 +116,13 @@
             CLLocationCoordinate2D coordinate = [self.mapView convertPoint:[gestureRecognizer locationInView:self.mapView] toCoordinateFromView:self.mapView];
             [self switchToPointCreationViewWithCompletion:NULL andCoordinate:coordinate];
         }
+        else if (self.activeViewController == self.pointCreationViewController && [self mapIsOpenForEditing]) {
+            CLLocationCoordinate2D coordinate = [self.mapView convertPoint:[gestureRecognizer locationInView:self.mapView] toCoordinateFromView:self.mapView];
+            [self.mapView removeAnnotation:self.pointCreationAnnotation];
+            self.pointCreationAnnotation.coordinate = coordinate;
+            [self.mapView addAnnotation:self.pointCreationAnnotation];
+            
+        }
     }
 }
 
@@ -233,7 +240,7 @@
                          [self.view layoutIfNeeded];
                          self.mapView.userLocationButton.alpha = 0;
                      } completion:^(BOOL finished) {
-                         CLLocationCoordinate2D coordinate = ((CYGPointAnnotation *)[self.annotations firstObject]).coordinate;
+                         CLLocationCoordinate2D coordinate = self.pointCreationAnnotation.coordinate;
                          [self.mapView focusOnCoordinate:coordinate withBufferDistance:kCYGRegionSmallBufferInMeters animated:YES];
                      }];
 }

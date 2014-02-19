@@ -70,6 +70,7 @@
     // Find presented annotation that's just been updated.
     CYGPointAnnotation *oldAnnotation;
     for (CYGPointAnnotation *currentAnnotation in self.annotations) {
+        if ([currentAnnotation isKindOfClass:[MKUserLocation class]]) continue;
         if ([newAnnotation.point.objectId isEqualToString:currentAnnotation.point.objectId]) {
             oldAnnotation = currentAnnotation;
             break;
