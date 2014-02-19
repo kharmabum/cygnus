@@ -53,12 +53,12 @@
     }
 }
 
-- (void)focusOnCoordinate:(CLLocationCoordinate2D)coordinate withBufferDistance:(CLLocationDistance)buffer;
+- (void)focusOnCoordinate:(CLLocationCoordinate2D)coordinate withBufferDistance:(CLLocationDistance)buffer animated:(BOOL)animated
 {
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude),
                                                                    buffer,
                                                                    buffer);
-    [self setRegion:region animated:YES];
+    [self setRegion:region animated:animated];
 }
 
 

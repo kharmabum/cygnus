@@ -213,7 +213,7 @@
                          self.mapView.userLocationButton.alpha = 0;
                      } completion:^(BOOL finished) {
                          CLLocationCoordinate2D coordinate = ((CYGPointAnnotation *)[self.annotations firstObject]).coordinate;
-                         [self.mapView focusOnCoordinate:coordinate withBufferDistance:kCYGRegionSmallBufferInMeters];
+                         [self.mapView focusOnCoordinate:coordinate withBufferDistance:kCYGRegionSmallBufferInMeters animated:YES];
                      }];
 }
 
@@ -411,7 +411,7 @@
         [self clearMap];
         [self.mapView addAnnotation:newAnnotation];
         [self.annotations addObject:newAnnotation];
-        [self.mapView focusOnCoordinate:newAnnotation.coordinate withBufferDistance:kCYGRegionSmallBufferInMeters];
+        [self.mapView focusOnCoordinate:newAnnotation.coordinate withBufferDistance:kCYGRegionSmallBufferInMeters animated:YES];
         if (completion) completion();
     }];
     
@@ -499,7 +499,7 @@
     [[CYGManager sharedManager] findCurrentLocation];
     [[[[RACObserve([CYGManager sharedManager], currentLocation) ignore:nil] take:1] deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(CLLocation *location) {
-         [self.mapView focusOnCoordinate:location.coordinate withBufferDistance:kCYGRegionLargeBufferInMeters];
+         [self.mapView focusOnCoordinate:location.coordinate withBufferDistance:kCYGRegionLargeBufferInMeters animated:NO];
          [self refreshOnMapViewRegion];
      }];
     
