@@ -10,8 +10,6 @@
 
 @interface CYGListView ()
 
-@property (strong, nonatomic)  UILabel *dummyLabel;
-
 @end
 
 @implementation CYGListView
@@ -20,7 +18,7 @@
 
 - (void)setDynamicText
 {
-    self.dummyLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+//    self.dummyLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
 }
 
 - (void)preferredContentSizeChanged
@@ -49,16 +47,15 @@
         self.opaque = YES;
         self.backgroundColor = [UIColor whiteColor];
         
-        _dummyLabel = [UILabel autoLayoutView];
-        [self addSubview:_dummyLabel];
-        _dummyLabel.text = @"List view text";
-        _dummyLabel.textColor = [UIColor darkGrayColor];
+        _tableView = [UITableView autoLayoutView];
+        [self addSubview:_tableView];
+        [_tableView pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
+        [_tableView constrainToHeightOfView:self];
+        [_tableView constrainToWidthOfView:self];
         
         [self setDynamicText];
         
         // Constraints
-        
-        [_dummyLabel pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinTop) toSuperViewWithInset:11];
         
         
         [[NSNotificationCenter defaultCenter] addObserver:self

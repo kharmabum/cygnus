@@ -13,5 +13,7 @@
 @interface CYGListViewController : UIViewController
 
 @property (strong, nonatomic)  CYGMainViewController *mainViewController;
+@property (strong, nonatomic)  NSMutableArray *annotations;
+
 
 @end

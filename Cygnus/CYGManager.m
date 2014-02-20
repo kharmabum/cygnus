@@ -14,7 +14,6 @@
 @property (nonatomic, strong, readwrite) CLLocation *currentLocation;
 @property (nonatomic, strong, readwrite) CLLocationManager *locationManager;
 @property (nonatomic, assign) BOOL isFirstUpdate;
-@property (assign, nonatomic)  NSUInteger failureCount;
 
 
 @end
@@ -70,8 +69,6 @@
 
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    self.failureCount = 0;
-    
     if (self.isFirstUpdate) { //ignore cached value
         self.isFirstUpdate = NO;
         return;
@@ -85,11 +82,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    self.failureCount++;
-    if (self.failureCount > 1) {
-        [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching your location." type:TSMessageNotificationTypeError];
-    }
-
+    [TSMessage showNotificationWithTitle:@"Error" subtitle:@"There was a problem fetching your location." type:TSMessageNotificationTypeError];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {

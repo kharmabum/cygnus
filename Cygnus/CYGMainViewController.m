@@ -551,15 +551,17 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
+        _tags = @[@"test"];
+
         _listViewController = [[CYGListViewController alloc] init];
         _tagsViewController = [[CYGTagsViewController alloc] init];
         _pointCreationViewController = [[CYGPointCreationViewController alloc] init];
         _listViewController.mainViewController = self;
+        _listViewController.annotations = _annotations;
         _tagsViewController.mainViewController = self;
         _pointCreationViewController.mainViewController = self;
         
-        _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
-        _tags = @[@"test"];
         //TODO: get cached tags in userDefaults self.tags == ??
         
         [[NSNotificationCenter defaultCenter] addObserver:self

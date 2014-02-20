@@ -18,7 +18,6 @@
 static NSNumberFormatter *_numberFormatter = nil;
 static NSDateFormatter *_dateFormatter = nil;
 
-
 @implementation CYGPointAnnotation
 
 + (NSNumberFormatter *)numberFormatter

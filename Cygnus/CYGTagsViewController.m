@@ -26,7 +26,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

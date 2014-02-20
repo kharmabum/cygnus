@@ -10,4 +10,6 @@
 
 @interface CYGListView : UIView
 
+@property (strong, nonatomic)  UITableView *tableView;
+
 @end

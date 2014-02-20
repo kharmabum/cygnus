@@ -9,6 +9,7 @@
 #import <Parse/PFObject+Subclass.h>
 #import "CYGUser.h"
 #import "CYGPoint.h"
+#import "CYGManager.h"
 
 
 @implementation CYGPoint
@@ -21,6 +22,12 @@
 }
 
 //TODO: isSimilar? For collapsing large datasets
+
+- (CLLocationDistance)distanceFromUserLocation
+{
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:self.location.latitude longitude:self.location.longitude];
+    return [location distanceFromLocation:[[CYGManager sharedManager] currentLocation]];
+}
 
 - (NSString *)description
 {

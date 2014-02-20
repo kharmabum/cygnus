@@ -15,6 +15,8 @@
 @property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  CYGUser *author;
 
+- (CLLocationDistance)distanceFromUserLocation;
+
 + (NSString *)parseClassName;
 
 @end

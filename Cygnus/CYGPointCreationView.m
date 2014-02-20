@@ -30,11 +30,11 @@
 
 - (void)setDynamicText
 {
-    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    self.tagsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    self.titleLengthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    self.titleTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.tagsTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    _tagsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    _titleLengthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    _titleTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    _tagsTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 - (void)preferredContentSizeChanged
@@ -122,12 +122,12 @@
         [_tagsTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
         [_tagsTextField pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
 
-        [lineView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:4];
+        [lineView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:3];
         [lineView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
         [lineView constrainToHeight:1];
         
         [_titleLabel pinEdges:FTUIViewEdgePinLeft toSuperViewWithInset:11];
-        [_titleLabel pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:10];
+        [_titleLabel pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:11];
 
         [_titleTextField pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
         [_titleTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_titleLabel inset:3];
