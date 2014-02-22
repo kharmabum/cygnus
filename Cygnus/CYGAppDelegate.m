@@ -72,6 +72,7 @@
 {
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithWhite:0.18 alpha:1]];
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlack];
+    [[UITextField appearance] setKeyboardAppearance:UIKeyboardAppearanceDark];
     [self.window setTintColor:[UIColor cyg_orangeColor]];
 }
 
