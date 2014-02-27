@@ -29,9 +29,13 @@ extern NSString *const kCYGGenericEventParam;
 #pragma mark - Parse Class Names, Keys
 
 extern NSString *const kCYGPointClassName;
+extern NSString *const kCYGTagClassName;
 extern NSString *const kCYGPointLocationKey;
 extern NSString *const kCYGPointAuthorKey;
 extern NSString *const kCYGPointTagsKey;
+extern NSString *const kCYGPointTagObjectsKey;
+extern NSString *const kCYGTagTitleKey;
+extern NSString *const kCYGTagTotalUsageCountKey;
 
 #pragma mark - Number Constants
 

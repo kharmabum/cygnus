@@ -25,9 +25,13 @@ NSString *const kCYGNotificationCLAuthorizationStatusAuthorized = @"CLAuthorizat
 #pragma mark - Parse Keys
 
 NSString *const kCYGPointClassName = @"CYGPoint";
+NSString *const kCYGTagClassName = @"CYGTag";
 NSString *const kCYGPointLocationKey = @"location";
 NSString *const kCYGPointAuthorKey = @"author";
 NSString *const kCYGPointTagsKey = @"tags";
+NSString *const kCYGPointTagObjectsKey = @"tags";
+NSString *const kCYGTagTitleKey = @"title";
+NSString *const kCYGTagTotalUsageCountKey = @"totalUsageCount";
 
 #pragma mark - Metrics
 

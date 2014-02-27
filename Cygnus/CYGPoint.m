@@ -9,17 +9,13 @@
 #import <Parse/PFObject+Subclass.h>
 #import "CYGUser.h"
 #import "CYGPoint.h"
+#import "CYGTag.h"
 #import "CYGManager.h"
 
 
 @implementation CYGPoint
 
-@dynamic title, location, tags, author;
-
-+ (NSString *)parseClassName
-{
-    return kCYGPointClassName;
-}
+@dynamic title, location, tags, tagObjects, author;
 
 //TODO: isSimilar? For collapsing large datasets
 
@@ -56,6 +52,11 @@
 - (NSUInteger)hash
 {
     return (NSUInteger)self;
+}
+
++ (NSString *)parseClassName
+{
+    return kCYGPointClassName;
 }
 
 @end
