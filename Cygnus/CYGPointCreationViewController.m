@@ -173,7 +173,7 @@
                 
                 for (NSString *tag in newPoint.tags) {
                     PFQuery *query = [CYGTag query];
-                    [query whereKey:kCYGTagTitleKey equalTo:tag];
+                    [query whereKey:kCYGTagTitleKey matchesRegex:[NSString stringWithFormat:@"^%@$", tag] modifiers:@"i"]; //case insensitive
                     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                         if (error) {
                             //TODO: handle error or case where objects.count > 1
@@ -189,7 +189,7 @@
                             }
                             else {
                                 tagObject = [CYGTag object];
-                                tagObject.title = tag;
+                                tagObject.title = [tag lowercaseString];
                                 tagObject.totalUsageCount = 1;
                                 [tagObject.points addObject:newPoint];
                                 newPoint.tagObjects = [newPoint.tagObjects arrayByAddingObject:tagObject];
