@@ -267,7 +267,6 @@
                                            longitude:self.mapView.centerCoordinate.longitude]
    withinKilometers:kCYGMaxFilterDistanceInKilometers];
     [query whereKey:kCYGPointTagsKey containsAllObjectsInArray:self.tags];
-    [query includeKey:kCYGPointAuthorKey];
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSLog(@"\n OBJECTS RETRIEVED: %lu \n ", (unsigned long)objects.count);

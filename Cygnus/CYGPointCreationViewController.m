@@ -184,7 +184,7 @@
                                 [tagObject.points addObject:newPoint];
                                 [tagObject incrementKey:kCYGTagTotalUsageCountKey];
                                 [tagObject saveEventually];
-                                [newPoint.tagObjects addObject:tagObject];
+                                newPoint.tagObjects = [newPoint.tagObjects arrayByAddingObject:tagObject];
                                 [newPoint saveEventually];
                             }
                             else {
@@ -192,7 +192,7 @@
                                 tagObject.title = tag;
                                 tagObject.totalUsageCount = 1;
                                 [tagObject.points addObject:newPoint];
-                                [newPoint.tagObjects addObject:tagObject];
+                                newPoint.tagObjects = [newPoint.tagObjects arrayByAddingObject:tagObject];
                                 [newPoint saveEventually]; // saves both newPoint and tagObject
                             }
                         }
