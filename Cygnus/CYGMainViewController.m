@@ -413,7 +413,7 @@
     [self switchToChildViewController:self.pointCreationViewController withCompletion:^{
 
         CLLocationCoordinate2D newCoordinate = (CLLocationCoordinate2DIsValid(aCoordinate)) ? aCoordinate : self.mapView.centerCoordinate;
-        CYGPoint *newPoint = [[CYGPoint alloc] init];
+        CYGPoint *newPoint = [CYGPoint object];
         newPoint.location = [PFGeoPoint geoPointWithLatitude:newCoordinate.latitude longitude:newCoordinate.longitude];
         CYGPointAnnotation *newAnnotation = [[CYGPointAnnotation alloc] initWithPoint:newPoint];
         newAnnotation.isNewlyCreatedPoint = YES;

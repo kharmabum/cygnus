@@ -10,6 +10,7 @@
 #import "CYGMainViewController.h"
 #import "CYGManager.h"
 #import "CYGPoint.h"
+#import "CYGTag.h"
 #import "CYGUser.h"
 #import "CYGPointAnnotation.h"
 #import "CYGPointCreationView.h"
@@ -169,6 +170,34 @@
                 [MRProgressOverlayView dismissOverlayForView:self.mainViewController.view animated:YES];
                 [self.mainViewController switchToMapView];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kCYGNotificationPointAnnotationUpdated object:newPoint];
+                
+                for (NSString *tag in newPoint.tags) {
+                    PFQuery *query = [CYGTag query];
+                    [query whereKey:kCYGTagTitleKey equalTo:tag];
+                    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                        if (error) {
+                            //TODO: handle error or case where objects.count > 1
+                        }
+                        else {
+                            CYGTag *tagObject = [objects firstObject];
+                            if (tagObject) {
+                                [tagObject.points addObject:newPoint];
+                                [tagObject incrementKey:kCYGTagTotalUsageCountKey];
+                                [tagObject saveEventually];
+                                [newPoint.tagObjects addObject:tagObject];
+                                [newPoint saveEventually];
+                            }
+                            else {
+                                tagObject = [CYGTag object];
+                                tagObject.title = tag;
+                                tagObject.totalUsageCount = 1;
+                                [tagObject.points addObject:newPoint];
+                                [newPoint.tagObjects addObject:tagObject];
+                                [newPoint saveEventually]; // saves both newPoint and tagObject
+                            }
+                        }
+                    }];
+                }
             }
             else {
                 [MRProgressOverlayView dismissOverlayForView:self.mainViewController.view animated:YES];

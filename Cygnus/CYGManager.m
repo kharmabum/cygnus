@@ -14,9 +14,8 @@
 @property (nonatomic, strong, readwrite) CLLocation *currentLocation;
 @property (nonatomic, strong, readwrite) CLLocationManager *locationManager;
 @property (nonatomic, assign) BOOL isFirstUpdate;
-
-
 @end
+
 @implementation CYGManager
 
 + (instancetype)sharedManager {
