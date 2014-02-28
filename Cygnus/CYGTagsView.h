@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class CYGTagsInputView;
+
 @interface CYGTagsView : UIView
+
+@property (strong, nonatomic)  UITableView *tableView;
+@property (strong, nonatomic)  CYGTagsInputView *tagsInputView;
+
+
 
 @end

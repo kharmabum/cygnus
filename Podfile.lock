@@ -58,6 +58,7 @@ PODS:
   - TSMessages (0.9.4):
     - HexColors
   - TTTAttributedLabel (1.8.1)
+  - TURecipientBar (1.1.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
@@ -75,6 +76,7 @@ DEPENDENCIES:
   - SSToolkit (~> 1.0.4)
   - TSMessages (~> 0.9)
   - TTTAttributedLabel (~> 1.8)
+  - TURecipientBar (~> 1.1)
 
 EXTERNAL SOURCES:
   FTAdditions:
@@ -98,5 +100,6 @@ SPEC CHECKSUMS:
   SSToolkit: 689acaedac79c2079e492e528a55bcb5db9d98c4
   TSMessages: 5ab92604b02e49a755d2cc2baf114d2248a90977
   TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
+  TURecipientBar: fd16db963c4d460d199edab9a7f7b16123644caa
 
 COCOAPODS: 0.29.0

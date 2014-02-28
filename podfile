@@ -14,4 +14,6 @@ pod 'SSDataKit', '~> 0.3.0'
 pod 'SSKeychain', '~> 1.2'
 pod 'SSToolkit', '~> 1.0.4'
 pod 'TSMessages', '~> 0.9'
+pod 'TURecipientBar', '~> 1.1'
 pod 'TTTAttributedLabel', '~> 1.8'
+

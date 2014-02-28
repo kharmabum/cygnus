@@ -26,6 +26,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO; // https://github.com/davbeck/TURecipientBar
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
