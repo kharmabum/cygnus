@@ -70,7 +70,7 @@
         
         _tagsLabel = [UILabel autoLayoutView];
         [_contentView addSubview:_tagsLabel];
-        _tagsLabel.text = @"Tags";
+        _tagsLabel.text = @"#";
         _tagsLabel.textColor = [UIColor darkGrayColor];
         
         _tagsTextField = [UITextField autoLayoutView];

@@ -10,4 +10,10 @@
 
 @interface CYGTagsInputView : UIView
 
+@property (strong, nonatomic)  NSString *activeText;
+@property (strong, nonatomic, readonly) NSMutableArray *tokens; /* List of NSStrings */
+
+- (void)addTokenWithText:(NSString *)tokenText;
+- (void)removeTokenWithText:(NSString *)tokenText;
+
 @end

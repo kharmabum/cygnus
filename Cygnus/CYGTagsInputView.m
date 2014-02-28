@@ -15,13 +15,83 @@
 
 @property (strong, nonatomic)  TURecipientsBar *recipientsBar;
 @property (strong, nonatomic)  TURecipientsDisplayController *displayController;
-
-
+@property (strong, nonatomic, readwrite) NSMutableArray *tokens; /* List of NSStrings */
 
 @end
 
 @implementation CYGTagsInputView
 
+#pragma mark - TURecipientsBarDelegate
+
+- (void)recipientsBarReturnButtonClicked:(TURecipientsBar *)recipientsBar
+{
+	if (recipientsBar.text.length == 0) {
+		[recipientsBar resignFirstResponder];
+	}
+}
+
+- (void)recipientsBar:(TURecipientsBar *)recipientsBar textDidChange:(NSString *)searchText
+{
+    if ([searchText containsString:@" "]) {
+        NSArray *tags = [[[[searchText componentsSeparatedByString:@" "].rac_sequence
+                           map:^id(NSString *tag) {
+                               return [tag stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters];
+                           }]
+                          filter:^BOOL(NSString *tag) {
+                              return tag.length;
+                          }]
+                         array];
+        for (NSString *tag in tags) {
+            [self addTokenWithText:tag];
+        }
+        recipientsBar.text = @"";
+    }
+}
+
+#pragma mark - TURecipientsDisplayDelegate
+
+
+- (BOOL)recipientsDisplayControllerShouldBeginSearch:(TURecipientsDisplayController *)controller
+{
+    return NO;
+}
+
+//not called on manual/programmatic additions
+- (void)recipientsDisplayController:(TURecipientsDisplayController *)controller didAddRecipient:(id<TURecipient>)recipient
+{
+    [self.tokens addObject:recipient.recipientTitle];
+}
+
+//always called
+- (void)recipientsDisplayController:(TURecipientsDisplayController *)controller didRemoveRecipient:(id<TURecipient>)recipient
+{
+    [self.tokens removeObject:recipient.recipientTitle];
+}
+
+#pragma mark - Private
+
+- (void)addTokenWithText:(NSString *)tokenText
+{
+    [_recipientsBar addRecipient:[TURecipient recipientWithTitle:tokenText address:nil]];
+    [self.tokens addObject:tokenText];
+}
+
+- (void)removeTokenWithText:(NSString *)tokenText
+{
+    TURecipient *r;
+    for (TURecipient *recipient in self.recipientsBar.recipients) {
+        if ([recipient.recipientTitle isEqualToString:tokenText]) {
+            r = recipient;
+            break;
+        }
+    }
+    if (r) {
+        [_recipientsBar removeRecipient:r];
+        [self.tokens removeObject:tokenText];
+    }
+}
+
+#pragma mark - UIView
 
 
 - (id)initWithFrame:(CGRect)frame
@@ -30,6 +100,8 @@
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
         
+        _tokens = [NSMutableArray array];
+        
         _recipientsBar = [[TURecipientsBar alloc] init];
         [self addSubview:_recipientsBar];
         _recipientsBar.recipientsBarDelegate = self;
@@ -37,6 +109,8 @@
         _recipientsBar.label = @"#:";
         _recipientsBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _recipientsBar.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        
+        _activeText = _recipientsBar.text;
         
         _displayController = [[TURecipientsDisplayController alloc] init];
         _displayController.recipientsBar = _recipientsBar;
@@ -63,57 +137,8 @@
         // Constraints
         
         [_recipientsBar pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
-//        [self constrainToHeightOfView:_recipientsBar];
-        
     }
     return self;
-}
-
-#pragma mark - TURecipientsBarDelegate
-
-- (void)recipientsBarReturnButtonClicked:(TURecipientsBar *)recipientsBar
-{
-	if (recipientsBar.text.length == 0) {
-		[recipientsBar resignFirstResponder];
-	}
-}
-
-- (void)recipientsBar:(TURecipientsBar *)recipientsBar textDidChange:(NSString *)searchText
-{
-    if ([searchText containsString:@" "]) {
-        NSArray *tags = [[[[searchText componentsSeparatedByString:@" "].rac_sequence
-                          map:^id(NSString *tag) {
-                              return [tag stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters];
-                          }]
-                         filter:^BOOL(NSString *tag) {
-                             return tag.length;
-                         }]
-                         array];
-        for (NSString *tag in tags) {
-            [recipientsBar addRecipient:[TURecipient recipientWithTitle:tag address:nil]];
-        }
-        recipientsBar.text = @"";
-    }
-}
-
-#pragma mark - TURecipientsDisplayDelegate
-
-
-- (BOOL)recipientsDisplayControllerShouldBeginSearch:(TURecipientsDisplayController *)controller
-{
-    return NO;
-}
-
-//not called on manual/programmatic additions
-- (void)recipientsDisplayController:(TURecipientsDisplayController *)controller didAddRecipient:(id<TURecipient>)recipient
-{
-    
-}
-
-//always called
-- (void)recipientsDisplayController:(TURecipientsDisplayController *)controller didRemoveRecipient:(id<TURecipient>)recipient
-{
-    
 }
 
 @end
