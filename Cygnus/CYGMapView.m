@@ -48,7 +48,7 @@
             }
         }
         
-        zoomRect = MKMapRectMake(zoomRect.origin.x - (zoomRect.size.width*0.2)/2, zoomRect.origin.y - (zoomRect.size.height*0.2)/2, zoomRect.size.width*1.2, zoomRect.size.height*1.2);
+        zoomRect = MKMapRectMake(zoomRect.origin.x - (zoomRect.size.width*0.2)/2, zoomRect.origin.y - (zoomRect.size.height*0.4)/1.3, zoomRect.size.width*1.2, zoomRect.size.height*1.4);
         [self setVisibleMapRect:zoomRect animated:YES];
     }
 }
