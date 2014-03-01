@@ -13,5 +13,6 @@
 @interface CYGTagsViewController : UIViewController
 
 @property (strong, nonatomic)  CYGMainViewController *mainViewController;
+@property (strong, nonatomic)  NSMutableArray *tags;
 
 @end

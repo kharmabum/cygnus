@@ -15,6 +15,8 @@
 #import "CYGPointCreationView.h"
 #import <SSToolkit/SSLineView.h>
 #import "CYGPointAnnotation.h"
+#import "CYGTokenInputField.h"
+
 
 @interface CYGPointCreationView () <UIScrollViewDelegate>
 
@@ -34,7 +36,6 @@
     _tagsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     _titleLengthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     _titleTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    _tagsTextField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 - (void)preferredContentSizeChanged
@@ -68,32 +69,31 @@
         _contentView.backgroundColor = [UIColor whiteColor];
         _contentView.opaque = YES;
         
-        _tagsLabel = [UILabel autoLayoutView];
-        [_contentView addSubview:_tagsLabel];
-        _tagsLabel.text = @"#";
-        _tagsLabel.textColor = [UIColor darkGrayColor];
+//        _tagsLabel = [UILabel autoLayoutView];
+//        [_contentView addSubview:_tagsLabel];
+//        _tagsLabel.text = @"Tags";
+//        _tagsLabel.textColor = [UIColor darkGrayColor];
         
-        _tagsTextField = [UITextField autoLayoutView];
-        [_contentView addSubview:_tagsTextField];
-        _tagsTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _tagsTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _tagsTextField.placeholder = @"(separate with spaces)";
-        _tagsTextField.returnKeyType = UIReturnKeyNext;
-        _tagsTextField.textColor = [UIColor lightGrayColor];
+        UIView *tagsInputContainerView = [UIView autoLayoutView];
+        [_contentView addSubview:tagsInputContainerView];
         
-        SSLineView *lineView = [[SSLineView alloc] init];
-        lineView.translatesAutoresizingMaskIntoConstraints = NO;
-        lineView.lineColor = [UIColor lightGrayColor];
-        [_contentView addSubview:lineView];
+        _tagsInputField = [[CYGTokenInputField alloc] init];
+        [tagsInputContainerView addSubview:_tagsInputField];
+        tagsInputContainerView.clipsToBounds = YES;
+        
+//        SSLineView *lineView = [[SSLineView alloc] init];
+//        lineView.translatesAutoresizingMaskIntoConstraints = NO;
+//        lineView.lineColor = [UIColor lightGrayColor];
+//        [_contentView addSubview:lineView];
         
         _titleLabel = [UILabel autoLayoutView];
         [_contentView addSubview:_titleLabel];
-        _titleLabel.text = @"Name";
+        _titleLabel.text = @"Optional";
         _titleLabel.textColor = [UIColor darkGrayColor];
         
         _titleTextField = [UITextField autoLayoutView];
         [_contentView addSubview:_titleTextField];
-        _titleTextField.placeholder = @"(optional)";
+        _titleTextField.placeholder = @"Name";
         _titleTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _titleTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _titleTextField.returnKeyType = UIReturnKeyDone;
@@ -117,20 +117,23 @@
         [_contentView pinEdge:FTUIViewEdgePinBottom toEdge:FTUIViewEdgePinTop ofItem:_saveButton];
         [_contentView constrainToWidthOfView:self];
 
-        [_tagsLabel pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinTop) toSuperViewWithInset:11];
+//        [_tagsLabel pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinTop) toSuperViewWithInset:11];
         
-        [_tagsTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
-        [_tagsTextField pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
+        [tagsInputContainerView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinTop ofItem:_contentView inset:3];
+//        [tagsInputContainerView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
+        [tagsInputContainerView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
 
-        [lineView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:3];
-        [lineView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
-        [lineView constrainToHeight:1];
+        [_tagsInputField pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
+
+//        [lineView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsInputField inset:3];
+//        [lineView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
+//        [lineView constrainToHeight:1];
         
-        [_titleLabel pinEdges:FTUIViewEdgePinLeft toSuperViewWithInset:11];
-        [_titleLabel pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsTextField inset:11];
+        [_titleLabel pinEdges:FTUIViewEdgePinLeft toSuperViewWithInset:8];
+        [_titleLabel pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:tagsInputContainerView inset:11];
 
         [_titleTextField pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
-        [_titleTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_titleLabel inset:3];
+        [_titleTextField pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_titleLabel inset:8];
         
         [_titleLengthLabel pinEdges:FTUIViewEdgePinRight toSuperViewWithInset:11];
         [_titleLengthLabel pinAttribute:NSLayoutAttributeCenterY toSameAttributeOfItem:_titleTextField];

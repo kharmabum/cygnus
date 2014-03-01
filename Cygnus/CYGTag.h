@@ -11,7 +11,7 @@
 @interface CYGTag : PFObject <PFSubclassing>
 
 @property (strong, nonatomic)  NSString *title;
-@property (strong, nonatomic)  PFRelation *points;
+@property (strong, nonatomic, readonly)  PFRelation *points;
 @property (assign, nonatomic)  NSUInteger totalUsageCount;
 
 + (NSString *)parseClassName;

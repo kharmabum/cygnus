@@ -16,6 +16,7 @@
 #import "CYGPointCreationView.h"
 #import <TSMessages/TSMessage.h>
 #import "MRProgress.h"
+#import "CYGTokenInputField.h"
 
 @interface CYGPointCreationViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 
@@ -54,7 +55,6 @@
         NSUInteger rangeLength = range.length;
         NSUInteger newLength = oldLength - rangeLength + replacementLength;
         BOOL returnKey = [string rangeOfString: @"\n"].location != NSNotFound;
-        
         if ((newLength <= 25)|| returnKey) {
             self.view.titleLengthLabel.text = [NSString stringWithFormat:@"(%lu)", (unsigned long)(25 - newLength)];
             return YES;
@@ -65,20 +65,16 @@
     return YES;
 }
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.view.tagsTextField){
-        [self.view.titleTextField becomeFirstResponder];
-    }
-    else {
-        [self.view endEditing:YES];
-    }
+    [self.view endEditing:YES];
     return YES;
 }
 
 
 #pragma mark - Actions, Gestures, Notification Handlers
+
+
 
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
@@ -112,23 +108,19 @@
 - (BOOL)fieldsAreValidWithAssignment
 {
     // TAGS
-    NSString *tagText = self.view.tagsTextField.text;
     
     // Check not empty
-    if (FTIsEmpty(tagText)) {
-        [self.view.tagsTextField becomeFirstResponder];
+    if (self.view.tagsInputField.tokens.count == 0) {
+        [self.view.tagsInputField becomeFirstResponder];
         return NO;
     }
     else {
-        // Get tags from comma-delimitted list
-        NSArray *tags = [[[tagText componentsSeparatedByString:@" "].rac_sequence
-                          map:^id(NSString *tag) {
-                              return [tag stringByTrimmingLeadingAndTrailingWhitespaceAndNewlineCharacters];
-                          }]
-                          array];
+        // Get tags from tagsInputView
+        NSArray *tags = self.view.tagsInputField.tokens;
         
         // Make unique
         NSOrderedSet *tagsSet = [NSOrderedSet orderedSetWithArray:tags];
+        
         // Check all tags are alphanumeric strings
         BOOL allGood = YES;
         for (NSString *tag in tagsSet) {
@@ -158,6 +150,9 @@
     self.point.author = [CYGUser currentUser];
     
     return YES;
+    
+    NSLog(@"tags - %@", self.point.tags);
+    NSLog(@"title - @%@", self.point.title);
 }
 
 - (void)save
@@ -184,7 +179,7 @@
                                 [tagObject.points addObject:newPoint];
                                 [tagObject incrementKey:kCYGTagTotalUsageCountKey];
                                 [tagObject saveEventually];
-                                newPoint.tagObjects = [newPoint.tagObjects arrayByAddingObject:tagObject];
+                                newPoint.tagObjects = (newPoint.tagObjects) ? [newPoint.tagObjects arrayByAddingObject:tagObject] : @[tagObject];
                                 [newPoint saveEventually];
                             }
                             else {
@@ -192,7 +187,7 @@
                                 tagObject.title = [tag lowercaseString];
                                 tagObject.totalUsageCount = 1;
                                 [tagObject.points addObject:newPoint];
-                                newPoint.tagObjects = [newPoint.tagObjects arrayByAddingObject:tagObject];
+                                newPoint.tagObjects = (newPoint.tagObjects) ? [newPoint.tagObjects arrayByAddingObject:tagObject] : @[tagObject];
                                 [newPoint saveEventually]; // saves both newPoint and tagObject
                             }
                         }
@@ -236,16 +231,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    self.automaticallyAdjustsScrollViewInsets = NO; // https://github.com/davbeck/TURecipientBar
+
     self.view.titleTextField.delegate = self;
-    self.view.tagsTextField.delegate = self;
     [self.view.saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
     
-    RAC(self.view.tagsTextField, text) = [[RACObserve(self, tags) deliverOn:RACScheduler.mainThreadScheduler]
-                                          map:^id(NSArray *tags) {
-                                              return [tags componentsJoinedByString:@" "];
-                                          }];
-
+    
+    // RAC
+    
+    @weakify(self)
+    [self.view.tagsInputField.rac_returnButtonClickedSignal subscribeNext:^(id x) {
+        @strongify(self);
+        if (self.view.tagsInputField.textField.text.length <= 1) {
+           [self.view.titleTextField becomeFirstResponder];
+        }
+        
+    }];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {

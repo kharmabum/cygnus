@@ -7,7 +7,7 @@
 //
 
 #import "CYGTagsView.h"
-#import "CYGTagsInputView.h"
+#import "CYGTokenInputField.h"
 
 @interface CYGTagsView ()
 
@@ -49,8 +49,8 @@
         self.opaque = YES;
         self.backgroundColor = [UIColor whiteColor];
         
-        _tagsInputView = [[CYGTagsInputView alloc] init];
-        [self addSubview:_tagsInputView];
+        _tokenInputField = [[CYGTokenInputField alloc] init];
+        [self addSubview:_tokenInputField];
     
         _tableView = [UITableView autoLayoutView];
         [self addSubview:_tableView];
@@ -59,9 +59,9 @@
         
         // Constraints
         
-        [_tagsInputView pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
+        [_tokenInputField pinEdges:(FTUIViewEdgePinTop | FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
         [_tableView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight | FTUIViewEdgePinBottom) toSuperViewWithInset:0];
-        [_tableView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsInputView];
+        [_tableView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tokenInputField];
         [_tableView constrainToWidthOfView:self];
         
         [[NSNotificationCenter defaultCenter] addObserver:self

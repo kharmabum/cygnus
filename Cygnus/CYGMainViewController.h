@@ -16,8 +16,9 @@
 @property (strong, nonatomic, readonly) CYGListViewController *listViewController;
 @property (strong, nonatomic, readonly) CYGTagsViewController *tagsViewController;
 @property (strong, nonatomic, readonly) CYGPointCreationViewController *pointCreationViewController;
+@property (strong, nonatomic) NSMutableArray *tags;
 
-
+- (void)refreshOnMapViewRegion;
 
 - (void)switchToMapView;
 - (void)switchToListView;

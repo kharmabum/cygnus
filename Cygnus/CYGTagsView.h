@@ -8,13 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class CYGTagsInputView;
+@class CYGTokenInputField;
 
 @interface CYGTagsView : UIView
 
 @property (strong, nonatomic)  UITableView *tableView;
-@property (strong, nonatomic)  CYGTagsInputView *tagsInputView;
-
-
+@property (strong, nonatomic)  CYGTokenInputField *tokenInputField;
 
 @end

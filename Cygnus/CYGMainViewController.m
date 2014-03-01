@@ -31,7 +31,6 @@
 @property (strong, nonatomic, readwrite) CYGPointCreationViewController *pointCreationViewController;
 @property (strong, nonatomic) UIViewController *activeViewController;
 
-@property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  NSMutableArray *annotations;
 @property (strong, nonatomic)  CYGPointAnnotation *pointCreationAnnotation;
 @property (strong, nonatomic)  CYGMapView *mapView;
@@ -551,17 +550,19 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _annotations = [[NSMutableArray alloc] initWithCapacity:kCYGMaxQueryLimit/10];
-        _tags = @[@"test"];
+        
+        _tags = ([[[NSUserDefaults standardUserDefaults] arrayForKey:kCYGSettingsTagsKey] mutableCopy]) ?: [@[@"test"] mutableCopy];
 
         _listViewController = [[CYGListViewController alloc] init];
-        _tagsViewController = [[CYGTagsViewController alloc] init];
-        _pointCreationViewController = [[CYGPointCreationViewController alloc] init];
         _listViewController.mainViewController = self;
         _listViewController.annotations = _annotations;
-        _tagsViewController.mainViewController = self;
-        _pointCreationViewController.mainViewController = self;
         
-        //TODO: get cached tags in userDefaults self.tags == ??
+        _tagsViewController = [[CYGTagsViewController alloc] init];
+        _tagsViewController.mainViewController = self;
+        _tagsViewController.tags = _tags;
+        
+        _pointCreationViewController = [[CYGPointCreationViewController alloc] init];
+        _pointCreationViewController.mainViewController = self;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(pointAnnotationDidUpdate:)

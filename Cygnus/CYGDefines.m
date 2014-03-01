@@ -21,6 +21,11 @@ NSString *const kCYGTwitterSecret = @"OMYzeu1vf70xklOiLuFokvo2huXnT8ckZXqSv1dcdB
 NSString *const kCYGNotificationPointAnnotationUpdated = @"CYGPointAnnotationUpdated";
 NSString *const kCYGNotificationCLAuthorizationStatusAuthorized = @"CLAuthorizationStatusAuthorized";
 
+#pragma mark - Analytics
+
+#pragma mark - Settings and Defaults
+
+NSString *const kCYGSettingsTagsKey = @"lastViewTags";
 
 #pragma mark - Parse Keys
 

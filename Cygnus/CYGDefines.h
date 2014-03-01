@@ -26,6 +26,10 @@ extern NSString *const kCYGNotificationCLAuthorizationStatusAuthorized;
 extern NSString *const kCYGGenericEvent;
 extern NSString *const kCYGGenericEventParam;
 
+#pragma mark - Settings and Defaults
+
+extern NSString  *const kCYGSettingsTagsKey;
+
 #pragma mark - Parse Class Names, Keys
 
 extern NSString *const kCYGPointClassName;

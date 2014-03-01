@@ -9,7 +9,7 @@
 
 @class MKMapView;
 
-@class CYGPointAnnotation;
+@class CYGPointAnnotation, CYGTokenInputField;
 
 @interface CYGPointCreationView : UIView
 
@@ -17,7 +17,7 @@
 @property (strong, nonatomic)  UILabel *tagsLabel;
 @property (strong, nonatomic)  UILabel *titleLengthLabel;
 @property (strong, nonatomic)  UITextField *titleTextField;
-@property (strong, nonatomic)  UITextField  *tagsTextField;
+@property (strong, nonatomic)  CYGTokenInputField  *tagsInputField;
 @property (strong, nonatomic)  UIButton *saveButton;
 
 
