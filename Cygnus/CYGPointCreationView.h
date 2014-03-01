@@ -17,7 +17,7 @@
 @property (strong, nonatomic)  UILabel *tagsLabel;
 @property (strong, nonatomic)  UILabel *titleLengthLabel;
 @property (strong, nonatomic)  UITextField *titleTextField;
-@property (strong, nonatomic)  CYGTokenInputField  *tagsInputField;
+@property (strong, nonatomic)  CYGTokenInputField  *tokenInputField;
 @property (strong, nonatomic)  UIButton *saveButton;
 
 

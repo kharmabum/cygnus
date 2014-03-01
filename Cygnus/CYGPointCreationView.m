@@ -77,8 +77,8 @@
         UIView *tagsInputContainerView = [UIView autoLayoutView];
         [_contentView addSubview:tagsInputContainerView];
         
-        _tagsInputField = [[CYGTokenInputField alloc] init];
-        [tagsInputContainerView addSubview:_tagsInputField];
+        _tokenInputField = [[CYGTokenInputField alloc] init];
+        [tagsInputContainerView addSubview:_tokenInputField];
         tagsInputContainerView.clipsToBounds = YES;
         
 //        SSLineView *lineView = [[SSLineView alloc] init];
@@ -123,9 +123,9 @@
 //        [tagsInputContainerView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsLabel inset:3];
         [tagsInputContainerView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:0];
 
-        [_tagsInputField pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
+        [_tokenInputField pinEdges:FTUIViewEdgePinAll toSuperViewWithInset:0];
 
-//        [lineView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tagsInputField inset:3];
+//        [lineView pinEdge:FTUIViewEdgePinTop toEdge:FTUIViewEdgePinBottom ofItem:_tokenInputField inset:3];
 //        [lineView pinEdges:(FTUIViewEdgePinLeft | FTUIViewEdgePinRight) toSuperViewWithInset:11];
 //        [lineView constrainToHeight:1];
         

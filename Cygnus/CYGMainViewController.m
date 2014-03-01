@@ -417,7 +417,6 @@
         newAnnotation.isNewlyCreatedPoint = YES;
         
         self.pointCreationViewController.point = newPoint;
-        self.pointCreationViewController.tags = [self.tags copy];
         
         self.toolbar.refreshButton.enabled = NO;
         [self.mapView removeAnnotations:self.annotations];

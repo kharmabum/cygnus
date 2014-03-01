@@ -13,7 +13,6 @@
 @interface CYGPointCreationViewController : UIViewController
 
 @property (strong, nonatomic)  CYGMainViewController *mainViewController;
-@property (strong, nonatomic)  NSArray *tags;
 @property (strong, nonatomic)  CYGPoint *point;
 
 @end

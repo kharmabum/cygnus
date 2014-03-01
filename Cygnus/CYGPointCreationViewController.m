@@ -74,9 +74,6 @@
 
 #pragma mark - Actions, Gestures, Notification Handlers
 
-
-
-
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     self.keyboardIsVisible = YES;
@@ -108,15 +105,14 @@
 - (BOOL)fieldsAreValidWithAssignment
 {
     // TAGS
-    
     // Check not empty
-    if (self.view.tagsInputField.tokens.count == 0) {
-        [self.view.tagsInputField becomeFirstResponder];
+    if (self.view.tokenInputField.tokens.count == 0) {
+        [self.view.tokenInputField becomeFirstResponder];
         return NO;
     }
     else {
         // Get tags from tagsInputView
-        NSArray *tags = self.view.tagsInputField.tokens;
+        NSArray *tags = self.view.tokenInputField.tokens;
         
         // Make unique
         NSOrderedSet *tagsSet = [NSOrderedSet orderedSetWithArray:tags];
@@ -131,7 +127,7 @@
         }
         
         if (allGood) {
-            self.point.tags = self.tags = [tagsSet array];
+            self.point.tags = [tagsSet array];
         }
         else {
             self.tagInputAlert = [[UIAlertView alloc] initWithTitle:@"Bad input" message:@"Tags must be space-delimitted, alphanumeric strings." delegate:self cancelButtonTitle:@"Lol, OK." otherButtonTitles:nil];
@@ -148,11 +144,8 @@
     
     // AUTHOR
     self.point.author = [CYGUser currentUser];
-    
+
     return YES;
-    
-    NSLog(@"tags - %@", self.point.tags);
-    NSLog(@"title - @%@", self.point.title);
 }
 
 - (void)save
@@ -232,17 +225,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO; // https://github.com/davbeck/TURecipientBar
+    
+    // Initialize tokenField with current tags
+    for (NSString *tag in self.mainViewController.tags) {
+        [self.view.tokenInputField addTokenWithText:tag];
+    }
 
     self.view.titleTextField.delegate = self;
     [self.view.saveButton setTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
     
     
-    // RAC
     
+    
+    // RAC: Bind return event on tagInput to progress to titleField
     @weakify(self)
-    [self.view.tagsInputField.rac_returnButtonClickedSignal subscribeNext:^(id x) {
+    [self.view.tokenInputField.rac_returnButtonClickedSignal subscribeNext:^(id x) {
         @strongify(self);
-        if (self.view.tagsInputField.textField.text.length <= 1) {
+        if (self.view.tokenInputField.textField.text.length <= 1) {
            [self.view.titleTextField becomeFirstResponder];
         }
         
