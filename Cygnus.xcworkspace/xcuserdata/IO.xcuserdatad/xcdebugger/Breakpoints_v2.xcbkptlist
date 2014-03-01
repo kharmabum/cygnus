@@ -40,11 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cygnus/CYGPointCreationViewController.m"
-            timestampString = "414401167.089543"
+            timestampString = "415330449.819564"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "428"
-            endingLineNumber = "428">
+            startingLineNumber = "430"
+            endingLineNumber = "430">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

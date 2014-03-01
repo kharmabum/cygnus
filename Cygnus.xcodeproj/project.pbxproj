@@ -59,8 +59,8 @@
 		C9CC593318AC4A16006FA0DD /* CYGPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CC593118AC4A16006FA0DD /* CYGPointAnnotation.m */; };
 		C9CE0E2618BFC72300CCF3FE /* CYGTag.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CE0E2518BFC72300CCF3FE /* CYGTag.m */; };
 		C9CE0E2718BFC72300CCF3FE /* CYGTag.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CE0E2518BFC72300CCF3FE /* CYGTag.m */; };
-		C9CE0E2A18C06D0100CCF3FE /* CYGTagsInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CE0E2918C06D0100CCF3FE /* CYGTagsInputView.m */; };
-		C9CE0E2B18C06D0100CCF3FE /* CYGTagsInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CE0E2918C06D0100CCF3FE /* CYGTagsInputView.m */; };
+		C9CE0E2A18C06D0100CCF3FE /* CYGTokenInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CE0E2918C06D0100CCF3FE /* CYGTokenInputField.m */; };
+		C9CE0E2B18C06D0100CCF3FE /* CYGTokenInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CE0E2918C06D0100CCF3FE /* CYGTokenInputField.m */; };
 		C9D3A53518A0E5CB00FD8193 /* CYGDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */; };
 		C9D3A53618A0E5CB00FD8193 /* CYGDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */; };
 		C9F4A0D118A0F0A100231649 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C978311A18A0E38D008879B7 /* QuartzCore.framework */; };
@@ -135,8 +135,8 @@
 		C9CC593118AC4A16006FA0DD /* CYGPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGPointAnnotation.m; sourceTree = "<group>"; };
 		C9CE0E2418BFC72300CCF3FE /* CYGTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGTag.h; sourceTree = "<group>"; };
 		C9CE0E2518BFC72300CCF3FE /* CYGTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGTag.m; sourceTree = "<group>"; };
-		C9CE0E2818C06D0100CCF3FE /* CYGTagsInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGTagsInputView.h; sourceTree = "<group>"; };
-		C9CE0E2918C06D0100CCF3FE /* CYGTagsInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGTagsInputView.m; sourceTree = "<group>"; };
+		C9CE0E2818C06D0100CCF3FE /* CYGTokenInputField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGTokenInputField.h; sourceTree = "<group>"; };
+		C9CE0E2918C06D0100CCF3FE /* CYGTokenInputField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGTokenInputField.m; sourceTree = "<group>"; };
 		C9D3A53318A0E5CB00FD8193 /* CYGDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYGDefines.h; sourceTree = "<group>"; };
 		C9D3A53418A0E5CB00FD8193 /* CYGDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYGDefines.m; sourceTree = "<group>"; };
 		D72F10921C964563A92E83E5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -222,8 +222,8 @@
 				C9C52D5318ADA0CD0089B3B1 /* CYGPointCreationView.m */,
 				C99A7ED818B5DEDD00843D7B /* CYGPointTableViewCell.h */,
 				C99A7ED918B5DEDD00843D7B /* CYGPointTableViewCell.m */,
-				C9CE0E2818C06D0100CCF3FE /* CYGTagsInputView.h */,
-				C9CE0E2918C06D0100CCF3FE /* CYGTagsInputView.m */,
+				C9CE0E2818C06D0100CCF3FE /* CYGTokenInputField.h */,
+				C9CE0E2918C06D0100CCF3FE /* CYGTokenInputField.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -472,7 +472,7 @@
 				C997D86A18B2EB1300E47C20 /* CYGTagsView.m in Sources */,
 				C9CC593218AC4A16006FA0DD /* CYGPointAnnotation.m in Sources */,
 				C9CE0E2618BFC72300CCF3FE /* CYGTag.m in Sources */,
-				C9CE0E2A18C06D0100CCF3FE /* CYGTagsInputView.m in Sources */,
+				C9CE0E2A18C06D0100CCF3FE /* CYGTokenInputField.m in Sources */,
 				C9A01C7A18AF6EBD005324CE /* CYGMapView.m in Sources */,
 				C997D85A18B2A6DB00E47C20 /* CYGListViewController.m in Sources */,
 				C997D86618B2A82000E47C20 /* CYGTagsViewController.m in Sources */,
@@ -499,7 +499,7 @@
 			files = (
 				C9C52D5918ADE3560089B3B1 /* UIColor+CYGAdditions.m in Sources */,
 				C978711718A8A78E00B25145 /* CYGPoint.m in Sources */,
-				C9CE0E2B18C06D0100CCF3FE /* CYGTagsInputView.m in Sources */,
+				C9CE0E2B18C06D0100CCF3FE /* CYGTokenInputField.m in Sources */,
 				C997D85B18B2A6DB00E47C20 /* CYGListViewController.m in Sources */,
 				C9CC592B18ABF5F8006FA0DD /* CYGManager.m in Sources */,
 				C997D86718B2A82000E47C20 /* CYGTagsViewController.m in Sources */,

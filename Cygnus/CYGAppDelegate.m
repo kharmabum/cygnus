@@ -12,6 +12,7 @@
 #import "CYGMainViewController.h"
 #import "CYGUser.h"
 #import "CYGPoint.h"
+#import "CYGTag.h"
 
 
 @implementation CYGAppDelegate
@@ -24,13 +25,13 @@
     
     [CYGUser registerSubclass];
     [CYGPoint registerSubclass];
+    [CYGTag registerSubclass];
     [PFUser enableAutomaticUser];
     PFACL *defaultACL = [PFACL ACL];
     [defaultACL setPublicReadAccess:YES];
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
     [Parse setApplicationId:kCYGParseApplicationId clientKey:kCYGParseClientKey];
     [PFTwitterUtils initializeWithConsumerKey:kCYGTwitterKey consumerSecret:kCYGTwitterSecret];
-    
   
     self.window.rootViewController = [[CYGMainViewController alloc] init];
     [self.window makeKeyAndVisible];
