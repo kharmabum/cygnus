@@ -628,7 +628,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C5CD8164C6014A1CBC72AA11 /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Debug";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_ID = "${ORGANIZATION}.${PRODUCT_NAME}.dev";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -644,7 +644,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C5CD8164C6014A1CBC72AA11 /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Release";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_ID = "${ORGANIZATION}.${PRODUCT_NAME}";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

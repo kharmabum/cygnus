@@ -9,6 +9,7 @@
 #import "CYGMapView.h"
 #import "CYGPoint.h"
 #import "CYGPointAnnotation.h"
+#import "NGAParallaxMotion.h"
 
 @implementation CYGMapView
 
@@ -103,6 +104,7 @@
         [_userLocationButton addTarget:self action:@selector(centerMapUserLocation) forControlEvents:UIControlEventTouchUpInside];
         [_userLocationButton setBackgroundImage:[UIImage imageNamed:@"user-location-icon"] forState:UIControlStateNormal];
         [_userLocationButton setAlpha:0.8];
+        _userLocationButton.parallaxIntensity = 2;
 
     }
     return self;
